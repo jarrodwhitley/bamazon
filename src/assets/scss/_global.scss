@@ -1,0 +1,40 @@
+* {
+    scroll-width: thin;
+    scrollbar-color: #4A5568 #232336;
+}
+
+*::-webkit-scrollbar {
+    width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #232336;
+    border-radius: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #3A3A59;
+    border-radius: 14px;
+    border: 3px solid #232336;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        color: white;
+    }
+}
+
+h3 {
+    font-size: 1.5rem;
+}

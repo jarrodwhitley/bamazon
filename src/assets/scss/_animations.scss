@@ -1,0 +1,226 @@
+// Animations
+@use 'sass:math';
+
+@keyframes pin {
+    0% {
+        transform: skewX(5deg);
+    }
+    4% {
+        transform: skewX(0deg);
+    }
+    29% {
+        transform: skewX(0deg);
+    }
+    30% {
+        transform: skewX(8deg);
+    }
+    34% {
+        transform: skewX(0deg);
+    }
+    59% {
+        transform: skewX(0deg);
+    }
+    60% {
+        transform: skewX(6deg);
+    }
+    64% {
+        transform: skewX(0deg);
+    }
+    99% {
+        transform: skewX(0deg);
+    }
+}
+
+@keyframes crawlingWall {
+    to {
+        background-position-y: bottom;
+    }
+}
+
+@keyframes glitch-anim {
+    $steps: 20;
+    @for $i from 0 through $steps {
+        #{percentage($i*(1/$steps))} {
+            // clip: rect(random(100)+px, 9999px, random(100)+px, 0);
+            -webkit-clip-path: inset(random(100)*1% 0 random(100)*1% 0);
+            clip-path: inset(random(100)*1% 0 random(100)*1% 0);
+            transform: skew(math.div(random(100), 100) + deg);
+        }
+    }
+}
+
+@keyframes glitch-anim2 {
+    $steps: 20;
+    @for $i from 0 through $steps {
+        #{percentage($i*(1/$steps))} {
+            // clip: rect(random(100)+px, 9999px, random(100)+px, 0);
+            -webkit-clip-path: inset(random(100)*1% 0 random(100)*1% 0);
+            clip-path: inset(random(100)*1% 0 random(100)*1% 0);
+            transform: skew(math.div(random(100), 100) + deg);
+        }
+    }
+}
+
+.glitch {
+    position: relative;
+}
+
+.glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00c1;
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+    animation: glitch-anim2 1s infinite linear alternate-reverse;
+}
+
+// Audio pulse
+#audioPlayer.playing {
+    #wave {
+        @for $i from 1 through 9 {
+            #Line_#{$i} {
+                animation: audio-pulse 1s infinite;
+                animation-delay: $i * .15s;
+            }
+        }
+    }
+}
+
+@keyframes audio-pulse {
+    0% {
+        transform: scaleY(1);
+        transform-origin: 50% 50%;
+    }
+
+    50% {
+        transform: scaleY(.7);
+        transform-origin: 50% 50%;
+    }
+
+    100% {
+        transform: scaleY(1);
+        transform-origin: 50% 50%;
+    }
+}
+
+.grid-bg {
+    height: 100vh;
+    width: 100vw;
+    perspective: 800px;
+    overflow: hidden;
+    background-image: linear-gradient(to bottom, #2a142d, #401e45, #4f2555, #55285c, #691c76, #760d74, #952586, #af209c);
+}
+
+.grid-lines {
+    background-size: 40px 40px;
+    background-image:
+            linear-gradient(to right, rgba(255, 255, 255, .1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, .1) 1px, transparent 1px);
+    height: inherit;
+    transform: rotateX(50deg);
+    transform-origin: top center;
+    animation: 7s linear infinite crawlingWall;
+    background-position-y: top;
+}
+
+// CRT Lines
+@keyframes moveDownAnimation {
+    100% {
+        background-position-y: 100%;
+    }
+}
+
+.crt-lines {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("https://i.imgur.com/zqtxcCG.jpg");
+    z-index: 10;
+    background-size: 7px auto;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    opacity: 0.4;
+    animation: moveDownAnimation 150s linear infinite;
+}
+
+.crt-darken {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.crt-vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("https://i.imgur.com/cFYYQUv.png");
+    z-index: 11;
+    background-size: 100% 100%;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+// Glow pulse
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 0 0 $neon;
+    }
+
+    40% {
+        box-shadow: 0 0 0.7rem 0 $neon;
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 $neon;
+    }
+}
+
+// Loading Dots
+#dots #dot1{
+    animation: load 1s infinite;
+}
+
+#dots #dot2{
+    animation: load 1s infinite;
+    animation-delay: 0.2s;
+}
+
+#dots #dot3{
+    animation: load 1s infinite;
+    animation-delay: 0.4s;
+}
+
+@keyframes load{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}

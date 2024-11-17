@@ -1,0 +1,53 @@
+.glow-hover {
+    &--neon {
+        transition: all ease-in .4s;
+        color: initial;
+        &:hover {
+            color: $neon;
+            -webkit-text-stroke: 1px $neon;
+        }
+    }
+    &--andes {
+        transition: all ease-in .4s;
+        &:hover {
+            color: $andes;
+            -webkit-text-stroke: 1px $andes;
+        }
+    }
+    &--purple {
+        transition: all ease-in .4s;
+        &:hover {
+            color: $purple;
+            -webkit-text-stroke: 1px $purple;
+        }
+    }
+    &--blue {
+        transition: all ease-in .4s;
+        &:hover {
+            color: $blue;
+            -webkit-text-stroke: 1px $blue;
+        }
+    }
+}
+
+.btn {
+    padding: 1rem 2rem;
+    font-weight: 600;
+    border: 2px solid white;
+    border-radius: 0.19rem;
+    height: fit-content;
+    cursor: pointer;
+
+    &-glow {
+        &--white {
+            color: white;
+            -webkit-text-stroke: 1px white;
+        }
+        &--neon {
+            @include glowHover($neon)
+        }
+        &--andes {
+            @include glowHover($andes)
+        }
+    }
+}
