@@ -1,0 +1,51 @@
+@import 'animate.css';
+@import './assets/fontawesome/css/fontawesome.min.css';
+@import './assets/fontawesome/css/brands.css';
+@import './assets/fontawesome/css/solid.css';
+@import './assets/scss/colors';
+@import './assets/scss/mixins';
+@import url('https://fonts.googleapis.com/css2?family=Qwitcher+Grypen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import './assets/scss/fonts';
+@import 'assets/scss/breakpoints';
+@import './assets/scss/animations';
+@import './assets/scss/global';
+@import './assets/scss/buttons';
+@import 'assets/scss/nav';
+@import './assets/scss/footer';
+@import './assets/scss/audio_player';
+
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    display: block;
+    font-family: 'Inter', sans-serif
+    //user-select: none;
+}
+
+img {
+    height: auto;
+    width: 100%;
+}
+
+//input {
+//    font-family: 'Inter', sans-serif;
+//}
+
+#app {
+    overflow-x: hidden;
+}
