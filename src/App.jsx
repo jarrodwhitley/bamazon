@@ -1,55 +1,35 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './style.scss'
-import NavigationBar from "./components/NavigationBar.jsx";
+import {useState, useEffect} from 'react';
+import NavigationBar from './components/NavigationBar.jsx';
+import Content from './components/Content.jsx';
+import Footer from './components/Footer.jsx';
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import { Context } from "./components/ContextProvider.jsx";
 
-function App() {
-    const [count, setCount] = useState(0)
+export default function App() {
+    const [rawProducts, setRawProducts] = useState([]);
+    
+    useEffect(() => {
+        fetch('https://dummyjson.com/products')
+            .then(res => res.json())
+            .then(json => setRawProducts(json.products));
+    }, []);
+    
+    // Set the first 3 products as featured
+    const products = rawProducts.map(product => {
+        let newObj = {...product, featured: false};
+        if (product.id <= 3) {
+            newObj.featured = true;
+        }
+        return newObj;
+    });
     
     return (
-        <>
-            <NavigationBar />
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo"/>
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo"/>
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-        </>
-    )
+        <ErrorBoundary>
+            <Context products={products}>
+                <NavigationBar />
+                <Content />
+                <Footer/>
+            </Context>
+        </ErrorBoundary>
+    );
 }
-
-// function NavigationBar() {
-//     return (
-//         <nav>
-//             <ul>
-//                 <li>
-//                     <a href="#home">Home</a>
-//                 </li>
-//                 <li>
-//                     <a href="#about">About</a>
-//                 </li>
-//                 <li>
-//                     <a href="#contact">Contact</a>
-//                 </li>
-//             </ul>
-//         </nav>
-//     )
-// }
-
-export default App
