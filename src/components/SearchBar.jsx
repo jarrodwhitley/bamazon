@@ -44,7 +44,7 @@ export default function SearchBar({ onFilterProducts }) {
                     borderRadius: '5px',
                     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
                     fontSize: '16px',
-                    zIndex: 1000,
+                    zIndex: 10,
                 }}
                 formatResult={formatResult}/>
         </div>

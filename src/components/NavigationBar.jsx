@@ -8,7 +8,6 @@ export default function NavigationBar({ onFilterProducts }) {
     
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
     const filterProducts = (string) => {
-        console.log(string);
         onFilterProducts(string);
     }
     
@@ -26,10 +25,9 @@ export default function NavigationBar({ onFilterProducts }) {
                     <i className={`fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}></i>
                 </div>
             )}
-            <div className="nav-links flex items-center gap-4 justify-end">
-                <a className="nav-links__link" href="#">JW</a>
-                <a className="nav-links__link" href="#">Contact</a>
-                <a className="nav-links__link" href="#">Login</a>
+            <div className="nav-links text-sm flex items-center gap-4 justify-end">
+                <a className="nav-links__link" href="https://github.com/jarrodwhitley/bamazon">See project on Github</a>
+                <a className="nav-links__link" href="https://jarrodwhitley.com">JW</a>
             </div>
         </nav>
     );
