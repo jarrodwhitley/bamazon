@@ -14,7 +14,7 @@ function formattedPrice(price) {
     );
 }
 
-function ProductCard({ product, size = 'sm', showDiscount = false, showLowStock = false }) {
+export default function ProductCard({ product, size = 'sm', showDiscount = false, showLowStock = false }) {
     const setSelectedProduct = useSetSelectedProduct();
     const showLowStockWarning = product.stock < 10 && showLowStock;
     
@@ -24,7 +24,9 @@ function ProductCard({ product, size = 'sm', showDiscount = false, showLowStock 
     };
     
     return (
-        <div key={product.id} className="product-card h-full bg-white shadow-md p-4 rounded-md cursor-pointer relative" onClick={selectProduct}>
+        <div key={product.id}
+             className="product-card h-full bg-white shadow-md p-4 rounded-md cursor-pointer relative"
+             onClick={selectProduct}>
             <div className="product-card__image flex items-center justify-center">
                 <img src={product?.thumbnail} height="300" width="300" alt={product.title}/>
             </div>
@@ -57,5 +59,3 @@ ProductCard.propTypes = {
     showDiscount: PropTypes.bool,
     showLowStock: PropTypes.bool,
 };
-
-export default ProductCard;

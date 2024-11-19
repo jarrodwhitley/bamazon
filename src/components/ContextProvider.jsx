@@ -31,6 +31,5 @@ Context.propTypes = {
     products: PropTypes.array.isRequired,
     filteredProducts: PropTypes.array.isRequired,
     selectedProduct: PropTypes.object,
-    // useSetSelectedProduct: PropTypes.func,
     children: PropTypes.node.isRequired,
 };
