@@ -5,6 +5,8 @@ import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
 import {useFilteredProducts, useProducts} from './ContextProvider.jsx';
 import BamazonAd from '../assets/images/bamazon_ad.png';
+import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
+import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
 
 export default function Content({isLoading, filtering}) {
     const products = useProducts();
@@ -18,14 +20,19 @@ export default function Content({isLoading, filtering}) {
         <main className="main-grid h-full relative">
             {/* Loading Overlay */}
             {isLoading && (
-                <div className="main-grid__loading-overlay absolute top-0 left-0 w-full h-full bg-white z-[2] flex items-center justify-center"></div>
+                <div className="main-grid__loading-overlay absolute top-0 left-0 w-full h-screen bg-white z-[2] grid grid-cols-1 grid-rows-1 items-center justify-items-center">
+                    <img src={BamazonBam} alt="Bamazon Bam" className="w-1/6 animate__animated animate__rotateOut animate__infinite row-start-1 col-start-1 z-10"/>
+                    <img src={BamazonBoom} alt="Bamazon Boom" className="w-1/6 animate__animated animate__pulse animate__infinite row-start-1 col-start-1"/>
+                </div>
             )}
             
             {/* Featured Products */}
             <div className="main-grid__featured featured-items grid grid-cols-3 gap-8 max-h-fit bg-gray-400 p-8 animate__animated">
-                <div className="main-grid__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex flex-col justify-start items-center w-full max-w-screen-sm text-white mt-4 p-6 mx-auto rounded font-bold">
-                    <span className="w-full text-[6vw] ">Today&#39;s<br/> Deals</span>
-                    <span className="w-full text-[1.5vw]">Get em&#39; before they&#39;re gone!</span>
+                <div className="main-grid__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex items-center w-full max-w-screen-sm text-white mt-4 p-6 mx-auto rounded font-bold">
+                    <div className="cta__text">
+                        <div className="w-full text-[6vw]">Today&#39;s<br/> Deals</div>
+                        <div className="w-full text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
+                    </div>
                 </div>
                 <div className="main-grid__featured__grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 col-span-2 max-w-6xl mt-4 mx-auto">
                     {featuredProducts.map(product => (
@@ -42,7 +49,7 @@ export default function Content({isLoading, filtering}) {
                             <ProductCard key={product.id} product={product} showLowStock={true}/>
                         ))}
                     </div>
-                    <img className="main-grid__advertisement" src={BamazonAd} alt="ad image"/>
+                    <img className="main-grid__advertisement cursor-pointer" src={BamazonAd} alt="fake ad"/>
                 </div>
             )}
             
