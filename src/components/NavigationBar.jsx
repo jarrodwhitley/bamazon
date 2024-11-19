@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
+import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
 
 export default function NavigationBar({ onFilterProducts }) {
     const [isMobile, setIsMobile] = useState(false);
@@ -19,7 +20,7 @@ export default function NavigationBar({ onFilterProducts }) {
     
     return (
         <nav className={`${isMobile ? 'mobile' : ''} w-full px-4 py-2 top-0 left-0 right-0 bg-blue-900 text-white flex items-center justify-between`}>
-            <div className="bamazon-logo text-3xl font-bold"><span className="text-yellow-500">BAM</span>azon</div>
+            <img className="bamazon-logo" src={BamazonLogo} width="150" alt="BAMazon logo"/>
             {!isMobile && (
                 <>
                     <SearchBar onFilterProducts={filterProducts} />

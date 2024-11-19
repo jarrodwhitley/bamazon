@@ -14,12 +14,10 @@ function formattedPrice(price) {
 }
 
 function ProductCard({ product, size = 'sm', showDiscount = false, showLowStock = false }) {
-    // console.log('ProductCard => product', product);
-    // display lowStock warning if stock is less than 5 and showLowStock is true
     const showLowStockWarning = product.stock < 10 && showLowStock;
     
     return (
-        <div key={product.id} className="product-card max-h-fit bg-white shadow-md p-4 rounded-md cursor-pointer relative">
+        <div key={product.id} className="product-card h-full bg-white shadow-md p-4 rounded-md cursor-pointer relative">
             <div className="product-card__image flex items-center justify-center">
                 <img src={product?.thumbnail} height="300" width="300" alt={product.title}/>
             </div>

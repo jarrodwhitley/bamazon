@@ -4,6 +4,7 @@ import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
 import {useFilteredProducts, useProducts} from './ContextProvider.jsx';
+import BamazonAd from '../assets/images/bamazon_ad.png';
 
 export default function Content({isLoading, filtering}) {
     const products = useProducts();
@@ -21,9 +22,12 @@ export default function Content({isLoading, filtering}) {
             )}
             
             {/* Featured Products */}
-            <div className="main-grid__featured featured-items max-h-fit bg-gray-400 p-4 animate__animated">
-                <h2 className="text-2xl bg-yellow-500 text-white w-1/2 py-2 mb-4 mx-auto rounded font-bold text-center">Today&#39;s Deals!</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="main-grid__featured featured-items grid grid-cols-3 gap-8 max-h-fit bg-gray-400 p-8 animate__animated">
+                <div className="main-grid__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex flex-col justify-start items-center w-full max-w-screen-sm text-white mt-4 p-6 mx-auto rounded font-bold">
+                    <span className="w-full text-[6vw] ">Today&#39;s<br/> Deals</span>
+                    <span className="w-full text-[1.5vw]">Get em&#39; before they&#39;re gone!</span>
+                </div>
+                <div className="main-grid__featured__grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 col-span-2 max-w-6xl mt-4 mx-auto">
                     {featuredProducts.map(product => (
                         <ProductCard key={product.id} product={product} size="lg" showDiscount={true} showLowStock={true}/>
                     ))}
@@ -32,13 +36,13 @@ export default function Content({isLoading, filtering}) {
             
             {/* Unfiltered Products */}
             {!filtering && (
-                <div className="main-grid__content unfiltered">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
+                <div className="main-grid__content unfiltered px-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 pl-4">
                         {products.map(product => (
                             <ProductCard key={product.id} product={product} showLowStock={true}/>
                         ))}
                     </div>
-                    <img className="main-grid__advertisement" src="https://unsplash.it/300/600" alt=""/>
+                    <img className="main-grid__advertisement" src={BamazonAd} alt="ad image"/>
                 </div>
             )}
             

@@ -84,6 +84,7 @@ button:focus-visible {
     gap: 1em;
 }
 
+/* Featured Products */
 .main-grid__featured {
     grid-area: featured;
 }
@@ -93,8 +94,6 @@ button:focus-visible {
     display: grid;
     grid-template-areas: 'sidebar content content';
     grid-template-columns: 1fr 4fr;
-    gap: 1em;
-    @apply p-4;
 }
 
 .main-grid__product-grid {
