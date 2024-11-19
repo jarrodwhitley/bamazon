@@ -22,8 +22,8 @@ export default function Content({isLoading, filtering}) {
             
             {/* Featured Products */}
             <div className="main-grid__featured featured-items max-h-fit bg-gray-400 p-4 animate__animated">
-                <h2 className="text-3xl text-blue-900 mb-4 font-bold text-center">Today&#39;s Deals!</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <h2 className="text-2xl bg-yellow-500 text-white w-1/2 py-2 mb-4 mx-auto rounded font-bold text-center">Today&#39;s Deals!</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {featuredProducts.map(product => (
                         <ProductCard key={product.id} product={product} size="lg" showDiscount={true} showLowStock={true}/>
                     ))}
@@ -50,7 +50,7 @@ export default function Content({isLoading, filtering}) {
                             <ProductCard key={product.id} product={product}/>
                         ))}
                     </div>
-                    <Sidebar/>
+                    <Sidebar />
                 </div>
             )}
             

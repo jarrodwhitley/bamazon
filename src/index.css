@@ -92,6 +92,7 @@ button:focus-visible {
     grid-area: content;
     display: grid;
     grid-template-areas: 'sidebar content content';
+    grid-template-columns: 1fr 4fr;
     gap: 1em;
     @apply p-4;
 }
@@ -100,6 +101,19 @@ button:focus-visible {
     grid-area: content;
 }
 
+/* Sidebar */
 .main-grid__sidebar, .main-grid__advertisement {
     grid-area: sidebar;
+}
+
+.sidebar__filter-section:not(:first-child) {
+    @apply flex flex-col mb-3
+}
+
+.sidebar__filter-section:not(:first-child) {
+    @apply mt-5
+}
+
+.sidebar__filter-list {
+    @apply flex flex-col gap-2
 }
