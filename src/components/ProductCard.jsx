@@ -2,24 +2,13 @@ import PropTypes from "prop-types";
 import RatingStars from "./RatingStars.jsx";
 import DiscountBadge from "./DiscountBadge.jsx";
 import { useSetSelectedProduct } from './ContextProvider.jsx';
-
-function formattedPrice(price) {
-    const [dollars, cents] = price.toString().split('.');
-    return (
-        <div className="items-start flex">
-            <span className="text-sm translate-y-[3px]">$</span>
-            <span className="text-3xl">{dollars}</span>
-            <span className="text-sm translate-y-[2px]">{cents}</span>
-        </div>
-    );
-}
+import { formattedPrice } from '../utils/functions.jsx';
 
 export default function ProductCard({ product, size = 'sm', showDiscount = false, showLowStock = false }) {
     const setSelectedProduct = useSetSelectedProduct();
     const showLowStockWarning = product.stock < 10 && showLowStock;
     
     const selectProduct = () => {
-        console.log('Product selected:', product);
         setSelectedProduct(product);
     };
     

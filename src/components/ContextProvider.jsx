@@ -9,6 +9,8 @@ const SetSelectedProductContext = createContext(undefined);
 export const Context = ({ products, filteredProducts, selectedProduct, children }) => {
     const [selectedProductState, setSelectedProductState] = useState(selectedProduct);
     
+    console.log("Selected Product State:", selectedProductState);
+    
     return (
         <ProductsContext.Provider value={products}>
             <FilteredProductsContext.Provider value={filteredProducts}>

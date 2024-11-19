@@ -5,11 +5,14 @@ import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import { Context } from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
+import SingleProductView from "./components/SingleProductView.jsx";
 
 export default function App() {
     const [isFiltering, setIsFiltering] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [rawProducts, setRawProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     
     useEffect(() => {
         window.addEventListener('load', () => {
@@ -29,9 +32,6 @@ export default function App() {
         }
         return newObj;
     });
-    
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [filteredProducts, setFilteredProducts] = useState([]);
     
     function filterProducts(string) {
         if (string.length > 2) {

@@ -7,6 +7,7 @@ import {useFilteredProducts, useProducts, useSelectedProduct} from './ContextPro
 import BamazonAd from '../assets/images/bamazon_ad.png';
 import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
 import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
+import SingleProductView from "./SingleProductView.jsx";
 
 export default function Content({isLoading, filtering}) {
     const products = useProducts();
@@ -15,11 +16,7 @@ export default function Content({isLoading, filtering}) {
         return products.filter(product => product.featured);
     }, [products]);
     
-    // const selectedProduct = useSelectedProduct();
-    // function selectProduct({product}) {
-    //     console.log('Product selected:', product);
-    //     onProductSelected(product)
-    // }
+    const selectedProduct = useSelectedProduct();
     
     return (
         <main className="main-grid h-full relative">
@@ -69,6 +66,8 @@ export default function Content({isLoading, filtering}) {
                     <Sidebar />
                 </div>
             )}
+            
+            <SingleProductView className={'animate__animated ' + (selectedProduct ? 'zoomIn' : 'zoomOut')} selectedProduct={selectedProduct} />
             
             {/*<div className="chat-widget-btn flex items-center justify-center w-14 h-14 bg-blue-600 border-blue-400 border-2 rounded-full top-[90%] mb-4 right-4 float-right sticky">*/}
             {/*    <FontAwesomeIcon icon="fa-comments" classes="text-white text-2xl"/>*/}

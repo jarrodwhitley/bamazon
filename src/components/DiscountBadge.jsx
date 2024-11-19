@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
 
-export default function DiscountBadge({ discountPercentage }) {
+export default function DiscountBadge({ discountPercentage, singleProductView = false }) {
     discountPercentage = Math.ceil(discountPercentage);
     
     return (
-        <div className="discount-badge bg-red-500 text-white text-md px-2 font-semibold absolute -top-2 -left-1 p-1 rounded-md">
+        <div className={(singleProductView ? 'ml-4 p-0 h-fit' : 'absolute -top-2 -left-1 p-1') + ' discount-badge bg-red-500 text-white w-fit text-md px-2 font-semibold rounded-md'}>
             {discountPercentage}% off
         </div>
     );
 }
 
 DiscountBadge.propTypes = {
-    discountPercentage: PropTypes.number.isRequired
+    discountPercentage: PropTypes.number.isRequired,
+    singleProductView: PropTypes.bool,
 }
