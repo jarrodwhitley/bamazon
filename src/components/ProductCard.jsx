@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import RatingStars from "./RatingStars.jsx";
 import DiscountBadge from "./DiscountBadge.jsx";
+import { useSetSelectedProduct } from './ContextProvider.jsx';
 
 function formattedPrice(price) {
     const [dollars, cents] = price.toString().split('.');
@@ -14,10 +15,16 @@ function formattedPrice(price) {
 }
 
 function ProductCard({ product, size = 'sm', showDiscount = false, showLowStock = false }) {
+    const setSelectedProduct = useSetSelectedProduct();
     const showLowStockWarning = product.stock < 10 && showLowStock;
     
+    const selectProduct = () => {
+        console.log('Product selected:', product);
+        setSelectedProduct(product);
+    };
+    
     return (
-        <div key={product.id} className="product-card h-full bg-white shadow-md p-4 rounded-md cursor-pointer relative">
+        <div key={product.id} className="product-card h-full bg-white shadow-md p-4 rounded-md cursor-pointer relative" onClick={selectProduct}>
             <div className="product-card__image flex items-center justify-center">
                 <img src={product?.thumbnail} height="300" width="300" alt={product.title}/>
             </div>
@@ -36,7 +43,6 @@ function ProductCard({ product, size = 'sm', showDiscount = false, showLowStock 
     );
 }
 
-// Define prop types for ProductCard
 ProductCard.propTypes = {
     product: PropTypes.shape({
         id: PropTypes.number.isRequired,

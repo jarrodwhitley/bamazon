@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
-import {useFilteredProducts, useProducts} from './ContextProvider.jsx';
+import {useFilteredProducts, useProducts, useSelectedProduct} from './ContextProvider.jsx';
 import BamazonAd from '../assets/images/bamazon_ad.png';
 import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
 import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
@@ -14,7 +14,12 @@ export default function Content({isLoading, filtering}) {
     const featuredProducts = useMemo(() => {
         return products.filter(product => product.featured);
     }, [products]);
-    // const filteredProducts = useFilteredProducts();
+    
+    // const selectedProduct = useSelectedProduct();
+    // function selectProduct({product}) {
+    //     console.log('Product selected:', product);
+    //     onProductSelected(product)
+    // }
     
     return (
         <main className="main-grid h-full relative">
