@@ -2,11 +2,15 @@ import { useState } from 'react';
 import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 
-function NavigationBar() {
+export default function NavigationBar({ onFilterProducts }) {
     const [isMobile, setIsMobile] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
+    const filterProducts = (string) => {
+        console.log(string);
+        onFilterProducts(string);
+    }
     
     // On load
     if (!isMobile && window.innerWidth < 768) {
@@ -14,9 +18,9 @@ function NavigationBar() {
     }
     
     return (
-        <nav className={`${isMobile ? 'mobile' : ''}` + 'fixed w-full px-4 py-2 top-0 left-0 right-0 bg-blue-900 text-white flex items-center justify-between'}>
-            <div className="bamazon-logo text-3xl font-bold"><span className="text-yellow-400">BAM</span>azon</div>
-            <SearchBar/>
+        <nav className={`${isMobile ? 'mobile' : ''}` + ' w-full px-4 py-2 top-0 left-0 right-0 bg-blue-900 text-white flex items-center justify-between'}>
+            <div className="bamazon-logo text-3xl font-bold"><span className="text-yellow-500">BAM</span>azon</div>
+            <SearchBar onFilterProducts={filterProducts}/>
             {isMobile && (
                 <div className="mobile-menu-btn" onClick={toggleMobileMenu}>
                     <i className={`fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}></i>
@@ -31,8 +35,6 @@ function NavigationBar() {
     );
 }
 
-PropTypes.propTypes = {
-    products: PropTypes.arrayOf(PropTypes.object).isRequired
-}
-
-export default NavigationBar;
+NavigationBar.propTypes = {
+    onFilterProducts: PropTypes.func.isRequired
+};

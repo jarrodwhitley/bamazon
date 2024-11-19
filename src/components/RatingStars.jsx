@@ -11,7 +11,7 @@ function RatingStars({value}) {
                         key={index}
                         type={value >= ratingValue ? 'solid' : 'regular'}
                         icon={value >= ratingValue ? 'fa-star' : value >= ratingValue - 0.5 ? 'fa-star-half-alt' : value > 0 ? 'fa-star' : 'fa-star-empty'}
-                        classes="text-yellow-400"
+                        classes="text-yellow-500 text-[15px]"
                     />
                 )
             })}

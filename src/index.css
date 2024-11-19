@@ -69,7 +69,29 @@ button:focus-visible {
   }
 }
 
-/* Tailwind styles */
+/* Theme styles */
 .nav-links__link {
   @apply text-lg text-white;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "featured featured"
+        "sidebar content";
+    gap: 1em;
+}
+
+.main-grid__featured {
+    grid-area: featured;
+}
+
+.main-grid__content {
+    grid-area: content;
+}
+
+.main-grid__sidebar {
+    grid-area: sidebar;
 }
