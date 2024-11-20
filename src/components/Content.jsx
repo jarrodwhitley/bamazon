@@ -29,11 +29,11 @@ export default function Content({isLoading, filtering}) {
             )}
             
             {/* Featured Products */}
-            <div className="main-grid__featured featured-items grid grid-cols-3 gap-8 max-h-fit bg-gray-400 p-8 animate__animated">
+            <div className="main-grid__featured featured-items grid grid-cols-1 lg:grid-cols-3 lg:gap-8 max-h-fit bg-gray-400 p-8 animate__animated">
                 <div className="main-grid__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex items-center w-full max-w-screen-sm text-white mt-4 p-6 mx-auto rounded font-bold">
                     <div className="cta__text">
-                        <div className="w-full text-[6vw]">Today&#39;s<br/> Deals</div>
-                        <div className="w-full text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
+                        <div className="w-full text-6xl lg:text-[6vw]">Today&#39;s<br/> Deals</div>
+                        <div className="w-full text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
                     </div>
                 </div>
                 <div className="main-grid__featured__grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 col-span-2 max-w-6xl mt-4 mx-auto">

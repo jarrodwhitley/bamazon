@@ -19,7 +19,7 @@ export default function NavigationBar({ onFilterProducts }) {
     }, []);
     
     return (
-        <nav className={`${isMobile ? 'mobile' : ''} w-full px-4 py-2 top-0 left-0 right-0 bg-blue-900 text-white flex items-center justify-between`}>
+        <nav className={`${isMobile ? 'mobile' : ''} w-full px-4 h-20 top-0 left-0 right-0 bg-blue-900 text-white flex items-center justify-between`}>
             <img className="bamazon-logo" src={BamazonLogo} width="150" alt="BAMazon logo"/>
             {!isMobile && (
                 <>

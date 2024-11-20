@@ -1,32 +1,33 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import NavigationBar from './components/NavigationBar.jsx';
 import Content from './components/Content.jsx';
 import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import { Context } from "./components/ContextProvider.jsx";
+import {Context} from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
 import SingleProductView from "./components/SingleProductView.jsx";
 
 export default function App() {
     const [isFiltering, setIsFiltering] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [rawProducts, setRawProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState([]);
     
     useEffect(() => {
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 1000);
-        });
-        
-        // Set rawProducts only once when the component mounts
+        const handleLoad = () => {
+            console.log('Window loaded');
+        };
+        window.addEventListener('load', handleLoad);
         setRawProducts(productsData);
+        
+        return () => {
+            window.removeEventListener('load', handleLoad);
+        };
     }, []);
     
     const products = rawProducts.map(product => {
-        let newObj = { ...product, featured: false };
+        let newObj = {...product, featured: false};
         if (product.id === 10 || product.id === 15 || product.id === 20) {
             newObj.featured = true;
         }
@@ -52,9 +53,9 @@ export default function App() {
     return (
         <ErrorBoundary>
             <Context products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct}>
-                <NavigationBar onFilterProducts={filterProducts} className="z-10" />
-                <Content filtering={isFiltering} isLoading={isLoading} className="z-0" />
-                <Footer />
+                <NavigationBar onFilterProducts={filterProducts} className="z-10"/>
+                <Content filtering={isFiltering} isLoading={isLoading} className="z-0"/>
+                <Footer/>
             </Context>
         </ErrorBoundary>
     );
