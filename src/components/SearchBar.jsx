@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import FontAwesomeIcon from "./FontAwesomeIcon.jsx";
+import { useRef, useEffect } from "react";
 import { useProducts } from "./ContextProvider.jsx";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 
@@ -8,7 +8,9 @@ function selectItem(item) {
 }
 
 export default function SearchBar({ onFilterProducts }) {
+    const isMobile = window.innerWidth < 768;
     const products = useProducts();
+    const searchInputRef = useRef(null);
     
     const formatResult = (item) => {
         return (
@@ -26,8 +28,21 @@ export default function SearchBar({ onFilterProducts }) {
         selectItem(item);
     };
     
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            let searchInputRef = document.querySelector('.search-bar input');
+            if (event.key === 'Enter' && document.activeElement === searchInputRef) {
+                searchInputRef.blur();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+    
     return (
-        <div className="search-bar w-1/2 relative">
+        <div className="search-bar w-full md:w-1/2 m-6 mb-4 relative">
             <ReactSearchAutocomplete
                 items={products}
                 onSearch={query => {
@@ -39,18 +54,26 @@ export default function SearchBar({ onFilterProducts }) {
                 fuseOptions={{keys: ['title', 'tags', 'brand']}}
                 autoFocus
                 placeholder="Search products..."
-                styling={{
+                styling={isMobile ? {
+                    height: '60px',
+                    borderRadius: '5px',
+                    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
+                    fontSize: '18px',
+                    zIndex: 10,
+                } : {
                     height: '40px',
                     borderRadius: '5px',
                     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
                     fontSize: '16px',
                     zIndex: 10,
                 }}
-                formatResult={formatResult}/>
+                formatResult={formatResult}
+                inputRef={searchInputRef}/>
         </div>
     );
 }
 
 SearchBar.propTypes = {
-    onFilterProducts: PropTypes.func.isRequired
+    onFilterProducts: PropTypes.func.isRequired,
+    onEnterPress: PropTypes.func
 };
