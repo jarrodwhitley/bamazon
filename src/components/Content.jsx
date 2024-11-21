@@ -1,9 +1,9 @@
-import {useEffect, useMemo, useState} from 'react';
+import { useMemo} from 'react';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
-import {useFilteredProducts, useProducts, useSelectedProduct, useSelectedCategory} from './ContextProvider.jsx';
+import {useFilteredProducts, useProducts, useSelectedProduct, useSelectedCategory, useIsFiltering} from './ContextProvider.jsx';
 import BamazonAd from '../assets/images/bamazon_ad.png';
 import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
 import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
@@ -11,18 +11,16 @@ import SingleProductView from "./SingleProductView.jsx";
 import SearchBar from "./SearchBar.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
-export default function Content({isLoading, filtering, onFilterProducts}) {
-    const [isMobile, setIsMobile] = useState(false);
+export default function Content({ isLoading }) {
+    const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
     const featuredProducts = useMemo(() => {
         return products.filter(product => product.featured);
     }, [products]);
     const selectedProduct = useSelectedProduct();
-    const filterProducts = (string) => {
-        onFilterProducts(string);
-    }
     const selectedCategory = useSelectedCategory();
+    const isFiltering = useIsFiltering();
     
     // loop through products and create a new array of unique categories
     const categories = products.reduce((acc, product) => {
@@ -35,14 +33,8 @@ export default function Content({isLoading, filtering, onFilterProducts}) {
     
     const productsInCategory = products.filter(product => product.category === selectedCategory);
     
-    useEffect(() => {
-        if (window.innerWidth < 768) {
-            setIsMobile(true);
-        }
-    }, []);
-    
     return (
-        <main className={'h-full lg:min-h-[800px] relative ' + (filtering ? 'flex md:mt-4' : '')}>
+        <main className={'h-full lg:min-h-[800px] relative ' + (isFiltering ? 'flex md:mt-4' : '')}>
             {/* Loading Overlay */}
             {isLoading && (
                 <div className="content__loading-overlay absolute top-0 left-0 w-full h-screen bg-white z-[2] grid grid-cols-1 grid-rows-1 items-center justify-items-center">
@@ -53,11 +45,11 @@ export default function Content({isLoading, filtering, onFilterProducts}) {
             
             {isMobile && (
                 <div className={'content__search-bar__container bg-gray-400 w-full flex justify-center'}>
-                    <SearchBar onFilterProducts={filterProducts}/>
+                    <SearchBar/>
                 </div>
             )}
             
-            {!filtering && (
+            {!isFiltering && (
                 <>
                     {/* Featured Products */}
                     <div className="content__featured featured-items w-full max-h-fit bg-gray-400 px-6 pb-4 md:p-8">
@@ -87,6 +79,9 @@ export default function Content({isLoading, filtering, onFilterProducts}) {
                                     ))}
                                 </div>
                             </div>
+                            <div className="content__categories-ad w-full max-w-[1400px] mx-auto mt-4">
+                                <img src={BamazonAd} alt="Bamazon Ad" className="w-full"/>
+                            </div>
                         </div>
                     )}
                     
@@ -107,14 +102,14 @@ export default function Content({isLoading, filtering, onFilterProducts}) {
                 </>
             )}
             {/* Filtered Products */}
-            {filtering && (
+            {isFiltering && (
                 <div className="content__filtered place-self-start max-w-[1400px] mx-auto">
                     <div className="content__product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
                         {filteredProducts.map(product => (
                             <ProductCard key={product.id} product={product}/>
                         ))}
                     </div>
-                    <Sidebar filtering={filtering}/>
+                    <Sidebar filtering={isFiltering}/>
                 </div>
             )}
             
@@ -129,6 +124,4 @@ export default function Content({isLoading, filtering, onFilterProducts}) {
 
 Content.propTypes = {
     isLoading: PropTypes.bool.isRequired,
-    filtering: PropTypes.bool.isRequired,
-    onFilterProducts: PropTypes.func.isRequired,
 }

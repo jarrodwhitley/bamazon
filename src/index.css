@@ -114,7 +114,20 @@ main {
     }
 }
 
+/* Category Products */
+.content__categories {
+
+    @screen md {
+        display: grid;
+        grid-template-areas:
+            'title title title'
+            'sidebar content content';
+        grid-template-columns: 1fr 4fr;
+    }
+}
+
 .content__category-products-inner {
+    grid-area: content;
     @apply flex flex-col-reverse;
 
     @screen md {
@@ -130,7 +143,12 @@ main {
     grid-area: content;
 }
 
-.content__category-products-title {
+.content__categories-ad {
+    grid-area: sidebar;
+}
+
+.content__category-products-title,
+.content__categories-title {
     grid-area: title;
 }
 
