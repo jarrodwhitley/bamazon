@@ -5,9 +5,9 @@ import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import {Context} from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
-import SingleProductView from "./components/SingleProductView.jsx";
 
 export default function App() {
+    const isMobile = window.innerWidth < 768;
     const [isFiltering, setIsFiltering] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [rawProducts, setRawProducts] = useState([]);
@@ -28,7 +28,7 @@ export default function App() {
     
     const products = rawProducts.map(product => {
         let newObj = {...product, featured: false};
-        if (product.id === 10 || product.id === 15 || product.id === 20) {
+        if (product.id === 10 || product.id === 15 || product.id === 20 || (product.id === 25 && isMobile)) {
             newObj.featured = true;
         }
         return newObj;
@@ -49,12 +49,15 @@ export default function App() {
             setIsFiltering(false);
         }
     }
+    function enterPress() {
+        console.log('Enter pressed');
+    }
     
     return (
         <ErrorBoundary>
             <Context products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct}>
-                <NavigationBar onFilterProducts={filterProducts} className="z-10"/>
-                <Content filtering={isFiltering} isLoading={isLoading} className="z-0"/>
+                <NavigationBar onFilterProducts={filterProducts} onEnterPress={enterPress} className="z-10"/>
+                <Content filtering={isFiltering} onFilterProducts={filterProducts} isLoading={isLoading} className="z-0"/>
                 <Footer/>
             </Context>
         </ErrorBoundary>
