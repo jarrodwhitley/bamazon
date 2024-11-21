@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import {useState, useEffect} from "react";
-import {useFilteredProducts} from "./ContextProvider.jsx";
+import {useFilteredProducts, useSetSelectedCategory} from "./ContextProvider.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
 export default function Sidebar( filtering ) {
@@ -14,6 +14,7 @@ export default function Sidebar( filtering ) {
         {min: 101, max: 1000}
     ];
     const [showFilters, setShowFilters] = useState(false);
+    const setSelectedCategory = useSetSelectedCategory();
     
     useEffect(() => {
         if (Array.isArray(filteredProducts)) {
@@ -35,6 +36,9 @@ export default function Sidebar( filtering ) {
         }
     }, [filteredProducts]);
     
+    function clearFilters() {
+        setSelectedCategory(null)
+    }
     
     return (
         <>
@@ -46,6 +50,7 @@ export default function Sidebar( filtering ) {
             <div className={'sidebar px-4 h-fit top-0 left-0 ' +
                 (isMobile ? 'block' : 'sticky')}>
                 <div className={'sidebar__filter-title text-xl font-semibold'}>Filters</div>
+                <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400'} onClick={clearFilters}>Clear filters</div>
                 <div className={'sidebar__filter-container ' +
                     (isMobile ? 'animate__animated fixed bg-white w-3/4 left-0 shadow-2xl text-xl p-6 ' : '') +
                     ((filtering && isMobile && !showFilters) ? 'animate__slideOutLeft' : '') +
