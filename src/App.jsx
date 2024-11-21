@@ -1,22 +1,23 @@
-import {useState, useEffect} from 'react';
+import { useCallback, useState, useEffect} from 'react';
 import NavigationBar from './components/NavigationBar.jsx';
 import Content from './components/Content.jsx';
 import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import {Context} from "./components/ContextProvider.jsx";
+import {Context, useSelectedCategory, useIsFiltering, useSetIsFiltering, useSearchString} from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
 
 export default function App() {
     const isMobile = window.innerWidth < 768;
-    const [isFiltering, setIsFiltering] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); //FIXME: currently not working
     const [rawProducts, setRawProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    
+    const setIsFiltering = useSetIsFiltering(false);
+    const searchString = useSearchString('');
+    const selectedCategory = useSelectedCategory({})
     useEffect(() => {
         const handleLoad = () => {
-            console.log('Window loaded');
+            setIsLoading(false);
         };
         window.addEventListener('load', handleLoad);
         setRawProducts(productsData);
@@ -25,7 +26,6 @@ export default function App() {
             window.removeEventListener('load', handleLoad);
         };
     }, []);
-    
     const products = rawProducts.map(product => {
         let newObj = {...product, featured: false};
         if (product.id === 10 || product.id === 15 || product.id === 20 || (product.id === 25 && isMobile)) {
@@ -34,7 +34,9 @@ export default function App() {
         return newObj;
     });
     
-    function filterProducts(string) {
+    const filterProducts = (string) => {
+        console.log('Filtering products...', string);
+        if (!string) return;
         if (string.length > 2) {
             let filtered = products.filter(product => {
                 return product.title.toLowerCase().includes(string.toLowerCase()) ||
@@ -49,15 +51,20 @@ export default function App() {
             setIsFiltering(false);
         }
     }
+    
+    useEffect(() => {
+        console.log('APP.jsx => Search string:', searchString);
+    }, [searchString]);
+    
     function enterPress() {
         console.log('Enter pressed');
     }
     
     return (
         <ErrorBoundary>
-            <Context products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct}>
-                <NavigationBar onFilterProducts={filterProducts} onEnterPress={enterPress} className="z-10"/>
-                <Content filtering={isFiltering} onFilterProducts={filterProducts} isLoading={isLoading} className="z-0"/>
+            <Context products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
+                <NavigationBar onEnterPress={enterPress} className="z-10"/>
+                <Content onFilterProducts={filterProducts} isLoading={isLoading} className="z-0"/>
                 <Footer/>
             </Context>
         </ErrorBoundary>

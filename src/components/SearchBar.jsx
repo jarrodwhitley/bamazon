@@ -1,16 +1,17 @@
 import PropTypes from "prop-types";
 import { useRef, useEffect } from "react";
-import { useProducts } from "./ContextProvider.jsx";
+import { useProducts, useSetSearchString } from "./ContextProvider.jsx";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 
 function selectItem(item) {
     console.log(item);
 }
 
-export default function SearchBar({ onFilterProducts }) {
+export default function SearchBar() {
     const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const searchInputRef = useRef(null);
+    const setSearchString = useSetSearchString();
     
     const formatResult = (item) => {
         return (
@@ -21,7 +22,7 @@ export default function SearchBar({ onFilterProducts }) {
     }
     
     const handleOnSearch = (string) => {
-        onFilterProducts(string);
+        setSearchString(string);
     };
     
     const handleOnSelect = (item) => {
@@ -74,6 +75,5 @@ export default function SearchBar({ onFilterProducts }) {
 }
 
 SearchBar.propTypes = {
-    onFilterProducts: PropTypes.func.isRequired,
     onEnterPress: PropTypes.func
 };
