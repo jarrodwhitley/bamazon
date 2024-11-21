@@ -1,27 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
 
 export default function NavigationBar({ onFilterProducts, onEnterPress }) {
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = window.innerWidth < 768;
     const [showMobileMenu, setShowMobileMenu] = useState(false);
-    
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
     const filterProducts = (string) => {
         onFilterProducts(string);
     }
     
-    useEffect(() => {
-        if (window.innerWidth < 768) {
-            setIsMobile(true);
-        }
-    }, []);
-    
     return (
         <nav className={`${isMobile ? 'mobile' : ''} w-full px-4 h-20 top-0 left-0 right-0 bg-blue-900 text-white flex items-center justify-between`}>
-            <img className="bamazon-logo" src={BamazonLogo} width="150" alt="BAMazon logo"/>
-            <span className={''}>(Under Construction)</span>
+            <img className="bamazon-logo" src={BamazonLogo} width={isMobile ? '100': '120'} alt="BAMazon logo"/>
+            <span className={''}>🚧 Under Construction 🚧</span>
             {!isMobile && (
                 <>
                     <SearchBar onFilterProducts={filterProducts}/>
