@@ -4,11 +4,12 @@ import {
     useFilteredProducts,
     useSetSelectedCategory,
     useSetSearchString,
+    useIsFiltering,
     useSetIsFiltering
 } from "./ContextProvider.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
-export default function Sidebar( filtering ) {
+export default function Sidebar({ onFilterProducts }) {
     const isMobile = window.innerWidth < 768;
     const filteredProducts = useFilteredProducts();
     const [categories, setCategories] = useState([]);
@@ -21,7 +22,9 @@ export default function Sidebar( filtering ) {
     const [showFilters, setShowFilters] = useState(false);
     const setSelectedCategory = useSetSelectedCategory();
     const setSearchString = useSetSearchString();
+    const isFiltering = useIsFiltering();
     const setIsFiltering = useSetIsFiltering();
+    const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
     
     useEffect(() => {
         if (Array.isArray(filteredProducts)) {
@@ -43,6 +46,18 @@ export default function Sidebar( filtering ) {
         }
     }, [filteredProducts]);
     
+    const handleCheckboxChange = (event) => {
+        const {checked, id} = event.target;
+        if (checked) {
+            setSelectedCheckboxes([...selectedCheckboxes, id]);
+        }
+        if (!checked) {
+            setSelectedCheckboxes(selectedCheckboxes.filter(checkbox => checkbox !== id));
+        }
+        console.log('handleCheckboxChange:', selectedCheckboxes);
+        onFilterProducts(selectedCheckboxes);
+    }
+    
     function clearFilters() {
         setSelectedCategory(null)
         setSearchString('')
@@ -63,15 +78,15 @@ export default function Sidebar( filtering ) {
                 <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400'} onClick={clearFilters}>Clear filters</div>
                 <div className={'sidebar__filter-container ' +
                     (isMobile ? 'animate__animated fixed bg-white w-3/4 left-0 shadow-2xl text-xl p-6 ' : '') +
-                    ((filtering && isMobile && !showFilters) ? 'animate__slideOutLeft' : '') +
-                    ((filtering && isMobile && showFilters) ? 'animate__slideInLeft' : '')}>
+                    ((isFiltering && isMobile && !showFilters) ? 'animate__slideOutLeft' : '') +
+                    ((isFiltering && isMobile && showFilters) ? 'animate__slideInLeft' : '')}>
                     {categories.length > 0 && (
                     <div className="sidebar__filter-section category-filter mt-2">
                         <h3 className="text-base font-semibold text-gray-400 pt-4 border-t-2">Categories</h3>
                         <div className="sidebar__filter-list">
                             {categories.map((category, index) => (
                                 <label className="flex items-center gap-2" key={index} htmlFor={`category-${index}`}>
-                                    <input type="checkbox" id={`category-${index}`}/>
+                                    <input type="checkbox" id={`category-${index}`} onClick={handleCheckboxChange}/>
                                     <span>{capitalizeFirstLetter(category)}</span>
                                 </label>
                             ))}
@@ -84,7 +99,7 @@ export default function Sidebar( filtering ) {
                             <div className="sidebar__filter-list">
                                 {brands.map((brand, index) => (
                                     <label className="flex items-center gap-2" key={index} htmlFor={`brand-${index}`}>
-                                        <input type="checkbox" id={`brand-${index}`}/>
+                                        <input type="checkbox" id={`brand-${index}`} onClick={handleCheckboxChange}/>
                                         {capitalizeFirstLetter(brand)}
                                     </label>
                                 ))}
@@ -96,7 +111,7 @@ export default function Sidebar( filtering ) {
                         <div className="sidebar__filter-list">
                             {prices.map((price, index) => (
                                 <label className="flex items-center gap-2" key={index} htmlFor={`price-${index}`}>
-                                    <input type="checkbox" id={`price-${index}`}/>
+                                    <input type="checkbox" id={`price-${index}`} onClick={handleCheckboxChange}/>
                                     <span className="checkbox-label-text">${price.min} - ${price.max}</span>
                                 </label>
                             ))}
@@ -107,3 +122,7 @@ export default function Sidebar( filtering ) {
         </>
     )
 }
+
+Sidebar.propTypes = {
+    onFilterProducts: PropTypes.func,
+};

@@ -43,6 +43,7 @@ export default function SearchBar() {
     
     useEffect(() => {
         console.log('searchString:', searchString);
+        if (!searchString) return;
         if (searchString.length < 3) {
             setIsFiltering(false);
         }
