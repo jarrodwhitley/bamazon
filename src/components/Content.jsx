@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
@@ -13,6 +13,7 @@ import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
 export default function Content({ isLoading }) {
     const isMobile = window.innerWidth < 768;
+    const [sidebarFilters, setSidebarFilters] = useState([]);
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
     const setFilteredProducts = useSetFilteredProducts();
@@ -33,7 +34,7 @@ export default function Content({ isLoading }) {
         }
         return acc;
     }, []);
-    const productsInCategory = products.filter(product => product.category === selectedCategory);
+    // const productsInCategory = products.filter(product => product.category === selectedCategory);
     
     const filterProducts = (string) => {
         console.log('Filtering products...', string);
@@ -53,10 +54,17 @@ export default function Content({ isLoading }) {
         }
     };
     
+    const handleSidebarFilters = (filters) => {
+        console.log('Sidebar filters:', filters);
+    }
+    
     useEffect(() => {
         filterProducts(searchString);
     }, [searchString]);
     
+    useEffect(() => {
+        filterProducts(selectedCategory);
+    }, [selectedCategory]);
     
     return (
         <main className={'relative ' + (isFiltering ? 'flex md:mt-4' : '')}>
@@ -95,10 +103,10 @@ export default function Content({ isLoading }) {
                     
                     {/* Category Selection */}
                     {!selectedCategory && (
-                        <div className="content__categories w-full pt-4 px-6 md:px-8">
+                        <div className="content__categories w-full pt-4 px-6 md:px-8 max-w-[1400px] mx-auto">
                             <h2 className="content__categories-title text-3xl font-semibold text-center">Categories</h2>
-                            <div className="content__categories-inner flex flex-row md:block w-full max-w-[1400px] mx-auto mt-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:pl-4 mt-4 md:mt-0">
+                            <div className="content__categories-inner lg:flex flex-row md:block w-full mx-auto mt-4">
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:pl-4 mt-4 md:mt-0">
                                     {categories.map(product => (
                                         <ProductCard key={product.id} product={product} size="lg" categoryCard={true} showDiscount={true} showLowStock={true}/>
                                     ))}
@@ -116,11 +124,11 @@ export default function Content({ isLoading }) {
                             <div className="content__category-products-title text-3xl font-semibold text-center">{capitalizeFirstLetter(selectedCategory)}</div>
                             <div className="content__category-products-inner w-full max-w-[1400px] mx-auto mt-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:pl-4 mt-4 md:mt-0">
-                                    {productsInCategory.map(product => (
+                                    {filteredProducts.map(product => (
                                         <ProductCard key={product.id} product={product} showLowStock={true}/>
                                     ))}
                                 </div>
-                                <Sidebar filtering={true}/>
+                                <Sidebar onFilterProducts={handleSidebarFilters}/>
                             </div>
                         </div>
                     )}
