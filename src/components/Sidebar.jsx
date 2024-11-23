@@ -1,6 +1,11 @@
 import PropTypes from "prop-types";
 import {useState, useEffect} from "react";
-import {useFilteredProducts, useSetSelectedCategory} from "./ContextProvider.jsx";
+import {
+    useFilteredProducts,
+    useSetSelectedCategory,
+    useSetSearchString,
+    useSetIsFiltering
+} from "./ContextProvider.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
 export default function Sidebar( filtering ) {
@@ -15,6 +20,8 @@ export default function Sidebar( filtering ) {
     ];
     const [showFilters, setShowFilters] = useState(false);
     const setSelectedCategory = useSetSelectedCategory();
+    const setSearchString = useSetSearchString();
+    const setIsFiltering = useSetIsFiltering();
     
     useEffect(() => {
         if (Array.isArray(filteredProducts)) {
@@ -38,6 +45,9 @@ export default function Sidebar( filtering ) {
     
     function clearFilters() {
         setSelectedCategory(null)
+        setSearchString('')
+        setIsFiltering(false)
+        document.querySelector('.clear-icon').click();
     }
     
     return (
@@ -57,7 +67,7 @@ export default function Sidebar( filtering ) {
                     ((filtering && isMobile && showFilters) ? 'animate__slideInLeft' : '')}>
                     {categories.length > 0 && (
                     <div className="sidebar__filter-section category-filter mt-2">
-                        <h3 className="text-base font-semibold text-gray-400">Categories</h3>
+                        <h3 className="text-base font-semibold text-gray-400 pt-4 border-t-2">Categories</h3>
                         <div className="sidebar__filter-list">
                             {categories.map((category, index) => (
                                 <label className="flex items-center gap-2" key={index} htmlFor={`category-${index}`}>

@@ -1,9 +1,9 @@
-import { useMemo} from 'react';
+import { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
-import {useFilteredProducts, useProducts, useSelectedProduct, useSelectedCategory, useIsFiltering} from './ContextProvider.jsx';
+import { useFilteredProducts, useSetFilteredProducts , useProducts, useSelectedProduct, useSelectedCategory, useIsFiltering, useSetIsFiltering, useSearchString } from './ContextProvider.jsx';
 import BamazonAd from '../assets/images/bamazon_ad.png';
 import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
 import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
@@ -15,14 +15,17 @@ export default function Content({ isLoading }) {
     const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
+    const setFilteredProducts = useSetFilteredProducts();
     const featuredProducts = useMemo(() => {
         return products.filter(product => product.featured);
     }, [products]);
     const selectedProduct = useSelectedProduct();
     const selectedCategory = useSelectedCategory();
     const isFiltering = useIsFiltering();
+    const setIsFiltering = useSetIsFiltering();
+    const searchString = useSearchString();
     
-    // loop through products and create a new array of unique categories
+    // Create array for categories section
     const categories = products.reduce((acc, product) => {
         const categorySet = new Set(acc.map(item => item.category));
         if (!categorySet.has(product.category)) {
@@ -30,11 +33,33 @@ export default function Content({ isLoading }) {
         }
         return acc;
     }, []);
-    
     const productsInCategory = products.filter(product => product.category === selectedCategory);
     
+    const filterProducts = (string) => {
+        console.log('Filtering products...', string);
+        if (!string) return;
+        if (string.length > 2) {
+            let filtered = products.filter(product => {
+                return product.title.toLowerCase().includes(string.toLowerCase()) ||
+                    product.tags.join(' ').toLowerCase().includes(string.toLowerCase()) ||
+                    (product.brand && product.brand.toLowerCase().includes(string.toLowerCase())) ||
+                    product.description.toLowerCase().includes(string.toLowerCase());
+            });
+            setFilteredProducts(filtered);
+            setIsFiltering(true);
+        } else {
+            setFilteredProducts(products);
+            setIsFiltering(false);
+        }
+    };
+    
+    useEffect(() => {
+        filterProducts(searchString);
+    }, [searchString]);
+    
+    
     return (
-        <main className={'h-full lg:min-h-[800px] relative ' + (isFiltering ? 'flex md:mt-4' : '')}>
+        <main className={'relative ' + (isFiltering ? 'flex md:mt-4' : '')}>
             {/* Loading Overlay */}
             {isLoading && (
                 <div className="content__loading-overlay absolute top-0 left-0 w-full h-screen bg-white z-[2] grid grid-cols-1 grid-rows-1 items-center justify-items-center">
@@ -54,10 +79,10 @@ export default function Content({ isLoading }) {
                     {/* Featured Products */}
                     <div className="content__featured featured-items w-full max-h-fit bg-gray-400 px-6 pb-4 md:p-8">
                         <div className="content__featured-inner grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 max-w-[1400px] mx-auto">
-                            <div className="content__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex items-center w-full text-white mt-4 p-6 mx-auto rounded font-bold">
+                            <div className="content__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex items-center w-fit text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
-                                    <div className="w-full text-6xl lg:text-[5vw]">Today&#39;s<br/> Deals</div>
-                                    <div className="w-full text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
+                                    <div className="w-full text-2xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals</div>
+                                    <div className="w-full hidden lg:block text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
                                 </div>
                             </div>
                             <div className="content__featured__grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 gap-y-4 md:gap-8 col-span-2 max-w-6xl mt-6 md:mt-4 mx-auto">

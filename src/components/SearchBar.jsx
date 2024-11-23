@@ -1,17 +1,16 @@
 import PropTypes from "prop-types";
 import { useRef, useEffect } from "react";
-import { useProducts, useSetSearchString } from "./ContextProvider.jsx";
+import {useProducts, useSearchString, useSetSearchString, useSetIsFiltering, useSetSelectedProduct} from "./ContextProvider.jsx";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
-
-function selectItem(item) {
-    console.log(item);
-}
 
 export default function SearchBar() {
     const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const searchInputRef = useRef(null);
+    const searchString =  useSearchString();
     const setSearchString = useSetSearchString();
+    const setSelectedProduct = useSetSelectedProduct();
+    const setIsFiltering = useSetIsFiltering();
     
     const formatResult = (item) => {
         return (
@@ -25,8 +24,8 @@ export default function SearchBar() {
         setSearchString(string);
     };
     
-    const handleOnSelect = (item) => {
-        selectItem(item);
+    const handleOnSelect = (product) => {
+        setSelectedProduct(product);
     };
     
     useEffect(() => {
@@ -41,6 +40,18 @@ export default function SearchBar() {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
+    
+    useEffect(() => {
+        console.log('searchString:', searchString);
+        if (searchString.length < 3) {
+            setIsFiltering(false);
+        }
+        if (searchString === '') {
+            if (searchInputRef.current) {
+                searchInputRef.current.value = '';
+            }
+        }
+    }, [searchString]);
     
     return (
         <div className="search-bar w-full md:w-1/2 m-6 mb-4 relative">
@@ -68,6 +79,7 @@ export default function SearchBar() {
                     fontSize: '16px',
                     zIndex: 10,
                 }}
+                showNoResults={true}
                 formatResult={formatResult}
                 inputRef={searchInputRef}/>
         </div>
