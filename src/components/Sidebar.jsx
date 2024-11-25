@@ -12,7 +12,7 @@ import {
 } from "./ContextProvider.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
-export default function Sidebar({ onFilterProducts }) {
+export default function Sidebar() {
     const isMobile = window.innerWidth < 768;
     const filteredProducts = useFilteredProducts();
     const [categories, setCategories] = useState([]);
@@ -53,7 +53,7 @@ export default function Sidebar({ onFilterProducts }) {
             }, []);
             setBrands(newBrands);
         }
-    }, [filteredProducts]);
+    }, []);
     
     const handleCheckboxChange = () => {
         let checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -70,7 +70,7 @@ export default function Sidebar({ onFilterProducts }) {
         setSelectedCheckboxes(checkboxesObj);
         setSelectedFilters({
             ...checkboxesObj,
-            categories: [selectedCategory],
+            category: selectedCategory,
             searchString: searchString || ''
         });
     }
@@ -125,17 +125,17 @@ export default function Sidebar({ onFilterProducts }) {
                             </div>
                         </div>
                     )}
-                    <div className="sidebar__filter-section mt-2">
-                        <h3 className="text-base font-semibold text-gray-400">Price</h3>
-                        <div className="sidebar__filter-list">
-                            {prices.map((price, index) => (
-                                <label className="w-fit flex items-center gap-2" key={index} htmlFor={`price-${index}`}>
-                                    <input type="checkbox" id={`price-${price.min}_${price.max}`} onClick={handleCheckboxChange}/>
-                                    <span className="checkbox-label-text">${price.min} - ${price.max}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
+                    {/*<div className="sidebar__filter-section mt-2">*/}
+                    {/*    <h3 className="text-base font-semibold text-gray-400">Price</h3>*/}
+                    {/*    <div className="sidebar__filter-list">*/}
+                    {/*        {prices.map((price, index) => (*/}
+                    {/*            <label className="w-fit flex items-center gap-2" key={index} htmlFor={`price-${index}`}>*/}
+                    {/*                <input type="checkbox" id={`price-${price.min}_${price.max}`} onClick={handleCheckboxChange}/>*/}
+                    {/*                <span className="checkbox-label-text">${price.min} - ${price.max}</span>*/}
+                    {/*            </label>*/}
+                    {/*        ))}*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </>

@@ -15,18 +15,13 @@ const SetSearchStringContext = createContext({});
 const SelectedFiltersContext = createContext({});
 const SetSelectedFiltersContext = createContext(null);
 
-export const Context = ({ products, filteredProducts, selectedProduct, selectedCategory, filtering, searchString, children }) => {
+export const Context = ({ products, filteredProducts, selectedProduct, selectedCategory, searchString, children }) => {
     const [selectedProductState, setSelectedProductState] = useState(selectedProduct);
     const [filteredProductsState, setFilteredProductsState] = useState(filteredProducts);
     const [selectedCategoryState, setSelectedCategoryState] = useState(selectedCategory);
-    const [filteringState, setFilteringState] = useState(filtering);
     const [searchStringState, setSearchStringState] = useState(searchString);
     const [isFilteringState, setIsFilteringState] = useState(false);
-    const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', categories: [], brands: [], prices: [] });
-    
-    useEffect(() => {
-        console.log('selectedFiltersState:', selectedFiltersState);
-    },[selectedFiltersState]);
+    const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', category: '', brands: [], prices: [] });
     
     return (
         <ProductsContext.Provider value={products}>

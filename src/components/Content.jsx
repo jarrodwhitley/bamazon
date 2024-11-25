@@ -18,7 +18,7 @@ export default function Content({ isLoading }) {
     const filteredProducts = useFilteredProducts();
     const setFilteredProducts = useSetFilteredProducts();
     const featuredProducts = useMemo(() => {
-        return products.filter(product => product.featured);
+        return products?.filter(product => product.featured);
     }, [products]);
     const selectedProduct = useSelectedProduct();
     const selectedCategory = useSelectedCategory();
@@ -26,6 +26,7 @@ export default function Content({ isLoading }) {
     const setIsFiltering = useSetIsFiltering();
     const searchString = useSearchString();
     const selectedFilters = useSelectedFilters();
+    const [filtersActive, setFiltersActive] = useState(false);
     
     // Create array for categories section
     const categories = products.reduce((acc, product) => {
@@ -35,70 +36,81 @@ export default function Content({ isLoading }) {
         }
         return acc;
     }, []);
-    const productsInCategory = products.filter(product => product.category === selectedCategory);
+
+    // I need to check if selectedFilters's properties are empty or not
+    const defaultFilters = {
+        category: '',
+        brands: [],
+        price: [],
+        searchString: ''
+    }
     
-    const filterProducts = (string) => {
-        console.log('Filtering products...', string);
-        if (searchString && string.length > 2) {
+    // if the values of selectdFilters is the same as defaultFilters then set filtersActive to false
+    useEffect(() => {
+        if (selectedFilters) {
+            const filterValues = Object.values(selectedFilters);
+            const defaultValues = Object.values(defaultFilters);
+            const activeFilters = filterValues.filter((value, index) => value?.length > 0 && value !== defaultValues[index]);
+            setFiltersActive(activeFilters.length > 0);
+        }
+    },[selectedFilters]);
+    
+    
+    const filterProducts = () => {
+        if (searchString && searchString.length > 2) {
+            console.log('1');
             let filtered = products.filter(product => {
-                return product.title.toLowerCase().includes(string.toLowerCase()) ||
-                    product.tags.join(' ').toLowerCase().includes(string.toLowerCase()) ||
-                    (product.brand && product.brand.toLowerCase().includes(string.toLowerCase())) ||
-                    product.description.toLowerCase().includes(string.toLowerCase());
+                return product.title.toLowerCase().includes(searchString.toLowerCase()) ||
+                    product.tags.join(' ').toLowerCase().includes(searchString.toLowerCase()) ||
+                    (product.brand && product.brand.toLowerCase().includes(searchString.toLowerCase())) ||
+                    product.description.toLowerCase().includes(searchString.toLowerCase());
             });
-            // Sidebar filter input
-            if (selectedFilters) {
-                console.log('selectedfilters - brands:', selectedFilters.brands);
+            if (selectedFilters && filtersActive) {
                 filtered = filtered.filter(product => {
                     console.log('product brand:', product.brand);
-                    const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
+                    const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
                     const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
-                    //         // const priceMatch = selectedFilters.price?.length === 0 || selectedFilters.price?.some(price => product.price >= price.min && product.price <= price.max);
-                    //         // return categoryMatch && brandMatch && priceMatch;
-                    // combine category and brand match arrays
                     return categoryMatch && brandMatch;
                 });
-                console.log('Search String Filtered Products:', filtered);
                 setFilteredProducts(filtered);
                 setIsFiltering(true);
             }
-        } else if (selectedFilters) {
-            // console.log('selectedfilters - brands:', selectedFilters.brands);
+        } else if (selectedFilters && filtersActive) {
+            console.log('2');
             let filtered = products.filter(product => {
-                // console.log('product brand:', product.brand);
-                const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
+                const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
                 const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
-                //         // const priceMatch = selectedFilters.price?.length === 0 || selectedFilters.price?.some(price => product.price >= price.min && product.price <= price.max);
-                //         // return categoryMatch && brandMatch && priceMatch;
-                // combine category and brand match arrays
+                // const priceMatch = selectedFilters.price?.some(price => product.price >= price.min && product.price <= price.max) || selectedFilters.price?.length === 0;
                 return categoryMatch && brandMatch;
             });
-            console.log('Sidebar Filtered Products:', filtered);
+            setFilteredProducts(filtered);
+            setIsFiltering(true);
+        } else if (selectedCategory) {
+            console.log('3');
+            let filtered = products.filter(product => product.category === selectedCategory);
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else {
+            console.log('4');
             setFilteredProducts(products);
             setIsFiltering(false);
         }
     };
     
     useEffect(() => {
-        console.log('useEffect selectedFilters:', selectedFilters);
+        if (!selectedFilters) return;
+        filterProducts();
     },[selectedFilters]);
-    
-    const handleSidebarFilters = (filters) => {
-        console.log('Sidebar filters:', filters);
-    }
     
     useEffect(() => {
         if (!searchString) return;
-        filterProducts(searchString);
+        filterProducts();
     }, [searchString]);
 
-    useEffect(() => {
-        if (!selectedCategory) return;
-        filterProducts(selectedCategory);
-    }, [selectedCategory]);
+    // useEffect(() => {
+    //     if (!selectedCategory) return;
+    //     filterProducts();
+    // }, [selectedCategory]);
     
     return (
         <main className={'relative ' + (isFiltering ? 'flex md:mt-4' : '')}>
@@ -162,7 +174,7 @@ export default function Content({ isLoading }) {
                                         <ProductCard key={product.id} product={product} showLowStock={true}/>
                                     ))}
                                 </div>
-                                <Sidebar onFilterProducts={handleSidebarFilters}/>
+                                <Sidebar/>
                             </div>
                         </div>
                     )}

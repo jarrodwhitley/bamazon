@@ -18,7 +18,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
         setSelectedFilters(
             {
                 searchString: '',
-                categories: [product.category],
+                category: product.category,
                 brands: selectedFilters.brands,
                 price: selectedFilters.price
             }
