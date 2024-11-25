@@ -2,10 +2,13 @@ import PropTypes from "prop-types";
 import {useState, useEffect} from "react";
 import {
     useFilteredProducts,
+    useSelectedCategory,
     useSetSelectedCategory,
     useSetSearchString,
     useIsFiltering,
-    useSetIsFiltering
+    useSetIsFiltering,
+    useSetSelectedFilters,
+    useSearchString
 } from "./ContextProvider.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
@@ -20,11 +23,17 @@ export default function Sidebar({ onFilterProducts }) {
         {min: 101, max: 1000}
     ];
     const [showFilters, setShowFilters] = useState(false);
+    const selectedCategory = useSelectedCategory();
     const setSelectedCategory = useSetSelectedCategory();
+    const searchString = useSearchString();
     const setSearchString = useSetSearchString();
     const isFiltering = useIsFiltering();
     const setIsFiltering = useSetIsFiltering();
-    const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+    const [selectedCheckboxes, setSelectedCheckboxes] = useState({
+        brands: [],
+        price: []
+    });
+    const setSelectedFilters = useSetSelectedFilters();
     
     useEffect(() => {
         if (Array.isArray(filteredProducts)) {
@@ -46,23 +55,33 @@ export default function Sidebar({ onFilterProducts }) {
         }
     }, [filteredProducts]);
     
-    const handleCheckboxChange = (event) => {
-        const {checked, id} = event.target;
-        if (checked) {
-            setSelectedCheckboxes([...selectedCheckboxes, id]);
-        }
-        if (!checked) {
-            setSelectedCheckboxes(selectedCheckboxes.filter(checkbox => checkbox !== id));
-        }
-        console.log('handleCheckboxChange:', selectedCheckboxes);
-        onFilterProducts(selectedCheckboxes);
+    const handleCheckboxChange = () => {
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let checkboxesObj = {
+            brands: [],
+            price: []
+        };
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                let [type, value] = checkbox.id.split('-');
+                checkboxesObj[type].push(value);
+            }
+        });
+        setSelectedCheckboxes(checkboxesObj);
+        setSelectedFilters({
+            ...checkboxesObj,
+            categories: [selectedCategory],
+            searchString: searchString || ''
+        });
     }
     
     function clearFilters() {
         setSelectedCategory(null)
         setSearchString('')
         setIsFiltering(false)
-        document.querySelector('.clear-icon').click();
+        if (document.querySelector('.clear-icon')) {
+            document.querySelector('.clear-icon').click();
+        }
     }
     
     return (
@@ -75,18 +94,18 @@ export default function Sidebar({ onFilterProducts }) {
             <div className={'sidebar px-4 h-fit top-0 left-0 ' +
                 (isMobile ? 'block' : 'sticky')}>
                 <div className={'sidebar__filter-title text-xl font-semibold'}>Filters</div>
-                <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400'} onClick={clearFilters}>Clear filters</div>
+                <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400 pb-4 border-b-2'} onClick={clearFilters}>Clear filters</div>
                 <div className={'sidebar__filter-container ' +
                     (isMobile ? 'animate__animated fixed bg-white w-3/4 left-0 shadow-2xl text-xl p-6 ' : '') +
                     ((isFiltering && isMobile && !showFilters) ? 'animate__slideOutLeft' : '') +
                     ((isFiltering && isMobile && showFilters) ? 'animate__slideInLeft' : '')}>
-                    {categories.length > 0 && (
+                    {categories.length >= 2 && (
                     <div className="sidebar__filter-section category-filter mt-2">
-                        <h3 className="text-base font-semibold text-gray-400 pt-4 border-t-2">Categories</h3>
+                        <h3 className="text-base font-semibold text-gray-400">Categories</h3>
                         <div className="sidebar__filter-list">
                             {categories.map((category, index) => (
-                                <label className="flex items-center gap-2" key={index} htmlFor={`category-${index}`}>
-                                    <input type="checkbox" id={`category-${index}`} onClick={handleCheckboxChange}/>
+                                <label className="w-fit flex items-center gap-2" key={index} htmlFor={`category-${index}`}>
+                                    <input type="checkbox" id={`category-${category}`} onClick={handleCheckboxChange}/>
                                     <span>{capitalizeFirstLetter(category)}</span>
                                 </label>
                             ))}
@@ -98,8 +117,8 @@ export default function Sidebar({ onFilterProducts }) {
                             <h3 className="text-base font-semibold text-gray-400">Brands</h3>
                             <div className="sidebar__filter-list">
                                 {brands.map((brand, index) => (
-                                    <label className="flex items-center gap-2" key={index} htmlFor={`brand-${index}`}>
-                                        <input type="checkbox" id={`brand-${index}`} onClick={handleCheckboxChange}/>
+                                    <label className="w-fit flex items-center gap-2" key={index} htmlFor={`brand-${index}`}>
+                                        <input type="checkbox" id={`brands-${brand}`} onClick={handleCheckboxChange}/>
                                         {capitalizeFirstLetter(brand)}
                                     </label>
                                 ))}
@@ -110,8 +129,8 @@ export default function Sidebar({ onFilterProducts }) {
                         <h3 className="text-base font-semibold text-gray-400">Price</h3>
                         <div className="sidebar__filter-list">
                             {prices.map((price, index) => (
-                                <label className="flex items-center gap-2" key={index} htmlFor={`price-${index}`}>
-                                    <input type="checkbox" id={`price-${index}`} onClick={handleCheckboxChange}/>
+                                <label className="w-fit flex items-center gap-2" key={index} htmlFor={`price-${index}`}>
+                                    <input type="checkbox" id={`price-${price.min}_${price.max}`} onClick={handleCheckboxChange}/>
                                     <span className="checkbox-label-text">${price.min} - ${price.max}</span>
                                 </label>
                             ))}
