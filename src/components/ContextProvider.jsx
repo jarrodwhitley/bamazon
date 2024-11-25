@@ -21,7 +21,7 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
     const [selectedCategoryState, setSelectedCategoryState] = useState(selectedCategory);
     const [searchStringState, setSearchStringState] = useState(searchString);
     const [isFilteringState, setIsFilteringState] = useState(false);
-    const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', category: '', brands: [], prices: [] });
+    const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', category: '', brands: [], price: '' });
     
     return (
         <ProductsContext.Provider value={products}>

@@ -37,15 +37,13 @@ export default function Content({ isLoading }) {
         return acc;
     }, []);
 
-    // I need to check if selectedFilters's properties are empty or not
     const defaultFilters = {
         category: '',
         brands: [],
-        price: [],
+        price: '',
         searchString: ''
     }
     
-    // if the values of selectdFilters is the same as defaultFilters then set filtersActive to false
     useEffect(() => {
         if (selectedFilters) {
             const filterValues = Object.values(selectedFilters);
@@ -80,8 +78,13 @@ export default function Content({ isLoading }) {
             let filtered = products.filter(product => {
                 const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
                 const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
+                // the value of selectedFilters.price is returning a string
+                // the value of that string will be in this format "0_50" which represents the min and max price, dollars only no cents
+                // product.price will be a decimal value so we'll need to convert it to an integer ignoring the cents
+                console.log('price', selectedFilters.price);
+                const priceMatch = selectedFilters.price === '' || (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1]));
                 // const priceMatch = selectedFilters.price?.some(price => product.price >= price.min && product.price <= price.max) || selectedFilters.price?.length === 0;
-                return categoryMatch && brandMatch;
+                return categoryMatch && brandMatch && priceMatch;
             });
             setFilteredProducts(filtered);
             setIsFiltering(true);
@@ -182,11 +185,14 @@ export default function Content({ isLoading }) {
             )}
             {/* Filtered Products */}
             {isFiltering && (
-                <div className="content__filtered place-self-start max-w-[1400px] mx-auto">
-                    <div className="content__product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
+                <div className={'content__filtered place-self-start w-full max-w-[1400px] ' + (filteredProducts.length === 0 ? '' : 'mx-auto')}>
+                    <div className="content__product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
                         {filteredProducts.map(product => (
                             <ProductCard key={product.id} product={product}/>
                         ))}
+                        {filteredProducts.length === 0 && (
+                            <div className="content__no-results text-2xl font-semibold text-center w-full row-span-full col-span-full place-self-center mt-4">No results found</div>
+                        )}
                     </div>
                     <Sidebar filtering={isFiltering}/>
                 </div>
