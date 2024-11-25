@@ -41,7 +41,7 @@ export default function App() {
             <Context products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
                 <NavigationBar onEnterPress={enterPress} className={'z-10'}/>
                 <Content isLoading={isLoading} className="z-0"/>
-                <Footer/>
+                {/*<Footer/>*/}
             </Context>
         </ErrorBoundary>
     );

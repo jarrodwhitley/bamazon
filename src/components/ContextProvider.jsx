@@ -11,7 +11,9 @@ const SetFilteredProductsContext = createContext(null);
 const FilteringContext = createContext(false);
 const SetFilteringContext = createContext(null);
 const SearchStringContext = createContext(null)
-const SetSearchStringContext = createContext(null);
+const SetSearchStringContext = createContext({});
+const SelectedFiltersContext = createContext({});
+const SetSelectedFiltersContext = createContext(null);
 
 export const Context = ({ products, filteredProducts, selectedProduct, selectedCategory, filtering, searchString, children }) => {
     const [selectedProductState, setSelectedProductState] = useState(selectedProduct);
@@ -20,6 +22,11 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
     const [filteringState, setFilteringState] = useState(filtering);
     const [searchStringState, setSearchStringState] = useState(searchString);
     const [isFilteringState, setIsFilteringState] = useState(false);
+    const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', categories: [], brands: [], prices: [] });
+    
+    useEffect(() => {
+        console.log('selectedFiltersState:', selectedFiltersState);
+    },[selectedFiltersState]);
     
     return (
         <ProductsContext.Provider value={products}>
@@ -33,7 +40,11 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
                                         <SetFilteringContext.Provider value={setIsFilteringState}>
                                             <SearchStringContext.Provider value={searchStringState}>
                                                 <SetSearchStringContext.Provider value={setSearchStringState}>
-                                                    {children}
+                                                    <SelectedFiltersContext.Provider value={selectedFiltersState}>
+                                                        <SetSelectedFiltersContext.Provider value={setSelectedFiltersState}>
+                                                            {children}
+                                                        </SetSelectedFiltersContext.Provider>
+                                                    </SelectedFiltersContext.Provider>
                                                 </SetSearchStringContext.Provider>
                                             </SearchStringContext.Provider>
                                         </SetFilteringContext.Provider>
@@ -59,6 +70,8 @@ export const useIsFiltering = () => useContext(FilteringContext);
 export const useSetIsFiltering = () => useContext(SetFilteringContext);
 export const useSearchString = () => useContext(SearchStringContext);
 export const useSetSearchString = () => useContext(SetSearchStringContext);
+export const useSelectedFilters = () => useContext(SelectedFiltersContext);
+export const useSetSelectedFilters = () => useContext(SetSelectedFiltersContext);
 
 Context.propTypes = {
     products: PropTypes.array.isRequired,

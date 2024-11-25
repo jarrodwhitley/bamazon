@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import RatingStars from "./RatingStars.jsx";
 import DiscountBadge from "./DiscountBadge.jsx";
-import {useSetSelectedProduct, useSetSelectedCategory} from './ContextProvider.jsx';
+import {useSetSelectedProduct, useSetSelectedCategory, useSelectedFilters, useSetSelectedFilters} from './ContextProvider.jsx';
 import {formattedPrice, capitalizeFirstLetter} from '../utils/functions.jsx';
 
 export default function ProductCard({product, showDiscount = false, showLowStock = false, categoryCard = false}) {
     const isMobile = window.innerWidth < 768;
+    const selectedFilters = useSelectedFilters();
+    const setSelectedFilters = useSetSelectedFilters();
     const setSelectedProduct = useSetSelectedProduct();
     const selectProduct = () => {
         setSelectedProduct(product);
@@ -13,6 +15,14 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     const setSelectedCategory = useSetSelectedCategory();
     const selectCategory = () => {
         setSelectedCategory(product.category);
+        setSelectedFilters(
+            {
+                searchString: '',
+                categories: [product.category],
+                brands: selectedFilters.brands,
+                price: selectedFilters.price
+            }
+        );
     }
     const showLowStockWarning = product.stock < 10 && showLowStock;
     

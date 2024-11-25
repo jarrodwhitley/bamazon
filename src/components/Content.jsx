@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
-import { useFilteredProducts, useSetFilteredProducts , useProducts, useSelectedProduct, useSelectedCategory, useIsFiltering, useSetIsFiltering, useSearchString } from './ContextProvider.jsx';
+import { useFilteredProducts, useSetFilteredProducts , useProducts, useSelectedProduct, useSelectedCategory, useIsFiltering, useSetIsFiltering, useSearchString, useSelectedFilters } from './ContextProvider.jsx';
 import BamazonAd from '../assets/images/bamazon_ad.png';
 import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
 import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
@@ -25,6 +25,7 @@ export default function Content({ isLoading }) {
     const isFiltering = useIsFiltering();
     const setIsFiltering = useSetIsFiltering();
     const searchString = useSearchString();
+    const selectedFilters = useSelectedFilters();
     
     // Create array for categories section
     const categories = products.reduce((acc, product) => {
@@ -34,18 +35,45 @@ export default function Content({ isLoading }) {
         }
         return acc;
     }, []);
-    // const productsInCategory = products.filter(product => product.category === selectedCategory);
+    const productsInCategory = products.filter(product => product.category === selectedCategory);
     
     const filterProducts = (string) => {
         console.log('Filtering products...', string);
-        if (!string) return;
-        if (string.length > 2) {
+        if (searchString && string.length > 2) {
             let filtered = products.filter(product => {
                 return product.title.toLowerCase().includes(string.toLowerCase()) ||
                     product.tags.join(' ').toLowerCase().includes(string.toLowerCase()) ||
                     (product.brand && product.brand.toLowerCase().includes(string.toLowerCase())) ||
                     product.description.toLowerCase().includes(string.toLowerCase());
             });
+            // Sidebar filter input
+            if (selectedFilters) {
+                console.log('selectedfilters - brands:', selectedFilters.brands);
+                filtered = filtered.filter(product => {
+                    console.log('product brand:', product.brand);
+                    const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
+                    const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
+                    //         // const priceMatch = selectedFilters.price?.length === 0 || selectedFilters.price?.some(price => product.price >= price.min && product.price <= price.max);
+                    //         // return categoryMatch && brandMatch && priceMatch;
+                    // combine category and brand match arrays
+                    return categoryMatch && brandMatch;
+                });
+                console.log('Search String Filtered Products:', filtered);
+                setFilteredProducts(filtered);
+                setIsFiltering(true);
+            }
+        } else if (selectedFilters) {
+            // console.log('selectedfilters - brands:', selectedFilters.brands);
+            let filtered = products.filter(product => {
+                // console.log('product brand:', product.brand);
+                const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
+                const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
+                //         // const priceMatch = selectedFilters.price?.length === 0 || selectedFilters.price?.some(price => product.price >= price.min && product.price <= price.max);
+                //         // return categoryMatch && brandMatch && priceMatch;
+                // combine category and brand match arrays
+                return categoryMatch && brandMatch;
+            });
+            console.log('Sidebar Filtered Products:', filtered);
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else {
@@ -54,15 +82,21 @@ export default function Content({ isLoading }) {
         }
     };
     
+    useEffect(() => {
+        console.log('useEffect selectedFilters:', selectedFilters);
+    },[selectedFilters]);
+    
     const handleSidebarFilters = (filters) => {
         console.log('Sidebar filters:', filters);
     }
     
     useEffect(() => {
+        if (!searchString) return;
         filterProducts(searchString);
     }, [searchString]);
-    
+
     useEffect(() => {
+        if (!selectedCategory) return;
         filterProducts(selectedCategory);
     }, [selectedCategory]);
     
@@ -87,7 +121,7 @@ export default function Content({ isLoading }) {
                     {/* Featured Products */}
                     <div className="content__featured featured-items w-full max-h-fit bg-gray-400 px-6 pb-4 md:p-8">
                         <div className="content__featured-inner grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 max-w-[1400px] mx-auto">
-                            <div className="content__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex items-center w-fit text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
+                            <div className="content__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
                                     <div className="w-full text-2xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals</div>
                                     <div className="w-full hidden lg:block text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
