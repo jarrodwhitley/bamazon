@@ -103,8 +103,8 @@ export default function Sidebar() {
                             <h3 className="text-base font-semibold text-gray-400">Categories</h3>
                             <div className="sidebar__filter-list">
                                 {categories.map((category, index) => (
-                                    <label className="w-fit flex items-center gap-2" key={index} htmlFor={`category-${index}`}>
-                                        <input type="checkbox" id={`category-${category}`} onClick={handleCheckboxChange}/>
+                                    <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`category-${category}`}>
+                                        <input type="checkbox" id={`category-${category}`} onChange={handleCheckboxChange}/>
                                         <span>{capitalizeFirstLetter(category)}</span>
                                     </label>
                                 ))}
@@ -116,9 +116,9 @@ export default function Sidebar() {
                             <h3 className="text-base font-semibold text-gray-400">Brands</h3>
                             <div className="sidebar__filter-list">
                                 {brands.map((brand, index) => (
-                                    <label className="w-fit flex items-center gap-2" key={index} htmlFor={`brand-${index}`}>
-                                        <input type="checkbox" id={`brands-${brand}`} onClick={handleCheckboxChange}/>
-                                        {capitalizeFirstLetter(brand)}
+                                    <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`brands-${brand}`}>
+                                        <input type="checkbox" id={`brands-${brand}`} onChange={handleCheckboxChange}/>
+                                        <span>{capitalizeFirstLetter(brand)}</span>
                                     </label>
                                 ))}
                             </div>
@@ -128,9 +128,9 @@ export default function Sidebar() {
                         <h3 className="text-base font-semibold text-gray-400">Price</h3>
                         <div className="sidebar__filter-list">
                             {prices.map((price, index) => (
-                                <label className="w-fit flex items-center gap-2" key={index} htmlFor={`price-${index}`}>
-                                    <input type="checkbox" id={`price-${price.min}_${price.max}`} onClick={handleCheckboxChange}/>
-                                    <span className="checkbox-label-text">${price.min} - ${price.max}</span>
+                                <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`price-${price.min}_${price.max}`}>
+                                    <input type="checkbox" id={`price-${price.min}_${price.max}`} onChange={handleCheckboxChange}/>
+                                    <span>${price.min} - ${price.max}</span>
                                 </label>
                             ))}
                         </div>

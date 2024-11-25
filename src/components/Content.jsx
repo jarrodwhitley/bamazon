@@ -55,8 +55,8 @@ export default function Content({ isLoading }) {
     
     
     const filterProducts = () => {
+        console.log('Updating Filters...');
         if (searchString && searchString.length > 2) {
-            console.log('1');
             let filtered = products.filter(product => {
                 return product.title.toLowerCase().includes(searchString.toLowerCase()) ||
                     product.tags.join(' ').toLowerCase().includes(searchString.toLowerCase()) ||
@@ -65,36 +65,28 @@ export default function Content({ isLoading }) {
             });
             if (selectedFilters && filtersActive) {
                 filtered = filtered.filter(product => {
-                    console.log('product brand:', product.brand);
                     const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
                     const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
-                    return categoryMatch && brandMatch;
+                    const priceMatch = selectedFilters.price === '' || (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1]));
+                    return categoryMatch && brandMatch && priceMatch;
                 });
                 setFilteredProducts(filtered);
                 setIsFiltering(true);
             }
         } else if (selectedFilters && filtersActive) {
-            console.log('2');
             let filtered = products.filter(product => {
                 const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
                 const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
-                // the value of selectedFilters.price is returning a string
-                // the value of that string will be in this format "0_50" which represents the min and max price, dollars only no cents
-                // product.price will be a decimal value so we'll need to convert it to an integer ignoring the cents
-                console.log('price', selectedFilters.price);
                 const priceMatch = selectedFilters.price === '' || (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1]));
-                // const priceMatch = selectedFilters.price?.some(price => product.price >= price.min && product.price <= price.max) || selectedFilters.price?.length === 0;
                 return categoryMatch && brandMatch && priceMatch;
             });
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else if (selectedCategory) {
-            console.log('3');
             let filtered = products.filter(product => product.category === selectedCategory);
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else {
-            console.log('4');
             setFilteredProducts(products);
             setIsFiltering(false);
         }
@@ -109,11 +101,6 @@ export default function Content({ isLoading }) {
         if (!searchString) return;
         filterProducts();
     }, [searchString]);
-
-    // useEffect(() => {
-    //     if (!selectedCategory) return;
-    //     filterProducts();
-    // }, [selectedCategory]);
     
     return (
         <main className={'relative ' + (isFiltering ? 'flex md:mt-4' : '')}>
@@ -188,13 +175,13 @@ export default function Content({ isLoading }) {
                 <div className={'content__filtered place-self-start w-full max-w-[1400px] ' + (filteredProducts.length === 0 ? '' : 'mx-auto')}>
                     <div className="content__product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
                         {filteredProducts.map(product => (
-                            <ProductCard key={product.id} product={product}/>
+                            <ProductCard key={product.id} product={product} showLowStock={true}/>
                         ))}
                         {filteredProducts.length === 0 && (
                             <div className="content__no-results text-2xl font-semibold text-center w-full row-span-full col-span-full place-self-center mt-4">No results found</div>
                         )}
                     </div>
-                    <Sidebar filtering={isFiltering}/>
+                    <Sidebar/>
                 </div>
             )}
             
