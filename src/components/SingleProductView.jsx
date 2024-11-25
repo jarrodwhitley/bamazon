@@ -10,12 +10,12 @@ export default function SingleProductView() {
     const isMobile = window.innerWidth < 768;
     const selectedProduct = useSelectedProduct();
     const setSelectedProduct = useSetSelectedProduct();
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [imageLoaded, setImageLoaded] = useState(false);
     
     function closeModal(param) {
         setSelectedProduct(param);
     }
-    
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     
     function setImageIndex(index) {
         setCurrentImageIndex(index);
@@ -23,8 +23,9 @@ export default function SingleProductView() {
     
     return (
         selectedProduct &&
-        <div className="single-product-view fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <div className="single-product-view__modal w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white flex flex-col md:flex-row md:p-6 shadow-2xl overflow-auto relative">
+        <div className={'single-product-view fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 z-10'}>
+            <div className={'single-product-view__modal w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white flex flex-col md:flex-row md:p-6 shadow-2xl overflow-auto relative animate__animated ' +
+                (imageLoaded ? 'animate__slideInUp' : 'animate__slideOutDown')}>
                 <div className="single-product-view__close absolute top-0 right-0 p-4 cursor-pointer" onClick={() => closeModal(null)}>
                     <FontAwesomeIcon icon="fa-times"/>
                 </div>
@@ -33,15 +34,14 @@ export default function SingleProductView() {
                         <div className="single-product-view__mobile-image-gallery overflow-hidden">
                             <div className="single-product-view__mobile-image-gallery-snap-container snap-x snap-mandatory flex overflow-auto">
                                 {selectedProduct.images.map((image, index) => (
-                                    <>
-                                        <figure key={index} className="snap-center row-start-1">
-                                            <img
-                                                src={image}
-                                                alt={selectedProduct.title}
-                                                className="w-screen max-w-[100vw]"
-                                            />
-                                        </figure>
-                                    </>
+                                    <figure key={index} className="snap-center row-start-1">
+                                        <img
+                                            src={image}
+                                            alt={selectedProduct.title}
+                                            className="w-screen max-w-[100vw]"
+                                            onLoad={() => setImageLoaded(true)}
+                                        />
+                                    </figure>
                                 ))}
                             </div>
                             <div className="single-product-view__scroll-indicator flex justify-center w-full">
@@ -51,7 +51,6 @@ export default function SingleProductView() {
                             </div>
                         </div>
                     )}
-                    {/* Modal images */}
                     {!isMobile && (
                         <>
                             <div className="single-product-view__thumbnails flex flex-col mr-4">
@@ -75,11 +74,11 @@ export default function SingleProductView() {
                                     height="400"
                                     width="400"
                                     alt={selectedProduct.title}
+                                    onLoad={() => setImageLoaded(true)}
                                 />
                             </div>
                         </>
                     )}
-                
                 </div>
                 <div className="single-product-view__details w-full p-4 md:p-0 md:w-1/2">
                     <div className="single-product-view__section">
@@ -103,11 +102,9 @@ export default function SingleProductView() {
                             <li className="single-product-view__list-item">sku# {selectedProduct.sku}</li>
                         </ul>
                     </div>
-                    
                     <div className="single-product-view__section mt-4 pt-2 border-t-2">
                         <button className="single-product-view__add-to-cart bg-blue-500 text-white px-4 py-2 rounded">Add to Cart</button>
                     </div>
-                
                 </div>
             </div>
         </div>
