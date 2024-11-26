@@ -28,7 +28,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     
     return (
         <div key={product.id}
-             className="product-card w-full h-full bg-white shadow-md p-4 rounded-md border-t-2 border-t-gray-100 cursor-pointer relative"
+             className="product-card w-full h-full bg-white shadow-md p-4 rounded-md border-t-2 border-t-gray-25 cursor-pointer relative"
              onClick={!categoryCard ? selectProduct : selectCategory}>
             <div className={'product-card__image flex items-center justify-center'}>
                 <img src={product?.thumbnail} height="300" width="300" alt={product.title}/>
