@@ -26,8 +26,8 @@ export default function NavigationBar({ onEnterPress }) {
     };
     
     return (
-        <nav className={`${isMobile ? 'mobile' : ''} w-full h-auto top-0 left-0 right-0 sticky bg-blue-900 text-white z-10`}>
-            <div className="upper grid grid-rows-1 grid-cols-2 items-center bg-blue-950 py-2 px-4">
+        <nav className={`${isMobile ? 'mobile' : ''} w-full h-auto top-0 left-0 right-0 sticky bg-blue-800 text-white z-[11]`}>
+            <div className="upper grid grid-rows-1 grid-cols-2 items-center bg-blue-900 py-2 px-4">
                 <span className={'w-fit justify-self-center col-span-full row-start-1'}>🚧 Under Construction 🚧</span>
                 <div className="text-sm row-start-1 flex items-center gap-4 justify-end">
                     <a className="nav-links__link flex items-center" href="https://github.com/jarrodwhitley/bamazon">
@@ -37,7 +37,7 @@ export default function NavigationBar({ onEnterPress }) {
                     <a className="nav-links__link" href="https://jarrodwhitley.com">JW</a>
                 </div>
             </div>
-            <div className="lower flex items-center justify-between px-4">
+            <div className="lower flex items-center justify-between py-2 lg:py-0 px-4">
                 <img className="bamazon-logo" src={BamazonLogo} width={isMobile ? '100': '120'} alt="BAMazon logo"/>
                 {!isMobile && (
                     <>
