@@ -24,15 +24,14 @@ export default function SingleProductView() {
     return (
         selectedProduct &&
         <div className={'single-product-view fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 z-10'}>
-            <div className={'single-product-view__modal w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white flex flex-col md:flex-row md:p-6 shadow-2xl overflow-auto relative animate__animated ' +
-                (imageLoaded ? 'animate__slideInUp' : 'animate__slideOutDown')}>
+            <div className={'single-product-view__modal w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white flex flex-col md:flex-row md:p-6 shadow-2xl overflow-auto relative'}>
                 <div className="single-product-view__close absolute top-0 right-0 p-4 cursor-pointer" onClick={() => closeModal(null)}>
                     <FontAwesomeIcon icon="fa-times"/>
                 </div>
                 <div className="single-product-view__images flex flex-row w-full md:w-1/2">
                     {isMobile && (
                         <div className="single-product-view__mobile-image-gallery overflow-hidden">
-                            <div className="single-product-view__mobile-image-gallery-snap-container snap-x snap-mandatory flex overflow-auto">
+                            <div className="single-product-view__mobile-image-gallery-snap-container h-[400px] snap-x snap-mandatory flex overflow-auto">
                                 {selectedProduct.images.map((image, index) => (
                                     <figure key={index} className="snap-center row-start-1">
                                         <img

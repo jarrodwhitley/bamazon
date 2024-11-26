@@ -7,13 +7,13 @@ import { useFilteredProducts, useSetFilteredProducts , useProducts, useSelectedP
 import BamazonAd from '../assets/images/bamazon_ad.png';
 import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
 import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
+import HeaderImage from '../assets/images/header_image.png';
 import SingleProductView from "./SingleProductView.jsx";
 import SearchBar from "./SearchBar.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
 export default function Content({ isLoading }) {
     const isMobile = window.innerWidth < 768;
-    const [sidebarFilters, setSidebarFilters] = useState([]);
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
     const setFilteredProducts = useSetFilteredProducts();
@@ -52,7 +52,6 @@ export default function Content({ isLoading }) {
             setFiltersActive(activeFilters.length > 0);
         }
     },[selectedFilters]);
-    
     
     const filterProducts = () => {
         console.log('Updating Filters...');
@@ -113,15 +112,27 @@ export default function Content({ isLoading }) {
             )}
             
             {isMobile && (
-                <div className={'content__search-bar__container bg-gray-400 w-full flex justify-center'}>
+                <div className={'content__search-bar__container bg-blue-950 w-full flex justify-center'}>
                     <SearchBar/>
                 </div>
             )}
             
             {!isFiltering && (
                 <>
+                    {/* Header Image */}
+                    <div className={'content__header grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center m-4 md:m-8 max-w-[1400px] lg:mx-auto'}>
+                        <div className={'content__header-text h-full w-full lg:w-fit flex flex-col items-start justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 md:pl-20 z-[1] font-semibold'}>
+                            <div className="content__header-text__title font-bold text-2xl md:text-7xl">Find Your Fashion</div>
+                            <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
+                            <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-blue-900 text-white font-semibold flex items-center'}>Shop Now</div>
+                        </div>
+                        <figure className="content__header-image w-full h-full col-span-full row-span-full overflow-hidden">
+                            <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[400px] max-w-[unset] object-cover object-left md:object-fit"/>
+                        </figure>
+                    </div>
+                    
                     {/* Featured Products */}
-                    <div className="content__featured featured-items w-full max-h-fit bg-gray-400 px-6 pb-4 md:p-8">
+                    <div className="content__featured featured-items w-full max-h-fit px-6 pb-4 md:p-8">
                         <div className="content__featured-inner grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 max-w-[1400px] mx-auto">
                             <div className="content__featured__cta text-8xl bg-gradient-to-br from-yellow-500 to-yellow-300 flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">

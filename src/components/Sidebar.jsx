@@ -91,13 +91,13 @@ export default function Sidebar() {
                 </div>
             )}
             <div className={'sidebar px-4 h-fit top-0 left-0 ' +
-                (isMobile ? 'block' : 'sticky')}>
+                (isMobile ? 'block' : 'sticky')  +
+                (isMobile ? ' animate__animated fixed bg-white w-3/4 left-0 shadow-2xl text-xl p-6 z-10 ' : '') +
+                ((isFiltering && isMobile && !showFilters) ? 'hidden' : '') +
+                ((isFiltering && isMobile && showFilters) ? 'block' : '')}>
                 <div className={'sidebar__filter-title text-xl font-semibold'}>Filters</div>
                 <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400 pb-4 border-b-2'} onClick={clearFilters}>Clear filters</div>
-                <div className={'sidebar__filter-container ' +
-                    (isMobile ? 'animate__animated fixed bg-white w-3/4 left-0 shadow-2xl text-xl p-6 ' : '') +
-                    ((isFiltering && isMobile && !showFilters) ? 'animate__slideOutLeft' : '') +
-                    ((isFiltering && isMobile && showFilters) ? 'animate__slideInLeft' : '')}>
+                <div className={'sidebar__filter-container'}>
                     {categories.length >= 2 && (
                         <div className="sidebar__filter-section category-filter mt-2">
                             <h3 className="text-base font-semibold text-gray-400">Categories</h3>

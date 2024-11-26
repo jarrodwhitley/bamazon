@@ -92,9 +92,28 @@ main {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
         grid-template-areas:
-        "featured"
-        "content";
+            "header"
+            "featured"
+            "content";
         gap: 1em;
+    }
+}
+
+/* Navigation */
+.navigation-bar__lower__links {
+    @apply flex gap-4;
+}
+
+/* Header */
+.content__header {
+    grid-area: header;
+}
+
+.content__header-text {
+    background-image: linear-gradient(to left, transparent, #ddb9b3);
+
+    @screen lg {
+        background-image: linear-gradient(to right, transparent, #ddb9b3);
     }
 }
 
@@ -116,7 +135,6 @@ main {
 
 /* Category Products */
 .content__categories {
-
     @screen md {
         display: grid;
         grid-template-areas:
