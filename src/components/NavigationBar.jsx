@@ -2,39 +2,64 @@ import { useState } from 'react';
 import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
-// import { useSetIsFiltering } from "./ContextProvider.jsx";
+import { useSelectedFilters, useSetSelectedFilters, useSetSelectedProduct } from "./ContextProvider.jsx";
 
-export default function NavigationBar({ onEnterPress, onSetSearchString, onSetSelectedProduct }) {
+export default function NavigationBar({ onEnterPress }) {
     const isMobile = window.innerWidth < 768;
+    const selectedFilters = useSelectedFilters();
+    const setSelectedFilters = useSetSelectedFilters();
+    const setSelectedProduct = useSetSelectedProduct();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
     
     const handleOnSetSearchString = (string) => {
-        onSetSearchString(string);
+        setSelectedFilters({
+            searchString: string,
+            category: selectedFilters.category,
+            brands: selectedFilters.brands,
+            price: selectedFilters.price
+        })
     };
     
     const handleOnSetSelectedProduct = (product) => {
-        onSetSelectedProduct(product);
+        setSelectedProduct(product);
     };
     
     return (
-        <nav className={`${isMobile ? 'mobile' : ''} w-full px-4 h-20 top-0 left-0 right-0 bg-blue-900 text-white flex items-center justify-between`}>
-            <img className="bamazon-logo" src={BamazonLogo} width={isMobile ? '100': '120'} alt="BAMazon logo"/>
-            <span className={''}>🚧 Under Construction 🚧</span>
-            {!isMobile && (
-                <>
-                    <SearchBar onSetSearchString={handleOnSetSearchString} onSetSelectedProduct={handleOnSetSelectedProduct}/>
-                    <div className="nav-links text-sm flex items-center gap-4 justify-end">
-                        <a className="nav-links__link" href="https://github.com/jarrodwhitley/bamazon">See project on Github</a>
-                        <a className="nav-links__link" href="https://jarrodwhitley.com">JW</a>
-                    </div>
-                </>
-            )}
-            {isMobile && (
-                <div className="mobile-menu-btn" onClick={toggleMobileMenu}>
-                    <i className={`text-2xl fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}></i>
+        <nav className={`${isMobile ? 'mobile' : ''} w-full h-auto top-0 left-0 right-0 sticky bg-blue-900 text-white z-10`}>
+            <div className="upper grid grid-rows-1 grid-cols-2 items-center bg-blue-950 py-2 px-4">
+                <span className={'w-fit justify-self-center col-span-full row-start-1'}>🚧 Under Construction 🚧</span>
+                <div className="text-sm row-start-1 flex items-center gap-4 justify-end">
+                    <a className="nav-links__link flex items-center" href="https://github.com/jarrodwhitley/bamazon">
+                        <i className="fa-brands fa-github text-lg"></i>
+                        <span className={'ml-2'}>See Project</span>
+                    </a>
+                    <a className="nav-links__link" href="https://jarrodwhitley.com">JW</a>
                 </div>
-            )}
+            </div>
+            <div className="lower flex items-center justify-between px-4">
+                <img className="bamazon-logo" src={BamazonLogo} width={isMobile ? '100': '120'} alt="BAMazon logo"/>
+                {!isMobile && (
+                    <>
+                        <SearchBar onSetSearchString={handleOnSetSearchString} onSetSelectedProduct={handleOnSetSelectedProduct}/>
+                        <div className={'navigation-bar__lower__links w-fit flex items-center gap-4'}>
+                            <div className={'user cursor-pointer hover:text-blue-400'}>
+                                <i className="fa-solid fa-user"></i>
+                                <span className={'font-semibold ml-2'}>Account</span>
+                            </div>
+                            <div className={'cart cursor-pointer hover:text-blue-400'}>
+                                <i className="fa-solid fa-cart-shopping"></i>
+                                <span className={'font-semibold ml-2'}>Cart</span>
+                            </div>
+                        </div>
+                    </>
+                )}
+                {isMobile && (
+                    <div className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                        <i className={`text-2xl fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}></i>
+                    </div>
+                )}
+            </div>
         </nav>
     );
 }

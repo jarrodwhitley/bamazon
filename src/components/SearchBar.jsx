@@ -67,14 +67,14 @@ export default function SearchBar() {
                 autoFocus
                 placeholder="Search products..."
                 styling={isMobile ? {
-                    height: '60px',
-                    borderRadius: '5px',
-                    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
+                    height: '40px',
+                    borderRadius: '30px',
+                    boxShadow: '0',
                     fontSize: '18px',
                     zIndex: 10,
                 } : {
                     height: '40px',
-                    borderRadius: '5px',
+                    borderRadius: '20px',
                     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
                     fontSize: '16px',
                     zIndex: 10,
