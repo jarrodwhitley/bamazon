@@ -24,7 +24,7 @@ export default function Content({ isLoading }) {
     const selectedCategory = useSelectedCategory();
     const isFiltering = useIsFiltering();
     const setIsFiltering = useSetIsFiltering();
-    const searchString = useSearchString();
+    // const searchString = useSearchString();
     const selectedFilters = useSelectedFilters();
     const [filtersActive, setFiltersActive] = useState(false);
     
@@ -55,7 +55,9 @@ export default function Content({ isLoading }) {
     
     const filterProducts = () => {
         console.log('Updating Filters...');
+        let searchString = selectedFilters.searchString;
         if (searchString && searchString.length > 2) {
+            console.log('1');
             let filtered = products.filter(product => {
                 return product.title.toLowerCase().includes(searchString.toLowerCase()) ||
                     product.tags.join(' ').toLowerCase().includes(searchString.toLowerCase()) ||
@@ -63,29 +65,34 @@ export default function Content({ isLoading }) {
                     product.description.toLowerCase().includes(searchString.toLowerCase());
             });
             if (selectedFilters && filtersActive) {
+                console.log('2');
                 filtered = filtered.filter(product => {
                     const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
                     const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
-                    const priceMatch = selectedFilters.price === '' || (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1]));
+                    const priceMatch = (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1])) || selectedFilters.price.length === 0;
                     return categoryMatch && brandMatch && priceMatch;
                 });
                 setFilteredProducts(filtered);
                 setIsFiltering(true);
             }
         } else if (selectedFilters && filtersActive) {
+            console.log('3');
             let filtered = products.filter(product => {
+                console.log('3 => selectedFilters:', selectedFilters);
                 const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
                 const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
-                const priceMatch = selectedFilters.price === '' || (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1]));
+                const priceMatch = (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1])) || selectedFilters.price.length === 0;
                 return categoryMatch && brandMatch && priceMatch;
             });
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else if (selectedCategory) {
+            console.log('4');
             let filtered = products.filter(product => product.category === selectedCategory);
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else {
+            console.log('5');
             setFilteredProducts(products);
             setIsFiltering(false);
         }
@@ -97,12 +104,18 @@ export default function Content({ isLoading }) {
     },[selectedFilters]);
     
     useEffect(() => {
-        if (!searchString) return;
-        filterProducts();
-    }, [searchString]);
+        if (!filteredProducts) return;
+        console.log('filterProducts:', filteredProducts);
+    },[filteredProducts]);
+    
+    // useEffect(() => {
+    //     if (!searchString) return;
+    //     console.log('searchString:', searchString);
+    //     filterProducts();
+    // },[searchString]);
     
     return (
-        <main className={'relative ' + (isFiltering ? 'flex md:mt-4' : '')}>
+        <main className={'relative ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
             {/* Loading Overlay */}
             {isLoading && (
                 <div className="content__loading-overlay absolute top-0 left-0 w-full h-screen bg-white z-[2] grid grid-cols-1 grid-rows-1 items-center justify-items-center">
@@ -120,20 +133,22 @@ export default function Content({ isLoading }) {
             {!isFiltering && (
                 <>
                     {/* Header Image */}
-                    <div className={'content__header grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center m-4 md:m-8 max-w-[1400px] lg:mx-auto'}>
-                        <div className={'content__header-text h-full w-full lg:w-fit flex flex-col items-start justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 md:pl-20 z-[1] font-semibold'}>
-                            <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
-                            <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
-                            <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-blue-900 text-white font-semibold flex items-center'}>Shop Now</div>
+                    <div className={'content__header p-6'}>
+                        <div className={'content__header-grid grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center max-w-[1400px] mx-auto'}>
+                            <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-20 pr-6 z-[1] font-semibold'}>
+                                <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
+                                <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
+                                <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-cerulean-400 text-white font-semibold flex items-center'}>Shop Now</div>
+                            </div>
+                            <figure className="content__header-image w-full h-full col-span-full row-span-full overflow-hidden">
+                                <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[400px] lg:min-h-[600px] max-w-[unset] object-cover object-left md:object-fit"/>
+                            </figure>
                         </div>
-                        <figure className="content__header-image w-full h-full col-span-full row-span-full overflow-hidden">
-                            <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[400px] max-w-[unset] object-cover object-left md:object-fit"/>
-                        </figure>
                     </div>
                     
                     {/* Featured Products */}
-                    <div className="content__featured featured-items w-full max-h-fit px-6 pb-4 md:p-12 bg-blue-600">
-                        <div className="content__featured-inner grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 max-w-[1400px] mx-auto">
+                    <div className="content__featured featured-items w-full max-h-fit bg-blue-600 px-6">
+                        <div className="content__featured-grid grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 py-4 max-w-[1400px] mx-auto">
                             <div className="content__featured__cta text-8xl flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
                                     <div className="w-full text-2xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals</div>
@@ -150,17 +165,19 @@ export default function Content({ isLoading }) {
                     
                     {/* Category Selection */}
                     {!selectedCategory && (
-                        <div className="content__categories w-full pt-4 px-6 md:px-8 max-w-[1400px] mx-auto">
-                            <h2 className="content__categories-title text-3xl font-semibold text-blue-950 text-center">Categories</h2>
-                            <div className="content__categories-inner lg:flex flex-row md:block w-full mx-auto mt-4">
-                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:pl-4 mt-4 md:mt-0">
-                                    {categories.map(product => (
-                                        <ProductCard key={product.id} product={product} size="lg" categoryCard={true} showDiscount={true} showLowStock={true}/>
-                                    ))}
+                        <div className="content__categories w-full py-4 px-6 md:px-8">
+                            <div className={'content__categories-grid max-w-[1400px] mx-auto'}>
+                                <h2 className="content__categories-title text-3xl font-semibold text-blue-950 text-center">Categories</h2>
+                                <div className="content__categories-inner lg:flex flex-row md:block w-full mx-auto mt-4">
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:pl-4 mt-4 md:mt-0">
+                                        {categories.map(product => (
+                                            <ProductCard key={product.id} product={product} size="lg" categoryCard={true} showDiscount={true} showLowStock={true}/>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="content__categories-ad w-full max-w-[1400px] mx-auto mt-4">
-                                <img src={BamazonAd} alt="Bamazon Ad" className="w-full"/>
+                                <div className="content__categories-ad w-full max-w-[1400px] mx-auto mt-4">
+                                    <img src={BamazonAd} alt="Bamazon Ad" className="w-full"/>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -183,7 +200,7 @@ export default function Content({ isLoading }) {
             )}
             {/* Filtered Products */}
             {isFiltering && (
-                <div className={'content__filtered place-self-start w-full max-w-[1400px] ' + (filteredProducts.length === 0 ? '' : 'mx-auto')}>
+                <div className={'content__filtered place-self-start w-full max-w-[1400px] mx-auto'}>
                     <div className="content__product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
                         {filteredProducts.map(product => (
                             <ProductCard key={product.id} product={product} showLowStock={true}/>

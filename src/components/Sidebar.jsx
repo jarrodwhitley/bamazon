@@ -7,6 +7,7 @@ import {
     useSetSearchString,
     useIsFiltering,
     useSetIsFiltering,
+    useSelectedFilters,
     useSetSelectedFilters,
     useSearchString
 } from "./ContextProvider.jsx";
@@ -23,12 +24,13 @@ export default function Sidebar() {
         {min: 101, max: 1000}
     ];
     const [showFilters, setShowFilters] = useState(false);
-    const selectedCategory = useSelectedCategory();
-    const setSelectedCategory = useSetSelectedCategory();
-    const searchString = useSearchString();
-    const setSearchString = useSetSearchString();
+    // const selectedCategory = useSelectedCategory();
+    // const setSelectedCategory = useSetSelectedCategory();
+    // const searchString = useSearchString();
+    // const setSearchString = useSetSearchString();
     const isFiltering = useIsFiltering();
     const setIsFiltering = useSetIsFiltering();
+    const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
     
     useEffect(() => {
@@ -39,6 +41,12 @@ export default function Sidebar() {
                 }
                 return acc;
             }, []);
+            setSelectedFilters({
+                category: newCategories || [],
+                brands: selectedFilters.brands || [],
+                price: selectedFilters.price || '',
+                searchString: selectedFilters.searchString || ''
+            })
             setCategories(newCategories);
             
             const newBrands = filteredProducts.reduce((acc, product) => {
@@ -47,7 +55,13 @@ export default function Sidebar() {
                 }
                 return acc;
             }, []);
-            setBrands(newBrands);
+            // setBrands(newBrands);
+            setSelectedFilters({
+                category: selectedFilters.category || [],
+                brands: newBrands || [],
+                price: selectedFilters.price || '',
+                searchString: selectedFilters.searchString || ''
+            })
         }
     }, []);
     
@@ -69,14 +83,19 @@ export default function Sidebar() {
         });
         setSelectedFilters({
             ...checkboxesObj,
-            category: selectedCategory,
-            searchString: searchString || ''
+            category: selectedFilters.category || [],
+            searchString: selectedFilters.searchString || ''
         });
     }
     
     function clearFilters() {
-        setSelectedCategory(null)
-        setSearchString('')
+        // setSelectedCategory([])
+        setSelectedFilters({
+            category: [],
+            brands: [],
+            price: '',
+            searchString: ''
+        })
         setIsFiltering(false)
         if (document.querySelector('.clear-icon')) {
             document.querySelector('.clear-icon').click();
