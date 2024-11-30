@@ -95,7 +95,6 @@ main {
             "header"
             "featured"
             "content";
-        gap: 1em;
     }
 }
 
@@ -134,7 +133,7 @@ main {
 }
 
 /* Category Products */
-.content__categories {
+.content__categories-grid {
     @screen md {
         display: grid;
         grid-template-areas:
@@ -144,7 +143,7 @@ main {
     }
 }
 
-.content__category-products-inner {
+.content__category-products-grid {
     grid-area: content;
     @apply flex flex-col-reverse;
 

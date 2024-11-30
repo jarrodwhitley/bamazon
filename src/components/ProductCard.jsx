@@ -14,13 +14,13 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     };
     const setSelectedCategory = useSetSelectedCategory();
     const selectCategory = () => {
-        setSelectedCategory(product.category);
+        // setSelectedCategory(product.category);
         setSelectedFilters(
             {
-                searchString: '',
-                category: product.category,
-                brands: selectedFilters.brands,
-                price: selectedFilters.price
+                searchString: selectedFilters.searchString || '',
+                category: product.category || [],
+                brands: selectedFilters.brands || [],
+                price: selectedFilters.price || ''
             }
         );
     }
