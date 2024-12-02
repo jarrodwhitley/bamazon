@@ -45,10 +45,10 @@ export default function Content({ isLoading }) {
     }
     
     const filterProducts = (filtersActive = false) => {
-        console.log('Updating Filters...', selectedFilters);
+        // console.log('Updating Filters...', selectedFilters);
         let searchString = selectedFilters.searchString;
         if (searchString && searchString.length > 2) {
-            console.log('1');
+            // console.log('1');
             let filtered = products.filter(product => {
                 return product.title.toLowerCase().includes(searchString.toLowerCase()) ||
                     product.tags.join(' ').toLowerCase().includes(searchString.toLowerCase()) ||
@@ -56,7 +56,7 @@ export default function Content({ isLoading }) {
                     product.description.toLowerCase().includes(searchString.toLowerCase());
             });
             if (selectedFilters && filtersActive) {
-                console.log('2');
+                // console.log('2');
                 filtered = filtered.filter(product => {
                     const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
                     const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
@@ -67,7 +67,7 @@ export default function Content({ isLoading }) {
                 setIsFiltering(true);
             }
         } else if (selectedFilters && filtersActive && !searchString) {
-            console.log('3');
+            // console.log('3');
             let filtered = products.filter(product => {
                 const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
                 const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
@@ -77,12 +77,12 @@ export default function Content({ isLoading }) {
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else if (selectedCategory) {
-            console.log('4');
+            // console.log('4');
             let filtered = products.filter(product => product.category === selectedCategory);
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else {
-            console.log('5');
+            // console.log('5');
             setFilteredProducts(products);
             setIsFiltering(false);
         }
@@ -102,12 +102,12 @@ export default function Content({ isLoading }) {
     
     useEffect(() => {
         if (!filteredProducts) return;
-        console.log('filterProducts:', filteredProducts);
+        // console.log('filterProducts:', filteredProducts);
     },[filteredProducts]);
     
     // useEffect(() => {
     //     if (!searchString) return;
-    //     console.log('searchString:', searchString);
+    // //     console.log('searchString:', searchString);
     //     filterProducts();
     // },[searchString]);
     

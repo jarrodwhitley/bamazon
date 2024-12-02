@@ -33,7 +33,6 @@ export default function Sidebar() {
         if (Array.isArray(filteredProducts)) {
             const newCategories = filteredProducts.reduce((acc, product) => {
                 if (!acc.includes(product.category) && product.category !== undefined) {
-                    console.log(product.category)
                     acc.push(product.category);
                 }
                 return acc;
