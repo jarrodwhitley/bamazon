@@ -1,4 +1,4 @@
-export const formattedPrice = (product, isMobile) => {
+export const formattedPrice = (product, isMobile = false) => {
     if (!product.price) return;
     const [dollars, cents] = product.price.toString().split('.');
     return (
