@@ -15,10 +15,10 @@ const SetSearchStringContext = createContext({});
 const SelectedFiltersContext = createContext({});
 const SetSelectedFiltersContext = createContext(null);
 
-export const Context = ({ products, filteredProducts, selectedProduct, selectedCategory, searchString, children }) => {
+export const Context = ({ products, filteredProducts, selectedProduct, selectedCategories, searchString, children }) => {
     const [selectedProductState, setSelectedProductState] = useState(selectedProduct);
     const [filteredProductsState, setFilteredProductsState] = useState(filteredProducts);
-    const [selectedCategoryState, setSelectedCategoryState] = useState(selectedCategory);
+    const [selectedCategoriesState, setSelectedCategoriesState] = useState(selectedCategories);
     const [searchStringState, setSearchStringState] = useState(searchString);
     const [isFilteringState, setIsFilteringState] = useState(false);
     const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', categories: [], brands: [], price: '' });
@@ -29,8 +29,8 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
                 <SetFilteredProductsContext.Provider value={setFilteredProductsState}>
                     <SelectedProductContext.Provider value={selectedProductState}>
                         <SetSelectedProductContext.Provider value={setSelectedProductState}>
-                            <SelectedCategoryContext.Provider value={selectedCategoryState}>
-                                <SetSelectedCategoryContext.Provider value={setSelectedCategoryState}>
+                            <SelectedCategoryContext.Provider value={selectedCategoriesState}>
+                                <SetSelectedCategoryContext.Provider value={setSelectedCategoriesState}>
                                     <FilteringContext.Provider value={isFilteringState}>
                                         <SetFilteringContext.Provider value={setIsFilteringState}>
                                             <SearchStringContext.Provider value={searchStringState}>

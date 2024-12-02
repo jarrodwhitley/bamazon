@@ -84,7 +84,7 @@ export default function SingleProductView() {
                         <h3 className="single-product-view text-2xl font-semibold truncate">{selectedProduct.title}</h3>
                         <RatingStars value={selectedProduct.rating}/>
                         <div className="flex flex-row items-center">
-                            <div className="single-product-view__price text-lg font-semibold ">{formattedPrice(selectedProduct.price)}</div>
+                            <div className="single-product-view__price text-lg font-semibold ">{formattedPrice(selectedProduct)}</div>
                             <DiscountBadge discountPercentage={selectedProduct.discountPercentage} singleProductView={true}/>
                         </div>
                         {selectedProduct.stock < 10 && (

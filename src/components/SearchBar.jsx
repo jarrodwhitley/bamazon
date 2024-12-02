@@ -26,12 +26,7 @@ export default function SearchBar() {
     };
     
     const handleOnSelect = (product) => {
-        console.log('Product selected:', product);
-        
-        // Immediately set the selected product
         setSelectedProduct(product);
-        
-        // Update the search string with the selected product's title
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
             searchString: product.title || ''
@@ -39,9 +34,6 @@ export default function SearchBar() {
     };
     
     useEffect(() => {
-        // Handle filtering logic when searchString changes
-        console.log('Updated searchString:', selectedFilters.searchString);
-        
         if (selectedFilters.searchString.length < 3) {
             setIsFiltering(false);
         }
