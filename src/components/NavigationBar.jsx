@@ -15,7 +15,7 @@ export default function NavigationBar({ onEnterPress }) {
     const handleOnSetSearchString = (string) => {
         setSelectedFilters({
             searchString: string,
-            category: selectedFilters.category,
+            categories: selectedFilters.category,
             brands: selectedFilters.brands,
             price: selectedFilters.price
         })

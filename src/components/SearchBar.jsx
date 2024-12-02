@@ -26,7 +26,7 @@ export default function SearchBar() {
         // setSearchString(string);
         setSelectedFilters({
             searchString: string || '',
-            category: selectedFilters.category || [],
+            categories: selectedFilters.category || [],
             brands: selectedFilters.brands || [],
             price: selectedFilters.price || ''
         })

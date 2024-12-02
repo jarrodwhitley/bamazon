@@ -26,7 +26,7 @@ export default function Content({ isLoading }) {
     const setIsFiltering = useSetIsFiltering();
     // const searchString = useSearchString();
     const selectedFilters = useSelectedFilters();
-    const [filtersActive, setFiltersActive] = useState(false);
+    // const [filtersActive, setFiltersActive] = useState(false);
     
     // Create array for categories section
     const categories = products.reduce((acc, product) => {
@@ -38,23 +38,14 @@ export default function Content({ isLoading }) {
     }, []);
 
     const defaultFilters = {
-        category: '',
+        categories: [],
         brands: [],
         price: '',
         searchString: ''
     }
     
-    useEffect(() => {
-        if (selectedFilters) {
-            const filterValues = Object.values(selectedFilters);
-            const defaultValues = Object.values(defaultFilters);
-            const activeFilters = filterValues.filter((value, index) => value?.length > 0 && value !== defaultValues[index]);
-            setFiltersActive(activeFilters.length > 0);
-        }
-    },[selectedFilters]);
-    
-    const filterProducts = () => {
-        console.log('Updating Filters...');
+    const filterProducts = (filtersActive = false) => {
+        console.log('Updating Filters...', selectedFilters);
         let searchString = selectedFilters.searchString;
         if (searchString && searchString.length > 2) {
             console.log('1');
@@ -67,7 +58,7 @@ export default function Content({ isLoading }) {
             if (selectedFilters && filtersActive) {
                 console.log('2');
                 filtered = filtered.filter(product => {
-                    const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
+                    const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
                     const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
                     const priceMatch = (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1])) || selectedFilters.price.length === 0;
                     return categoryMatch && brandMatch && priceMatch;
@@ -75,11 +66,10 @@ export default function Content({ isLoading }) {
                 setFilteredProducts(filtered);
                 setIsFiltering(true);
             }
-        } else if (selectedFilters && filtersActive) {
+        } else if (selectedFilters && filtersActive && !searchString) {
             console.log('3');
             let filtered = products.filter(product => {
-                console.log('3 => selectedFilters:', selectedFilters);
-                const categoryMatch = selectedFilters.category === product.category || selectedFilters.category.length === 0;
+                const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
                 const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
                 const priceMatch = (product.price >= parseInt(selectedFilters.price.split('_')[0]) && product.price <= parseInt(selectedFilters.price.split('_')[1])) || selectedFilters.price.length === 0;
                 return categoryMatch && brandMatch && priceMatch;
@@ -100,7 +90,14 @@ export default function Content({ isLoading }) {
     
     useEffect(() => {
         if (!selectedFilters) return;
-        filterProducts();
+        let activeFilters = [];
+        if (selectedFilters) {
+            const filterValues = Object.values(selectedFilters);
+            const defaultValues = Object.values(defaultFilters);
+            activeFilters = filterValues.filter((value, index) => value?.length > 0 && value !== defaultValues[index]);
+            // setFiltersActive(activeFilters.length > 0);
+        }
+        filterProducts(activeFilters.length > 0);
     },[selectedFilters]);
     
     useEffect(() => {
