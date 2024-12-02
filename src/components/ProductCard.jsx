@@ -15,20 +15,23 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     const setSelectedCategory = useSetSelectedCategory();
     const selectCategory = () => {
         // setSelectedCategory(product.category);
+        let newCategories = selectedFilters.categories;
+        !newCategories.includes(product.category) && newCategories.push(product.category);
         setSelectedFilters(
             {
                 searchString: selectedFilters.searchString || '',
-                category: product.category || [],
+                categories: newCategories || [],
                 brands: selectedFilters.brands || [],
                 price: selectedFilters.price || ''
             }
         );
+        
     }
     const showLowStockWarning = product.stock < 10 && showLowStock;
     
     return (
         <div key={product.id}
-             className="product-card w-full h-full bg-white shadow-md p-4 rounded-md border-t-2 border-t-gray-25 cursor-pointer relative"
+             className="product-card w-full h-[370px] bg-white shadow-md p-4 rounded-md border-t-2 border-t-gray-25 cursor-pointer relative"
              onClick={!categoryCard ? selectProduct : selectCategory}>
             <div className={'product-card__image flex items-center justify-center'}>
                 <img src={product?.thumbnail} height="300" width="300" alt={product.title}/>
@@ -48,7 +51,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
                 )}
             </div>
             {showLowStockWarning && !categoryCard && (
-                <div className="product-card__low-stock text-red-500 text-xs font-semibold">Low Stock - only {product.stock} remaining</div>
+                <div className="product-card__low-stock text-[indianred] text-xs font-semibold">Low Stock - only {product.stock} remaining</div>
             )}
         </div>
     );
@@ -64,7 +67,7 @@ ProductCard.propTypes = {
         discountPercentage: PropTypes.number,
         stock: PropTypes.number,
         featured: PropTypes.bool,
-        category: PropTypes.string,
+        categories: PropTypes.string,
     }).isRequired,
     showDiscount: PropTypes.bool,
     showLowStock: PropTypes.bool,

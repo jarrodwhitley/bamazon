@@ -24,10 +24,6 @@ export default function Sidebar() {
         {min: 101, max: 1000}
     ];
     const [showFilters, setShowFilters] = useState(false);
-    // const selectedCategory = useSelectedCategory();
-    // const setSelectedCategory = useSetSelectedCategory();
-    // const searchString = useSearchString();
-    // const setSearchString = useSetSearchString();
     const isFiltering = useIsFiltering();
     const setIsFiltering = useSetIsFiltering();
     const selectedFilters = useSelectedFilters();
@@ -36,28 +32,24 @@ export default function Sidebar() {
     useEffect(() => {
         if (Array.isArray(filteredProducts)) {
             const newCategories = filteredProducts.reduce((acc, product) => {
-                if (!acc.includes(product.category)) {
+                if (!acc.includes(product.category) && product.category !== undefined) {
+                    console.log(product.category)
                     acc.push(product.category);
                 }
                 return acc;
             }, []);
-            setSelectedFilters({
-                category: newCategories || [],
-                brands: selectedFilters.brands || [],
-                price: selectedFilters.price || '',
-                searchString: selectedFilters.searchString || ''
-            })
-            setCategories(newCategories);
+            setCategories(newCategories); // Static categories for filtering
             
             const newBrands = filteredProducts.reduce((acc, product) => {
-                if (!acc.includes(product.brand)) {
+                if (!acc.includes(product.brand) && product.brand !== undefined) {
                     acc.push(product.brand);
                 }
                 return acc;
             }, []);
-            // setBrands(newBrands);
+            setBrands(newBrands); // Static brands for filtering
+            
             setSelectedFilters({
-                category: selectedFilters.category || [],
+                categories: newCategories || [],
                 brands: newBrands || [],
                 price: selectedFilters.price || '',
                 searchString: selectedFilters.searchString || ''
@@ -83,7 +75,7 @@ export default function Sidebar() {
         });
         setSelectedFilters({
             ...checkboxesObj,
-            category: selectedFilters.category || [],
+            categories: selectedFilters.categories || [],
             searchString: selectedFilters.searchString || ''
         });
     }
@@ -91,7 +83,7 @@ export default function Sidebar() {
     function clearFilters() {
         // setSelectedCategory([])
         setSelectedFilters({
-            category: [],
+            categories: [],
             brands: [],
             price: '',
             searchString: ''
