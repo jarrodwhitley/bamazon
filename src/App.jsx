@@ -9,29 +9,40 @@ import productsData from './assets/data/products.json';
 export default function App() {
     const isMobile = window.innerWidth < 768;
     const [isLoading, setIsLoading] = useState(false); //FIXME: currently not working
-    const [rawProducts, setRawProducts] = useState([]);
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState({});
     const [filteredProducts, setFilteredProducts] = useState([]);
     const selectedCategory = useSelectedCategory()
-    useEffect(() => {
-        const handleLoad = () => {
-            setIsLoading(false);
-        };
-        window.addEventListener('load', handleLoad);
-        setRawProducts(productsData);
+    
+    const handleLoad = async () => {
+        setIsLoading(true);
+        // NOTE: I'm not fetching data from the API because I needed to customize it for the project
+        // So I am loading it locally for the purpose of this project
+        // try {
+        //     const response = await fetch('https://dummyjson.com/products');
+        //     const productsData = await response.json();
+        //     setRawProducts(productsData.products);
+        // } catch (error) {
+        //     console.error('Error fetching products:', error);
+        // } finally {
+        //     setIsLoading(false);
+        // }
+        // setRawProducts(productsData);
         
-        return () => {
-            window.removeEventListener('load', handleLoad);
-        };
-    }, []);
-    const products = rawProducts.map(product => {
-        let newObj = {...product, featured: false};
-        if (product.id === 10 || product.id === 15 || product.id === 20 || (product.id === 25 && isMobile)) {
-            newObj.featured = true;
-        }
-        return newObj;
-    });
+        // For now, I'm just using the data from the JSON file
+        setProducts(productsData.map(product => {
+            let newObj = {...product, featured: false};
+            if (product.id === 10 || product.id === 15 || product.id === 20 || (product.id === 25 && isMobile)) {
+                newObj.featured = true;
+            }
+            return newObj;
+        }));
+        setIsLoading(false);
+        window.removeEventListener('load', handleLoad);
+    };
+    
+    window.addEventListener('load', handleLoad);
     
     function enterPress() {
         console.log('Enter pressed');

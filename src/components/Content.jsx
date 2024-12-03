@@ -1,6 +1,5 @@
 import { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
 import {
@@ -99,7 +98,6 @@ export default function Content({ isLoading }) {
             const filterValues = Object.values(selectedFilters);
             const defaultValues = Object.values(defaultFilters);
             activeFilters = filterValues.filter((value, index) => value?.length > 0 && value !== defaultValues[index]);
-            // setFiltersActive(activeFilters.length > 0);
         }
         filterProducts(activeFilters.length > 0);
     },[selectedFilters]);
