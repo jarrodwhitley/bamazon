@@ -3,15 +3,18 @@ import PropTypes from "prop-types";
 import DiscountBadge from "./DiscountBadge.jsx";
 import RatingStars from "./RatingStars.jsx";
 import {formattedPrice} from "../utils/functions.jsx";
-import {useSelectedProduct, useSetSelectedProduct} from "./ContextProvider.jsx";
+import {useSelectedProduct, useSetSelectedProduct, useSetSelectedFilters, useCart, useSetCart} from "./ContextProvider.jsx";
 import FontAwesomeIcon from "./FontAwesomeIcon.jsx";
 
 export default function SingleProductView() {
     const isMobile = window.innerWidth < 768;
     const selectedProduct = useSelectedProduct();
     const setSelectedProduct = useSetSelectedProduct();
+    const setSelectedFilters = useSetSelectedFilters();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const cart = useCart();
+    const setCart = useSetCart();
     
     function closeModal(param) {
         setSelectedProduct(param);
@@ -21,16 +24,28 @@ export default function SingleProductView() {
         setCurrentImageIndex(index);
     }
     
+    const handleAddToCart = () => {
+        let newCart = [...cart];
+        let productIndex = newCart.findIndex(item => item.id === selectedProduct.id);
+        if (productIndex !== -1) {
+            newCart[productIndex].quantity += 1;
+        } else {
+            newCart.push({...selectedProduct, quantity: 1});
+        }
+        setCart(newCart);
+    }
+    
     return (
-        selectedProduct &&
+        Object.keys(selectedProduct).length &&
         <div className={'single-product-view fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 z-10'}>
-            <div className={'single-product-view__modal w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white flex flex-col md:flex-row md:p-6 shadow-2xl overflow-auto relative'}>
+            <div className={'single-product-view__modal w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white flex flex-col gap-4 md:flex-row md:p-6 shadow-2xl overflow-auto relative'}>
                 <div className="single-product-view__close absolute top-0 right-0 p-4 cursor-pointer" onClick={() => closeModal(null)}>
                     <FontAwesomeIcon icon="fa-times"/>
                 </div>
-                <div className="single-product-view__images flex flex-row w-full md:w-1/2">
+                <div className="single-product-view__images grid grid-cols-4 grid-rows-1 w-full md:w-1/2">
+                    {/* Image, no thumbnails */}
                     {isMobile && (
-                        <div className="single-product-view__mobile-image-gallery overflow-hidden">
+                        <div className="single-product-view__mobile-image-gallery overflow-hidden w-screen">
                             <div className="single-product-view__mobile-image-gallery-snap-container h-[400px] snap-x snap-mandatory flex overflow-auto">
                                 {selectedProduct.images.map((image, index) => (
                                     <figure key={index} className="snap-center row-start-1">
@@ -50,6 +65,7 @@ export default function SingleProductView() {
                             </div>
                         </div>
                     )}
+                    {/* Image with thumbnails */}
                     {!isMobile && (
                         <>
                             <div className="single-product-view__thumbnails flex flex-col mr-4">
@@ -67,9 +83,10 @@ export default function SingleProductView() {
                                     </figure>
                                 ))}
                             </div>
-                            <div className="single-product-view__image flex items-center justify-center">
+                            <div className="single-product-view__image col-start-2 col-span-full flex items-center justify-center">
                                 <img
                                     src={selectedProduct.images[currentImageIndex]}
+                                    className={'max-h-full object-contain'}
                                     height="400"
                                     width="400"
                                     alt={selectedProduct.title}
@@ -101,8 +118,8 @@ export default function SingleProductView() {
                             <li className="single-product-view__list-item">sku# {selectedProduct.sku}</li>
                         </ul>
                     </div>
-                    <div className="single-product-view__section mt-4 pt-2 border-t-2">
-                        <button className="single-product-view__add-to-cart bg-blue-500 text-white px-4 py-2 rounded">Add to Cart</button>
+                    <div className="single-product-view__section mt-4 pt-2 w-fit place-self-end">
+                        <button className="single-product-view__add-to-cart bg-blue-500 text-white font-semibold px-4 py-2 rounded" onClick={handleAddToCart}>Add to Cart</button>
                     </div>
                 </div>
             </div>

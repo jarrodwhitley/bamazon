@@ -1,9 +1,19 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from './FontAwesomeIcon.jsx';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
-import { useFilteredProducts, useSetFilteredProducts , useProducts, useSelectedProduct, useSelectedCategory, useIsFiltering, useSetIsFiltering, useSearchString, useSelectedFilters } from './ContextProvider.jsx';
+import {
+    useFilteredProducts,
+    useSetFilteredProducts,
+    useProducts,
+    useSelectedProduct,
+    useSelectedCategory,
+    useIsFiltering,
+    useSetIsFiltering,
+    useSelectedFilters,
+    useSetSelectedFilters
+} from './ContextProvider.jsx';
 import BamazonAd from '../assets/images/bamazon_ad.png';
 import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
 import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
@@ -26,7 +36,7 @@ export default function Content({ isLoading }) {
     const setIsFiltering = useSetIsFiltering();
     // const searchString = useSearchString();
     const selectedFilters = useSelectedFilters();
-    // const [filtersActive, setFiltersActive] = useState(false);
+    const setSelectedFilters = useSetSelectedFilters();
     
     // Create array for categories section
     const categories = products.reduce((acc, product) => {
@@ -45,10 +55,8 @@ export default function Content({ isLoading }) {
     }
     
     const filterProducts = (filtersActive = false) => {
-        // console.log('Updating Filters...', selectedFilters);
         let searchString = selectedFilters.searchString;
         if (searchString && searchString.length > 2) {
-            // console.log('1');
             let filtered = products.filter(product => {
                 return product.title.toLowerCase().includes(searchString.toLowerCase()) ||
                     product.tags.join(' ').toLowerCase().includes(searchString.toLowerCase()) ||
@@ -56,7 +64,6 @@ export default function Content({ isLoading }) {
                     product.description.toLowerCase().includes(searchString.toLowerCase());
             });
             if (selectedFilters && filtersActive) {
-                // console.log('2');
                 filtered = filtered.filter(product => {
                     const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
                     const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
@@ -67,7 +74,6 @@ export default function Content({ isLoading }) {
                 setIsFiltering(true);
             }
         } else if (selectedFilters && filtersActive && !searchString) {
-            // console.log('3');
             let filtered = products.filter(product => {
                 const categoryMatch = selectedFilters.categories.includes(product.category) || selectedFilters.categories.length === 0;
                 const brandMatch = selectedFilters.brands.includes(product.brand) || selectedFilters.brands.length === 0;
@@ -77,12 +83,10 @@ export default function Content({ isLoading }) {
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else if (selectedCategory) {
-            // console.log('4');
             let filtered = products.filter(product => product.category === selectedCategory);
             setFilteredProducts(filtered);
             setIsFiltering(true);
         } else {
-            // console.log('5');
             setFilteredProducts(products);
             setIsFiltering(false);
         }
@@ -100,16 +104,21 @@ export default function Content({ isLoading }) {
         filterProducts(activeFilters.length > 0);
     },[selectedFilters]);
     
-    useEffect(() => {
-        if (!filteredProducts) return;
-        // console.log('filterProducts:', filteredProducts);
-    },[filteredProducts]);
-    
     // useEffect(() => {
-    //     if (!searchString) return;
-    // //     console.log('searchString:', searchString);
-    //     filterProducts();
-    // },[searchString]);
+    //     if (!filteredProducts) return;
+    //     // console.log('filterProducts:', filteredProducts);
+    // },[filteredProducts]);
+    
+    useEffect(() => {
+        if (!selectedFilters.searchString) return;
+        setSelectedFilters({
+            searchString: selectedFilters.searchString,
+            categories: [],
+            brands: [],
+            price: ''
+        })
+        filterProducts();
+    },[selectedFilters.searchString]);
     
     return (
         <main className={'relative ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
@@ -132,10 +141,10 @@ export default function Content({ isLoading }) {
                     {/* Header Image */}
                     <div className={'content__header p-6'}>
                         <div className={'content__header-grid grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center max-w-[1400px] mx-auto'}>
-                            <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-20 pr-6 z-[1] font-semibold'}>
+                            <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 lg:pl-20 pr-6 z-[1] font-semibold'}>
                                 <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
                                 <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
-                                <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-cerulean-400 text-white font-semibold flex items-center'}>Shop Now</div>
+                                <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-cerulean-400 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
                             </div>
                             <figure className="content__header-image w-full h-full col-span-full row-span-full overflow-hidden">
                                 <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[400px] lg:min-h-[600px] max-w-[unset] object-cover object-left md:object-fit"/>
@@ -144,7 +153,7 @@ export default function Content({ isLoading }) {
                     </div>
                     
                     {/* Featured Products */}
-                    <div className="content__featured featured-items w-full max-h-fit bg-blue-600 px-6">
+                    <div className="content__featured featured-items w-full max-h-fit bg-blue-800 px-6">
                         <div className="content__featured-grid grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 py-4 max-w-[1400px] mx-auto">
                             <div className="content__featured__cta text-8xl flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
@@ -164,7 +173,7 @@ export default function Content({ isLoading }) {
                     {!selectedCategory && (
                         <div className="content__categories w-full py-4 px-6 md:px-8">
                             <div className={'content__categories-grid max-w-[1400px] mx-auto'}>
-                                <h2 className="content__categories-title text-3xl font-semibold text-blue-950 text-center">Categories</h2>
+                                <h2 className="content__categories-title text-3xl font-semibold text-black text-center">Categories</h2>
                                 <div className="content__categories-inner lg:flex flex-row md:block w-full mx-auto mt-4">
                                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:pl-4 mt-4 md:mt-0">
                                         {categories.map(product => (

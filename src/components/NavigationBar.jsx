@@ -2,12 +2,13 @@ import { useState } from 'react';
 import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
-import { useSelectedFilters, useSetSelectedFilters, useSetSelectedProduct } from "./ContextProvider.jsx";
+import { useSelectedFilters, useSetSelectedFilters, useSelectedProduct, useSetSelectedProduct } from "./ContextProvider.jsx";
 
 export default function NavigationBar({ onEnterPress }) {
     const isMobile = window.innerWidth < 768;
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
+    const selectedProduct = useSelectedProduct();
     const setSelectedProduct = useSetSelectedProduct();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
@@ -26,10 +27,10 @@ export default function NavigationBar({ onEnterPress }) {
     };
     
     return (
-        <nav className={`${isMobile ? 'mobile' : ''} w-full h-auto top-0 left-0 right-0 sticky bg-blue-800 text-white z-[11]`}>
-            <div className="upper bg-blue-900 px-6">
+        <nav className={(isMobile ? 'mobile ' : '') + (isMobile && selectedProduct ? 'block ' : 'sticky ') + 'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-[11]'}>
+            <div className="upper bg-blue-950 px-6">
                 <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
-                    <span className={'w-fit justify-self-center col-span-full row-start-1'}>🚧 Under Construction 🚧</span>
+                    <span className={'w-fit text-sm justify-self-center col-span-full row-start-1'}>🚧 Under Construction 🚧</span>
                     <div className="text-sm row-start-1 flex items-center gap-4 justify-end">
                         <a className="nav-links__link flex items-center hover:text-blue-400" href="https://github.com/jarrodwhitley/bamazon">
                             <i className="fa-brands fa-github text-lg"></i>
