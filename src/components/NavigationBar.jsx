@@ -11,6 +11,7 @@ export default function NavigationBar({ onEnterPress }) {
     const selectedProduct = useSelectedProduct();
     const setSelectedProduct = useSetSelectedProduct();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const [upperNavHidden, setUpperNavHidden] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
     
     const handleOnSetSearchString = (string) => {
@@ -26,9 +27,11 @@ export default function NavigationBar({ onEnterPress }) {
         setSelectedProduct(product);
     };
     
+    
+    
     return (
         <nav className={(isMobile ? 'mobile ' : '') + (isMobile && selectedProduct ? 'block ' : 'sticky ') + 'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-[11]'}>
-            <div className="upper bg-blue-950 px-6">
+            <div className={(upperNavHidden ? 'hidden' : 'block') + ' upper bg-blue-950 px-6'}>
                 <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
                     <span className={'w-fit text-sm justify-self-center col-span-full row-start-1'}>🚧 Under Construction 🚧</span>
                     <div className="text-sm row-start-1 flex items-center gap-4 justify-end">
@@ -37,6 +40,7 @@ export default function NavigationBar({ onEnterPress }) {
                             <span className={'ml-2'}>See Project</span>
                         </a>
                         <a className="nav-links__link" href="https://jarrodwhitley.com">JW</a>
+                        <i className={'fa-solid fa-times cursor-pointer'} onClick={() => setUpperNavHidden(true)}></i>
                     </div>
                 </div>
             </div>

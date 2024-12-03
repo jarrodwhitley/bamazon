@@ -1,14 +1,14 @@
-import { useCallback, useState, useEffect} from 'react';
+import { useState } from 'react';
 import NavigationBar from './components/NavigationBar.jsx';
 import Content from './components/Content.jsx';
 import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import {Context, useSelectedCategory } from "./components/ContextProvider.jsx";
+import { Context, useSelectedCategory } from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
 
 export default function App() {
     const isMobile = window.innerWidth < 768;
-    const [isLoading, setIsLoading] = useState(false); //FIXME: currently not working
+    const [isLoading, setIsLoading] = useState(false);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState({});
