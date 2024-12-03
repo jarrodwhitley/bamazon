@@ -60,7 +60,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
 ProductCard.propTypes = {
     product: PropTypes.shape({
         id: PropTypes.number.isRequired,
-        thumbnail: PropTypes.string.isRequired,
+        thumbnail: PropTypes.string,
         title: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         rating: PropTypes.number,

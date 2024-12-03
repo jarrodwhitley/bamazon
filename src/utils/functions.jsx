@@ -1,3 +1,5 @@
+import { useCart, useSetCart } from '../components/ContextProvider';
+
 export const formattedPrice = (product, isMobile = false) => {
     if (!product.price) return;
     const [dollars, cents] = product.price.toString().split('.');
@@ -16,4 +18,9 @@ export const capitalizeFirstLetter = (val) => {
 
 export const addToCard = (product) => {
     console.log('Adding to cart:', product);
+    const cart = useCart();
+    const setCart = useSetCart();
+    let newCart = [...cart];
+    newCart.push(product);
+    
 }
