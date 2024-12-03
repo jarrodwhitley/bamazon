@@ -96,15 +96,16 @@ export default function Sidebar() {
     return (
         <>
             {isMobile && (
-                <div className="sidebar__mobile-filter-btn fixed bottom-4 right-4 z-50" onClick={() => setShowFilters(!showFilters)}>
-                    Show filters<i className="text-2xl fa-solid fa-filter"></i>
+                <div className="sidebar__mobile-filter-btn w-[160px] fixed bottom-0 right-4 z-50 bg-blue-500 text-white font-semibold p-4 rounded-t-xl" onClick={() => setShowFilters(!showFilters)}>
+                    {(showFilters ? 'Hide' : 'Show') + ' filters'}
+                    <i className="text-xl fa-solid fa-filter pl-2"></i>
                 </div>
             )}
             <div className={'sidebar px-4 h-fit top-0 left-0 ' +
                 (isMobile ? 'block' : 'sticky')  +
                 (isMobile ? ' animate__animated fixed bg-white w-3/4 left-0 shadow-2xl text-xl p-6 z-10 ' : '') +
                 ((isFiltering && isMobile && !showFilters) ? 'hidden' : '') +
-                ((isFiltering && isMobile && showFilters) ? 'block' : '')}>
+                ((isFiltering && isMobile && showFilters) ? 'block top-[80px]' : '')}>
                 <div className={'sidebar__filter-title text-xl font-semibold'}>Filters</div>
                 <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400 pb-4 border-b-2'} onClick={clearFilters}>Clear filters</div>
                 <div className={'sidebar__filter-container'}>

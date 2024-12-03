@@ -3,14 +3,15 @@ import NavigationBar from './components/NavigationBar.jsx';
 import Content from './components/Content.jsx';
 import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import {Context, useSelectedCategory, useIsFiltering, useSetIsFiltering } from "./components/ContextProvider.jsx";
+import {Context, useSelectedCategory } from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
 
 export default function App() {
     const isMobile = window.innerWidth < 768;
     const [isLoading, setIsLoading] = useState(false); //FIXME: currently not working
     const [rawProducts, setRawProducts] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [cart, setCart] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState({});
     const [filteredProducts, setFilteredProducts] = useState([]);
     const selectedCategory = useSelectedCategory()
     useEffect(() => {
@@ -38,10 +39,10 @@ export default function App() {
     
     return (
         <ErrorBoundary>
-            <Context products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
+            <Context cart={cart} products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
                 <NavigationBar onEnterPress={enterPress} className={'z-10'}/>
                 <Content isLoading={isLoading} className="z-0"/>
-                {/*<Footer/>*/}
+                <Footer/>
             </Context>
         </ErrorBoundary>
     );

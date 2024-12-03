@@ -13,3 +13,7 @@ export const formattedPrice = (product, isMobile = false) => {
 export const capitalizeFirstLetter = (val) => {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
+
+export const addToCard = (product) => {
+    console.log('Adding to cart:', product);
+}

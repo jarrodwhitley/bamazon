@@ -16,7 +16,6 @@ export default function SearchBar() {
     const setIsFiltering = useSetIsFiltering();
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
-    
     const handleOnSearch = (string) => {
         // Update the search string in state
         setSelectedFilters((prevFilters) => ({
@@ -24,14 +23,21 @@ export default function SearchBar() {
             searchString: string || ''
         }));
     };
-    
     const handleOnSelect = (product) => {
-        setSelectedProduct(product);
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
-            searchString: product.title || ''
+            searchString: product.title
         }));
+        setSelectedProduct(product);
     };
+    const handleOnClear = () => {
+        setSelectedFilters(() => ({
+            searchString: '',
+            categories: [],
+            brands: [],
+            price: ''
+        }));
+    }
     
     useEffect(() => {
         if (selectedFilters.searchString.length < 3) {
@@ -46,6 +52,7 @@ export default function SearchBar() {
                 inputSearchString={selectedFilters.searchString || ''} // Fully controlled input
                 onSearch={handleOnSearch}
                 onSelect={handleOnSelect}
+                onClear={handleOnClear}
                 fuseOptions={{ keys: ['title', 'tags', 'brand'] }}
                 resultStringKeyName="title"
                 autoFocus

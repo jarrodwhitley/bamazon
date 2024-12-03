@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const ProductsContext = createContext(null);
@@ -14,46 +14,55 @@ const SearchStringContext = createContext(null)
 const SetSearchStringContext = createContext({});
 const SelectedFiltersContext = createContext({});
 const SetSelectedFiltersContext = createContext(null);
+const CartContext = createContext([]);
+const SetCartContext = createContext(null);
 
-export const Context = ({ products, filteredProducts, selectedProduct, selectedCategories, searchString, children }) => {
+export const Context = ({ products, filteredProducts, selectedProduct, selectedCategories, searchString, cart, children }) => {
     const [selectedProductState, setSelectedProductState] = useState(selectedProduct);
     const [filteredProductsState, setFilteredProductsState] = useState(filteredProducts);
     const [selectedCategoriesState, setSelectedCategoriesState] = useState(selectedCategories);
     const [searchStringState, setSearchStringState] = useState(searchString);
     const [isFilteringState, setIsFilteringState] = useState(false);
     const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', categories: [], brands: [], price: '' });
+    const [cartState, setCartState] = useState(cart);
     
     return (
-        <ProductsContext.Provider value={products}>
-            <FilteredProductsContext.Provider value={filteredProductsState}>
-                <SetFilteredProductsContext.Provider value={setFilteredProductsState}>
-                    <SelectedProductContext.Provider value={selectedProductState}>
-                        <SetSelectedProductContext.Provider value={setSelectedProductState}>
-                            <SelectedCategoryContext.Provider value={selectedCategoriesState}>
-                                <SetSelectedCategoryContext.Provider value={setSelectedCategoriesState}>
-                                    <FilteringContext.Provider value={isFilteringState}>
-                                        <SetFilteringContext.Provider value={setIsFilteringState}>
-                                            <SearchStringContext.Provider value={searchStringState}>
-                                                <SetSearchStringContext.Provider value={setSearchStringState}>
-                                                    <SelectedFiltersContext.Provider value={selectedFiltersState}>
-                                                        <SetSelectedFiltersContext.Provider value={setSelectedFiltersState}>
-                                                            {children}
-                                                        </SetSelectedFiltersContext.Provider>
-                                                    </SelectedFiltersContext.Provider>
-                                                </SetSearchStringContext.Provider>
-                                            </SearchStringContext.Provider>
-                                        </SetFilteringContext.Provider>
-                                    </FilteringContext.Provider>
-                                </SetSelectedCategoryContext.Provider>
-                            </SelectedCategoryContext.Provider>
-                        </SetSelectedProductContext.Provider>
-                    </SelectedProductContext.Provider>
-                </SetFilteredProductsContext.Provider>
-            </FilteredProductsContext.Provider>
-        </ProductsContext.Provider>
+        <CartContext.Provider value={cartState}>
+            <SetCartContext.Provider value={setCartState}>
+                <ProductsContext.Provider value={products}>
+                    <FilteredProductsContext.Provider value={filteredProductsState}>
+                        <SetFilteredProductsContext.Provider value={setFilteredProductsState}>
+                            <SelectedProductContext.Provider value={selectedProductState}>
+                                <SetSelectedProductContext.Provider value={setSelectedProductState}>
+                                    <SelectedCategoryContext.Provider value={selectedCategoriesState}>
+                                        <SetSelectedCategoryContext.Provider value={setSelectedCategoriesState}>
+                                            <FilteringContext.Provider value={isFilteringState}>
+                                                <SetFilteringContext.Provider value={setIsFilteringState}>
+                                                    <SearchStringContext.Provider value={searchStringState}>
+                                                        <SetSearchStringContext.Provider value={setSearchStringState}>
+                                                            <SelectedFiltersContext.Provider value={selectedFiltersState}>
+                                                                <SetSelectedFiltersContext.Provider value={setSelectedFiltersState}>
+                                                                    {children}
+                                                                </SetSelectedFiltersContext.Provider>
+                                                            </SelectedFiltersContext.Provider>
+                                                        </SetSearchStringContext.Provider>
+                                                    </SearchStringContext.Provider>
+                                                </SetFilteringContext.Provider>
+                                            </FilteringContext.Provider>
+                                        </SetSelectedCategoryContext.Provider>
+                                    </SelectedCategoryContext.Provider>
+                                </SetSelectedProductContext.Provider>
+                            </SelectedProductContext.Provider>
+                        </SetFilteredProductsContext.Provider>
+                    </FilteredProductsContext.Provider>
+                </ProductsContext.Provider>
+            </SetCartContext.Provider>
+        </CartContext.Provider>
     );
 };
 
+export const useCart = () => useContext(CartContext);
+export const useSetCart = () => useContext(SetCartContext);
 export const useProducts = () => useContext(ProductsContext);
 export const useFilteredProducts = () => useContext(FilteredProductsContext);
 export const useSetFilteredProducts = () => useContext(SetFilteredProductsContext);
@@ -69,6 +78,7 @@ export const useSelectedFilters = () => useContext(SelectedFiltersContext);
 export const useSetSelectedFilters = () => useContext(SetSelectedFiltersContext);
 
 Context.propTypes = {
+    cart: PropTypes.array.isRequired,
     products: PropTypes.array.isRequired,
     filteredProducts: PropTypes.array.isRequired,
     selectedProduct: PropTypes.object,
