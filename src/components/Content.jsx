@@ -142,7 +142,7 @@ export default function Content({ isLoading }) {
                             <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 lg:pl-20 pr-6 z-[1] font-semibold'}>
                                 <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
                                 <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
-                                <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-cerulean-400 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
+                                <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-blue-500 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
                             </div>
                             <figure className="content__header-image w-full h-full col-span-full row-span-full overflow-hidden">
                                 <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[400px] lg:min-h-[600px] max-w-[unset] object-cover object-left md:object-fit"/>
