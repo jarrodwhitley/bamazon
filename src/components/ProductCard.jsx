@@ -1,7 +1,12 @@
 import PropTypes from "prop-types";
 import RatingStars from "./RatingStars.jsx";
 import DiscountBadge from "./DiscountBadge.jsx";
-import {useSetSelectedProduct, useSetSelectedCategory, useSelectedFilters, useSetSelectedFilters} from './ContextProvider.jsx';
+import {
+    useSetSelectedProduct,
+    useSetSelectedCategory,
+    useSelectedFilters,
+    useSetSelectedFilters
+} from './ContextProvider.jsx';
 import {formattedPrice, capitalizeFirstLetter} from '../utils/functions.jsx';
 
 export default function ProductCard({product, showDiscount = false, showLowStock = false, categoryCard = false}) {
@@ -35,20 +40,21 @@ export default function ProductCard({product, showDiscount = false, showLowStock
                  'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'}
              onClick={!categoryCard ? selectProduct : selectCategory}>
             <div className={'product-card__image flex items-center justify-center'}>
-                <img src={product?.thumbnail} className={(categoryCard ? 'h-32 w-auto' : '')} height="300" width="300" alt={product.title}/>
+                <img src={product?.thumbnail} className={((categoryCard && isMobile)? 'pt-4 h-3/4 w-auto' : '') + ((categoryCard && !isMobile) ? 'h-32 w-auto' : '')} height="300" width="300" alt={product.title}/>
             </div>
             {showDiscount && !categoryCard && (
                 <DiscountBadge discountPercentage={product.discountPercentage}/>
             )}
             <div className="product-card__details">
-                <h3 className={'product-card__name mt-2 truncate ' + (!categoryCard ? 'text-sm font-semibold' : '')}>
+                <h3 className={'product-card__name mt-2 truncate ' +
+                    (((!categoryCard && !isMobile) || (categoryCard && isMobile)) ? 'text-base font-semibold' : 'font-normal')}>
                     {!categoryCard ? product.title : capitalizeFirstLetter(product.category)}
                 </h3>
-                {(!product.featured && isMobile && !categoryCard || !isMobile && !categoryCard) && (
-                    <RatingStars value={product.rating}/>
-                )}
-                {!categoryCard && (
-                    <div className={'product-card__price text-lg font-semibold' + ((isMobile && product.featured) ? 'text-xs' : '')}>{formattedPrice(product, isMobile)}</div>
+                {(!categoryCard) && (
+                    <>
+                        <RatingStars value={product.rating}/>
+                        <div className={'product-card__price text-lg font-semibold' + ((isMobile && product.featured) ? 'text-xs' : '')}>{formattedPrice(product, isMobile)}</div>
+                    </>
                 )}
             </div>
             {showLowStockWarning && !categoryCard && (

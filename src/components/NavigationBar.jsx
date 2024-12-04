@@ -38,7 +38,7 @@ export default function NavigationBar({ onEnterPress }) {
         <nav className={(isMobile ? 'mobile ' : '') + (isMobile && !selectedProduct.title || !isMobile ? 'sticky ' : 'block ') + 'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-30'}>
             <div className={(upperNavHidden ? 'hidden' : 'block') + ' upper bg-blue-950 px-6'}>
                 <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
-                    <span className={'w-fit text-sm text-orange-500 font-bold justify-self-start col-span-full row-start-1'}>Under Construction</span>
+                    <span className={'w-fit text-sm text-[#EAB308] font-bold justify-self-start col-span-full row-start-1'}>Under Construction</span>
                     <div className="text-sm row-start-1 flex items-center gap-4 justify-end">
                         <a className="nav-links__link flex items-center hover:text-blue-400" href="https://github.com/jarrodwhitley/bamazon">
                             <i className="fa-brands fa-github text-lg"></i>
@@ -51,7 +51,7 @@ export default function NavigationBar({ onEnterPress }) {
             </div>
             <div className="lower px-6 py-2">
                 <div className={'flex items-center justify-between max-w-[1400px] mx-auto'}>
-                    <img className="bamazon-logo" src={BamazonLogo} width={isMobile ? '100': '120'} alt="BAMazon logo"/>
+                    <a href={'/'}><img className="bamazon-logo" src={BamazonLogo} width={isMobile ? '100': '120'} alt="BAMazon logo"/></a>
                     {!isMobile && (
                         <>
                             <SearchBar classes={'search-bar w-1/2 relative'} onSetSearchString={handleOnSetSearchString} onSetSelectedProduct={handleOnSetSelectedProduct}/>
