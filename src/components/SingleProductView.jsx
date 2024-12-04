@@ -11,6 +11,7 @@ import {
     useSetCart
 } from "./ContextProvider.jsx";
 import FontAwesomeIcon from "./FontAwesomeIcon.jsx";
+import Boombam from "../assets/images/bamazon_logo_boombam.png";
 
 export default function SingleProductView() {
     const isMobile = window.innerWidth < 768;
@@ -19,17 +20,10 @@ export default function SingleProductView() {
     const setSelectedFilters = useSetSelectedFilters();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [showBam, setShowBam] = useState(false);
+    const [closingModal, setCloseModal] = useState(false);
     const cart = useCart();
     const setCart = useSetCart();
-    
-    function closeModal() {
-        setSelectedProduct({});
-    }
-    
-    function setImageIndex(index) {
-        setCurrentImageIndex(index);
-    }
-    
     const handleAddToCart = () => {
         let newCart = [...cart.items];
         let productIndex = newCart.findIndex(product => product.id === selectedProduct.id);
@@ -43,17 +37,44 @@ export default function SingleProductView() {
             showCart: cart.showCart,
             items: newCart
         });
+        setShowBam(true);
         setTimeout(() => {
+            setCloseModal(true);
+        },1000);
+        setTimeout(() => {
+            setShowBam(false)
             setSelectedProduct({});
+            setSelectedFilters(() => ({
+                searchString: '',
+                categories: [],
+                brands: [],
+                price: ''
+            }));
+            setCloseModal(false);
         },2000);
     }
-    
+    function closeModal() {
+        setCloseModal(true);
+        setTimeout(() => {
+            setSelectedProduct({});
+            setSelectedFilters(() => ({
+                searchString: '',
+                categories: [],
+                brands: [],
+                price: ''
+            }));
+            setCloseModal(false);
+        },1000);
+    }
+    function setImageIndex(index) {
+        setCurrentImageIndex(index);
+    }
     
     return (
         <>
             {selectedProduct && Object.keys(selectedProduct).length > 0 && (
-                <div className={'single-product-view fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 z-10'} onClick={closeModal}>
-                    <div className={'single-product-view__modal w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white grid grid-rows-[1fr_2fr] lg:grid-rows-1 grid-cols-1 lg:grid-cols-2 items-start gap-4 md:p-6 shadow-2xl overflow-auto relative'} onClick={(e) => e.stopPropagation()}>
+                <div className={(!closingModal ? 'animate__fadeIn animate__faster ' : 'animate__fadeOut ') + 'single-product-view animate__animated fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 z-10'} onClick={closeModal}>
+                    <div className={((!closingModal ? 'animate__slideInUp ' : 'animate__zoomOut ')) + 'single-product-view__modal animate__animated w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white grid grid-rows-[1fr_2fr] lg:grid-rows-1 grid-cols-1 lg:grid-cols-2 items-start gap-4 md:p-6 shadow-2xl overflow-auto relative'} onClick={(e) => e.stopPropagation()}>
                         <div className="single-product-view__close absolute top-0 right-0 px-4 py-2 text-2xl cursor-pointer" onClick={() => closeModal(null)}>
                             <FontAwesomeIcon icon="fa-times"/>
                         </div>
@@ -109,6 +130,9 @@ export default function SingleProductView() {
                                         />
                                     </div>
                                 </>
+                            )}
+                            {showBam && (
+                                <img src={Boombam} alt="Bamazon logo" className="animate__animated animate__bounceIn animate__faster single-product-view__bam absolute top-0 left-0 w-2/3 drop-shadow-2xl z-10"/>
                             )}
                         </div>
                         <div className="single-product-view__details row-start-2 lg:row-start-1 col-start-1 lg:col-start-2 w-full p-4 md:p-0 ">

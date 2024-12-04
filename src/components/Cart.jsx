@@ -25,7 +25,7 @@ export default function Cart() {
     
     return (
         <div className={(cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ') +
-            'cart__container fixed w-full lg:w-[400px] h-full top-[100px] lg:top-[118px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4'}>
+            'cart__container fixed w-full lg:w-[400px] h-full top-[100px] lg:top-[110px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4'}>
             { cart.items.length > 0 && (
                 <div className={'text-2xl font-semibold pl-6 py-4 border-b'}>Your cart</div>
             )}
