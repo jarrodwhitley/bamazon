@@ -151,7 +151,7 @@ export default function SingleProductView() {
                                 <div className="single-product-view__add-to-cart flex items-center justify-center bg-blue-500 text-white font-semibold px-4 py-2 rounded self-start cursor-pointer" onClick={handleAddToCart}>Add to Cart</div>
                                 {cart.items.find(product => product.id === selectedProduct.id) && (
                                     <div className="single-product-view__added-message flex items-center justify-center">
-                                        <p className="single-product-view__in-cart text-green-500 font-semibold animate__animated animate__fadeInUp">Added to cart!</p>
+                                        <p className="single-product-view__in-cart text-green-500 font-semibold animate__animated animate__faster animate__fadeInUp">Added to cart!</p>
                                     </div>
                                 )}
                             </div>
