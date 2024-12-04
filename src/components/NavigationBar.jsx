@@ -35,7 +35,7 @@ export default function NavigationBar({ onEnterPress }) {
     }
     
     return (
-        <nav className={(isMobile ? 'mobile ' : '') + (isMobile && !selectedProduct.title || !isMobile ? 'sticky ' : 'block ') + 'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-[11]'}>
+        <nav className={(isMobile ? 'mobile ' : '') + (isMobile && !selectedProduct.title || !isMobile ? 'sticky ' : 'block ') + 'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-30'}>
             <div className={(upperNavHidden ? 'hidden' : 'block') + ' upper bg-blue-950 px-6'}>
                 <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
                     <span className={'w-fit text-sm text-orange-500 font-bold justify-self-start col-span-full row-start-1'}>Under Construction</span>

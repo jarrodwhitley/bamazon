@@ -5,10 +5,11 @@ import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import { Context, useSelectedCategory } from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
+import LoadingOverlay from "./components/LoadingOverlay.jsx";
 
 export default function App() {
     const isMobile = window.innerWidth < 768;
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState({});
@@ -25,14 +26,33 @@ export default function App() {
         }));
     }, [isMobile]);
     
+    useEffect(() => {
+        if (products.length > 0 && isLoading) {
+            setTimeout(() => {
+                console.log('Setting loading to false');
+                setIsLoading(false);
+            },2000);
+        }
+    },[products]);
+    
     function enterPress() {
         console.log('Enter pressed');
     }
     
+    // window.addEventListener('load', () => {
+    //     setTimeout(() => {
+    //         setIsLoading(false);
+    //         window.removeEventListener('load', () => {});
+    //     },2000);
+    // })
+    // TODO: Actually use window load state
+  
+    
     return (
         <ErrorBoundary>
             <Context cart={cart} products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
-                <NavigationBar onEnterPress={enterPress} className={'z-10'}/>
+                <NavigationBar onEnterPress={enterPress}/>
+                <LoadingOverlay isLoading={isLoading}/>
                 <Content isLoading={isLoading} />
                 <Footer/>
             </Context>

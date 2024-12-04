@@ -29,7 +29,7 @@ body {
 }
 
 body.no-animation {
-    .animate__animated {
+    .animate__animated:not(.loading-overlay > *) {
         animation-duration: 0s;
     }
 }

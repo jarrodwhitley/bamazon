@@ -21,6 +21,7 @@ import SingleProductView from "./SingleProductView.jsx";
 import SearchBar from "./SearchBar.jsx";
 import Cart from "./Cart.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
+import Boombam from "../assets/images/bamazon_logo_boombam.png";
 
 export default function Content({isLoading}) {
     const isMobile = window.innerWidth < 768;
@@ -36,6 +37,7 @@ export default function Content({isLoading}) {
     const setIsFiltering = useSetIsFiltering();
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
+    const [showBam, setShowBam] = useState(false);
     
     // Create array for categories section
     const categories = products.reduce((acc, product) => {
@@ -101,7 +103,6 @@ export default function Content({isLoading}) {
         }
         filterProducts(activeFilters.length > 0);
     }, [selectedFilters]);
-    
     useEffect(() => {
         if (!selectedFilters.searchString) return;
         setSelectedFilters({
@@ -116,12 +117,8 @@ export default function Content({isLoading}) {
     return (
         <main className={'overflow-x-hidden relative pb-2 ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
             
-            {/* Loading Overlay */}
-            {isLoading && (
-                <div className="content__loading-overlay absolute top-0 left-0 w-full h-screen bg-white z-[2] grid grid-cols-1 grid-rows-1 items-center justify-items-center">
-                    <img src={BamazonBam} alt="Bamazon Bam" className="w-1/6 animate__animated animate__rotateOut animate__infinite row-start-1 col-start-1 z-10"/>
-                    <img src={BamazonBoom} alt="Bamazon Boom" className="w-1/6 animate__animated animate__pulse animate__infinite row-start-1 col-start-1"/>
-                </div>
+            {showBam && (
+                <img src={Boombam} alt="Bamazon logo" className="animate__animated animate__bounceIn animate__faster single-product-view__bam absolute top-0 left-0 w-full drop-shadow-2xl z-10"/>
             )}
             
             {isMobile && (
