@@ -151,7 +151,7 @@ export default function Content({isLoading}) {
                         <div className="content__featured-grid grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 py-4 max-w-[1400px] mx-auto">
                             <div className="content__featured__cta text-8xl flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
-                                    <div className="w-full text-2xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals
+                                    <div className="w-full text-3xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals
                                     </div>
                                     <div className="w-full hidden lg:block text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
                                 </div>
