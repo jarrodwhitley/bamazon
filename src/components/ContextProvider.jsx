@@ -25,15 +25,8 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
     const [isFilteringState, setIsFilteringState] = useState(false);
     const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', categories: [], brands: [], price: '' });
     const storedCart = JSON.parse(localStorage.getItem('cart'));
-    const initialCartState = storedCart ? storedCart : { showCart: false, items: [] };
+    const initialCartState = storedCart ? { showCart: false, items: storedCart.items} : { showCart: false, items: [] };
     const [cartState, setCartState] = useState(initialCartState);
-    
-    // useEffect(() => {
-    //     const storedCart = JSON.parse(localStorage.getItem('cart'));
-    //     if (storedCart && cartState.items.length === 0) {
-    //         setCartState({showCart: cartState.showCart, items: cart});
-    //     }
-    // },[])
     
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cartState));
