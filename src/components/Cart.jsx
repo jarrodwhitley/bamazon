@@ -1,9 +1,11 @@
 import { useCart, useSetCart } from './ContextProvider.jsx';
+import Boombam from "../assets/images/bamazon_logo_boombam.png";
+import {useState} from "react";
 
 export default function Cart() {
     const cart = useCart();
     const setCart = useSetCart();
-    
+    const [showBam, setShowBam] = useState(false);
     const handleRemoveFromCart = (e, id) => {
         let newCart = cart.items.filter(product => product.id !== id);
         setCart({
@@ -11,7 +13,6 @@ export default function Cart() {
             items: newCart
         })
     }
-    
     const handleQuantityChange = (e, id) => {
         let newCart = [...cart.items];
         let productIndex = newCart.findIndex(product => product.id === id);
@@ -21,6 +22,16 @@ export default function Cart() {
             items: newCart
         })
     }
+    const handleCheckout = () => {
+        setShowBam(true);
+        setTimeout(() => {
+            setCart({
+                showCart: false,
+                items: []
+            });
+            setShowBam(false);
+        },1000);
+    }
     
     return (
         <div className={(cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ') +
@@ -28,6 +39,8 @@ export default function Cart() {
             { cart.items.length > 0 && (
                 <div className={'text-2xl font-semibold pl-6 py-4 border-b'}>Your cart</div>
             )}
+            
+            {/* Cart Items */}
             {cart.items.map((product, index) => (
                 <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 p-4 border-b border-gray-200'}>
                     <img src={product.images[0]} alt={product.title} className={'w-16 h-16 object-cover row-start-1'}/>
@@ -46,14 +59,14 @@ export default function Cart() {
                 </div>
             ))}
             
-            {/* Subtotal */}
+            {/* Subtotal and Checkout Button */}
             {cart.items.length > 0 && (
                 <>
                     <div className={'cart__subtotal flex items-center justify-between p-4'}>
                         <span className={'font-semibold'}>Subtotal:</span>
                         <span className={'font-semibold'}>${cart.items.reduce((acc, product) => acc + (product.price * product.quantity), 0).toFixed(2)}</span>
                     </div>
-                    <div className={'cart__checkout w-fit h-fit py-2 px-8 mt-6 cursor-pointer mx-auto text-white bg-orange-400 font-semibold rounded'}>Checkout</div>
+                    <div className={'cart__checkout w-fit h-fit py-2 px-8 mt-6 cursor-pointer mx-auto text-white bg-orange-400 font-semibold rounded'} onClick={handleCheckout}>Checkout</div>
                 </>
             )}
             
@@ -63,6 +76,11 @@ export default function Cart() {
                     <span className={'text-2xl font-semibold text-center'}>Your cart is empty 😅</span>
                     <span className={'text-xl font-base text-center mt-4 mx-6 leading-[1]'}>Come back after you add a few things!</span>
                 </div>
+            )}
+            
+            {/*  BAM  */}
+            {showBam && (
+                <img src={Boombam} alt="Bamazon logo" className="animate__animated animate__bounceIn animate__faster single-product-view__bam fixed top-0 left-0 w-full drop-shadow-2xl z-10"/>
             )}
         </div>
     );

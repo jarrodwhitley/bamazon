@@ -14,16 +14,13 @@ import {
     useSetSelectedFilters
 } from './ContextProvider.jsx';
 import BamazonAd from '../assets/images/bamazon_ad.png';
-import BamazonBoom from '../assets/images/bamazon_logo_boom.png';
-import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
 import HeaderImage from '../assets/images/header_image.png';
 import SingleProductView from "./SingleProductView.jsx";
 import SearchBar from "./SearchBar.jsx";
 import Cart from "./Cart.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
-import Boombam from "../assets/images/bamazon_logo_boombam.png";
 
-export default function Content({isLoading}) {
+export default function Content() {
     const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
@@ -37,9 +34,6 @@ export default function Content({isLoading}) {
     const setIsFiltering = useSetIsFiltering();
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
-    const [showBam, setShowBam] = useState(false);
-    
-    // Create array for categories section
     const categories = products.reduce((acc, product) => {
         const categorySet = new Set(acc.map(item => item.category));
         if (!categorySet.has(product.category)) {
@@ -47,14 +41,12 @@ export default function Content({isLoading}) {
         }
         return acc;
     }, []);
-    
     const defaultFilters = {
         categories: [],
         brands: [],
         price: '',
         searchString: ''
     }
-    
     const filterProducts = (filtersActive = false) => {
         let searchString = selectedFilters.searchString;
         if (searchString && searchString.length > 2) {
@@ -116,10 +108,6 @@ export default function Content({isLoading}) {
     
     return (
         <main className={'overflow-x-hidden relative pb-2 ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
-            
-            {showBam && (
-                <img src={Boombam} alt="Bamazon logo" className="animate__animated animate__bounceIn animate__faster single-product-view__bam absolute top-0 left-0 w-full drop-shadow-2xl z-10"/>
-            )}
             
             {isMobile && (
                 <div className={'content__search-bar__container bg-blue-950 w-full flex justify-center'}>
@@ -200,7 +188,7 @@ export default function Content({isLoading}) {
             {/* Filtered Products */}
             {isFiltering && (
                 <div className={'content__filtered place-self-start w-full max-w-[1400px] mx-auto'}>
-                    <div className="content__product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
+                    <div className="content__product-grid w-full grid grid-cols-2 lg:grid-cols-4 gap-4 px-4">
                         {filteredProducts.map(product => (
                             <ProductCard key={product.id} product={product} showLowStock={true}/>
                         ))}
@@ -221,8 +209,4 @@ export default function Content({isLoading}) {
             {/*</div>*/}
         </main>
     )
-}
-
-Content.propTypes = {
-    isLoading: PropTypes.bool.isRequired,
 }

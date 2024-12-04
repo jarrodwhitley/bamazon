@@ -72,7 +72,7 @@ export default function NavigationBar({ onEnterPress }) {
                         </>
                     )}
                     {isMobile && (
-                        <div className={'grid grid-rows-1 grid-cols-2 gap-6'}>
+                        <div className={'grid grid-rows-1 grid-cols-2 gap-6 items-center'}>
                             <div className={'mobile-cart-btn'}>
                                 <i className="fa-solid text-lg fa-cart-shopping relative" onClick={handleCartClick}>
                                     {cart.items.length > 0 && (

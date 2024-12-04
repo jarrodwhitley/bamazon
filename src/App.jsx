@@ -15,6 +15,9 @@ export default function App() {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [filteredProducts, setFilteredProducts] = useState([]);
     const selectedCategory = useSelectedCategory();
+    function enterPress() {
+        console.log('Enter pressed');
+    }
     
     useEffect(() => {
         setProducts(productsData.map(product => {
@@ -26,6 +29,7 @@ export default function App() {
         }));
     }, [isMobile]);
     
+    // TODO: Actually use window load state
     useEffect(() => {
         if (products.length > 0 && isLoading) {
             setTimeout(() => {
@@ -35,25 +39,13 @@ export default function App() {
         }
     },[products]);
     
-    function enterPress() {
-        console.log('Enter pressed');
-    }
-    
-    // window.addEventListener('load', () => {
-    //     setTimeout(() => {
-    //         setIsLoading(false);
-    //         window.removeEventListener('load', () => {});
-    //     },2000);
-    // })
-    // TODO: Actually use window load state
-  
     
     return (
         <ErrorBoundary>
             <Context cart={cart} products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
                 <NavigationBar onEnterPress={enterPress}/>
                 <LoadingOverlay isLoading={isLoading}/>
-                <Content isLoading={isLoading} />
+                <Content />
                 <Footer/>
             </Context>
         </ErrorBoundary>
