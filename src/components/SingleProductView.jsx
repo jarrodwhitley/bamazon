@@ -45,7 +45,7 @@ export default function SingleProductView() {
         });
         setTimeout(() => {
             setSelectedProduct({});
-        },1000);
+        },2000);
     }
     
     
@@ -123,6 +123,14 @@ export default function SingleProductView() {
                                     <div className="single-product-view__low-stock text-red-500 text-xs font-semibold">Low Stock - only {selectedProduct.stock} remaining</div>
                                 )}
                             </div>
+                            <div className="single-product-view__section grid grid-rows-1 grid-cols-2 mt-4 pt-2 w-full place-self-end">
+                                <div className="single-product-view__add-to-cart flex items-center justify-center bg-blue-500 text-white font-semibold px-4 py-2 rounded self-start cursor-pointer" onClick={handleAddToCart}>Add to Cart</div>
+                                {cart.items.find(product => product.id === selectedProduct.id) && (
+                                    <div className="single-product-view__added-message flex items-center justify-center">
+                                        <p className="single-product-view__in-cart text-green-500 font-semibold animate__animated animate__fadeInUp">Added to cart!</p>
+                                    </div>
+                                )}
+                            </div>
                             <div className="single-product-view__section mt-4 pt-2 border-t-2">
                                 <div className={'font-semibold'}>Product Description</div>
                                 <p className="single-product-view__description mt-2">{selectedProduct.description}</p>
@@ -135,14 +143,7 @@ export default function SingleProductView() {
                                     <li className="single-product-view__list-item">sku# {selectedProduct.sku}</li>
                                 </ul>
                             </div>
-                            <div className="single-product-view__section grid grid-rows-1 grid-cols-2 mt-4 pt-2 w-full place-self-end">
-                                <div className="single-product-view__add-to-cart flex items-center justify-center bg-blue-500 text-white font-semibold px-4 py-2 rounded self-start cursor-pointer" onClick={handleAddToCart}>Add to Cart</div>
-                                {cart.items.find(product => product.id === selectedProduct.id) && (
-                                    <div className="single-product-view__added-message flex items-center justify-center">
-                                        <p className="single-product-view__in-cart text-green-500 font-semibold animate__animated animate__fadeInUp">Added to cart!</p>
-                                    </div>
-                                )}
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
