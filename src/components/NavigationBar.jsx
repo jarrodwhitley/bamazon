@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
-import { useSelectedFilters, useSetSelectedFilters, useSelectedProduct, useSetSelectedProduct } from "./ContextProvider.jsx";
+import { useSelectedFilters, useSetSelectedFilters, useSelectedProduct, useSetSelectedProduct, useCart, useSetCart } from "./ContextProvider.jsx";
 
 export default function NavigationBar({ onEnterPress }) {
     const isMobile = window.innerWidth < 768;
@@ -10,6 +10,8 @@ export default function NavigationBar({ onEnterPress }) {
     const setSelectedFilters = useSetSelectedFilters();
     const selectedProduct = useSelectedProduct();
     const setSelectedProduct = useSetSelectedProduct();
+    const cart = useCart();
+    const setCart = useSetCart();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [upperNavHidden, setUpperNavHidden] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
@@ -27,13 +29,18 @@ export default function NavigationBar({ onEnterPress }) {
         setSelectedProduct(product);
     };
     
-    
+    const handleCartClick = () => {
+        setCart({
+            showCart: !cart.showCart,
+            items: cart.items
+        })
+    }
     
     return (
-        <nav className={(isMobile ? 'mobile ' : '') + (isMobile && selectedProduct ? 'block ' : 'sticky ') + 'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-[11]'}>
+        <nav className={(isMobile ? 'mobile ' : '') + (isMobile && !selectedProduct.title ? 'sticky ' : 'block ') + 'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-[11]'}>
             <div className={(upperNavHidden ? 'hidden' : 'block') + ' upper bg-blue-950 px-6'}>
                 <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
-                    <span className={'w-fit text-sm justify-self-center col-span-full row-start-1'}>🚧 Under Construction 🚧</span>
+                    <span className={'w-fit text-sm text-orange-500 font-bold justify-self-start col-span-full row-start-1'}>Under Construction</span>
                     <div className="text-sm row-start-1 flex items-center gap-4 justify-end">
                         <a className="nav-links__link flex items-center hover:text-blue-400" href="https://github.com/jarrodwhitley/bamazon">
                             <i className="fa-brands fa-github text-lg"></i>
@@ -55,16 +62,29 @@ export default function NavigationBar({ onEnterPress }) {
                                     <i className="fa-solid fa-user"></i>
                                     <span className={'font-semibold ml-2'}>Account</span>
                                 </div>
-                                <div className={'cart cursor-pointer hover:text-blue-400 ml-2'}>
-                                    <i className="fa-solid fa-cart-shopping"></i>
+                                <div className={'cart cursor-pointer hover:text-blue-400 ml-2'} onClick={handleCartClick}>
+                                    <i className="fa-solid fa-cart-shopping relative">
+                                        {cart.items.length > 0 && (
+                                            <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>
+                                        )}
+                                    </i>
                                     <span className={'font-semibold ml-2'}>Cart</span>
                                 </div>
                             </div>
                         </>
                     )}
                     {isMobile && (
-                        <div className="mobile-menu-btn" onClick={toggleMobileMenu}>
-                            <i className={`text-2xl fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}></i>
+                        <div className={'grid grid-rows-1 grid-cols-2 gap-6'}>
+                            <div className={'mobile-cart-btn'}>
+                                <i className="fa-solid text-lg fa-cart-shopping" onClick={handleCartClick}>
+                                    {cart.items.length > 0 && (
+                                        <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>
+                                    )}
+                                </i>
+                            </div>
+                            <div className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                            <i className={`text-2xl min-w-[21px] fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}></i>
+                        </div>
                         </div>
                     )}
                 </div>

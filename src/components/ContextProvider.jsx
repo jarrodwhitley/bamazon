@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const ProductsContext = createContext(null);
@@ -24,7 +24,12 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
     const [searchStringState, setSearchStringState] = useState(searchString);
     const [isFilteringState, setIsFilteringState] = useState(false);
     const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', categories: [], brands: [], price: '' });
-    const [cartState, setCartState] = useState(cart);
+    const [cartState, setCartState] = useState({ showCart: false, items: cart });
+    
+    // when the cart is updated in the context, update the local storage
+    useEffect(() => {
+        sessionStorage.setItem('cart', JSON.stringify(cartState));
+    }, [cartState]);
     
     return (
         <CartContext.Provider value={cartState}>
