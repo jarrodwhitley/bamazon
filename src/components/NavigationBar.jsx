@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
+import BamazonLogoDark from "../assets/images/bamazon_logo_dark_v1.1.png";
 import { useSelectedFilters, useSetSelectedFilters, useSelectedProduct, useSetSelectedProduct, useCart, useSetCart } from "./ContextProvider.jsx";
 
 export default function NavigationBar({ onEnterPress }) {
@@ -15,7 +16,6 @@ export default function NavigationBar({ onEnterPress }) {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [upperNavHidden, setUpperNavHidden] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
-    
     const handleOnSetSearchString = (string) => {
         setSelectedFilters({
             searchString: string,
@@ -24,11 +24,9 @@ export default function NavigationBar({ onEnterPress }) {
             price: selectedFilters.price
         })
     };
-    
     const handleOnSetSelectedProduct = (product) => {
         setSelectedProduct(product);
     };
-    
     const handleCartClick = () => {
         setCart({
             showCart: !cart.showCart,
@@ -51,12 +49,12 @@ export default function NavigationBar({ onEnterPress }) {
                     </div>
                 </div>
             </div>
-            <div className="lower px-6 py-2 lg:py-0">
+            <div className="lower px-6 py-2">
                 <div className={'flex items-center justify-between max-w-[1400px] mx-auto'}>
                     <img className="bamazon-logo" src={BamazonLogo} width={isMobile ? '100': '120'} alt="BAMazon logo"/>
                     {!isMobile && (
                         <>
-                            <SearchBar onSetSearchString={handleOnSetSearchString} onSetSelectedProduct={handleOnSetSelectedProduct}/>
+                            <SearchBar classes={'search-bar w-1/2 relative'} onSetSearchString={handleOnSetSearchString} onSetSelectedProduct={handleOnSetSelectedProduct}/>
                             <div className={'navigation-bar__lower__links w-fit flex items-center'}>
                                 <div className={'user cursor-pointer hover:text-blue-400'}>
                                     <i className="fa-solid fa-user"></i>

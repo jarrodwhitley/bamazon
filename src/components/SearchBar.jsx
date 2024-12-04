@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
     useProducts,
     useSetSelectedProduct,
@@ -9,13 +9,14 @@ import {
 } from "./ContextProvider.jsx";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 
-export default function SearchBar() {
+export default function SearchBar({classes}) {
     const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const setSelectedProduct = useSetSelectedProduct();
     const setIsFiltering = useSetIsFiltering();
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
+    const parentAutocompleteRef = useRef(null);
     const handleOnSearch = (string) => {
         // Update the search string in state
         setSelectedFilters((prevFilters) => ({
@@ -29,6 +30,7 @@ export default function SearchBar() {
             searchString: product.title
         }));
         setSelectedProduct(product);
+        parentAutocompleteRef.current.querySelector('input').blur();
     };
     const handleOnClear = () => {
         setSelectedFilters(() => ({
@@ -46,10 +48,10 @@ export default function SearchBar() {
     }, [selectedFilters.searchString, setIsFiltering]);
     
     return (
-        <div className="search-bar w-full md:w-1/2 m-6 mb-4 relative">
+        <div className={classes} ref={parentAutocompleteRef}>
             <ReactSearchAutocomplete
                 items={products}
-                inputSearchString={selectedFilters.searchString || ''} // Fully controlled input
+                inputSearchString={selectedFilters.searchString || ''}
                 onSearch={handleOnSearch}
                 onSelect={handleOnSelect}
                 onClear={handleOnClear}
@@ -61,14 +63,14 @@ export default function SearchBar() {
                     isMobile
                         ? {
                             height: '40px',
-                            borderRadius: '30px',
+                            borderRadius: '5px',
                             boxShadow: '0',
                             fontSize: '18px',
                             zIndex: 10,
                         }
                         : {
                             height: '40px',
-                            borderRadius: '20px',
+                            borderRadius: '5px',
                             boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
                             fontSize: '16px',
                             zIndex: 10,
@@ -84,5 +86,6 @@ export default function SearchBar() {
 }
 
 SearchBar.propTypes = {
-    onEnterPress: PropTypes.func
+    onEnterPress: PropTypes.func,
+    classes: PropTypes.string
 };

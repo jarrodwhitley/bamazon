@@ -126,7 +126,7 @@ export default function Content({isLoading}) {
             
             {isMobile && (
                 <div className={'content__search-bar__container bg-blue-950 w-full flex justify-center'}>
-                    <SearchBar/>
+                    <SearchBar classes={'search-bar w-full relative p-4'}/>
                 </div>
             )}
             
@@ -138,7 +138,7 @@ export default function Content({isLoading}) {
                             <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 lg:pl-20 pr-6 z-[1] font-semibold'}>
                                 <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
                                 <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
-                                <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-blue-500 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
+                                <div className={'w-fit mt-4 px-4 py-2 text-lg rounded bg-blue-500 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
                             </div>
                             <figure className="content__header-image w-full h-full col-span-full row-span-full overflow-hidden">
                                 <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[400px] lg:min-h-[600px] max-w-[unset] object-cover object-left md:object-fit"/>
@@ -147,7 +147,7 @@ export default function Content({isLoading}) {
                     </div>
                     
                     {/* Featured Products */}
-                    <div className="content__featured featured-items w-full max-h-fit bg-blue-800 px-6">
+                    <div className="content__featured featured-items w-full max-h-fit bg-gradient-to-tr from-blue-800 to-blue-500 px-6">
                         <div className="content__featured-grid grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 py-4 max-w-[1400px] mx-auto">
                             <div className="content__featured__cta text-8xl flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
@@ -168,15 +168,15 @@ export default function Content({isLoading}) {
                     {!selectedCategory && (
                         <div className="content__categories w-full py-4 px-6 md:px-8">
                             <div className={'content__categories-grid max-w-[1400px] mx-auto'}>
-                                <h2 className="content__categories-title text-3xl font-semibold text-black text-center">Categories</h2>
-                                <div className="content__categories-inner lg:flex flex-row md:block w-full mx-auto mt-4">
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:pl-4 mt-4 md:mt-0">
+                                <h2 className="content__categories-title text-3xl font-semibold text-blue-950 text-center">Categories</h2>
+                                <div className="content__categories-inner lg:flex flex-row md:block w-full mx-auto mt-8">
+                                    <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-6 md:pl-8 mt-4 md:mt-0">
                                         {categories.map(product => (
                                             <ProductCard key={product.id} product={product} size="lg" categoryCard={true} showDiscount={true} showLowStock={true}/>
                                         ))}
                                     </div>
                                 </div>
-                                <div className="content__categories-ad w-full max-w-[1400px] mx-auto mt-4">
+                                <div className="content__categories-ad w-full max-w-[1400px] mx-auto mt-8">
                                     <img src={BamazonAd} alt="Bamazon Ad" className="w-full"/>
                                 </div>
                             </div>

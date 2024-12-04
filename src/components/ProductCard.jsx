@@ -31,11 +31,11 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     
     return (
         <div key={product.id}
-             className={(categoryCard ? 'category-card border-t-0 ' : '') +
+             className={(categoryCard ? 'category-card border-t-0 h-full flex items-center justify-center ' : '') +
                  'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'}
              onClick={!categoryCard ? selectProduct : selectCategory}>
             <div className={'product-card__image flex items-center justify-center'}>
-                <img src={product?.thumbnail} height="300" width="300" alt={product.title}/>
+                <img src={product?.thumbnail} className={(categoryCard ? 'h-32 w-auto' : '')} height="300" width="300" alt={product.title}/>
             </div>
             {showDiscount && !categoryCard && (
                 <DiscountBadge discountPercentage={product.discountPercentage}/>
