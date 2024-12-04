@@ -24,11 +24,19 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
     const [searchStringState, setSearchStringState] = useState(searchString);
     const [isFilteringState, setIsFilteringState] = useState(false);
     const [selectedFiltersState, setSelectedFiltersState] = useState({ searchString: '', categories: [], brands: [], price: '' });
-    const [cartState, setCartState] = useState({ showCart: false, items: cart });
+    const storedCart = JSON.parse(localStorage.getItem('cart'));
+    const initialCartState = storedCart ? storedCart : { showCart: false, items: [] };
+    const [cartState, setCartState] = useState(initialCartState);
     
-    // when the cart is updated in the context, update the local storage
+    // useEffect(() => {
+    //     const storedCart = JSON.parse(localStorage.getItem('cart'));
+    //     if (storedCart && cartState.items.length === 0) {
+    //         setCartState({showCart: cartState.showCart, items: cart});
+    //     }
+    // },[])
+    
     useEffect(() => {
-        sessionStorage.setItem('cart', JSON.stringify(cartState));
+        localStorage.setItem('cart', JSON.stringify(cartState));
     }, [cartState]);
     
     return (
