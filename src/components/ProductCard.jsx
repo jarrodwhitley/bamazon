@@ -31,7 +31,8 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     
     return (
         <div key={product.id}
-             className={(categoryCard ? 'category-card ' : '') + 'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'}
+             className={(categoryCard ? 'category-card border-t-0 ' : '') +
+                 'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'}
              onClick={!categoryCard ? selectProduct : selectCategory}>
             <div className={'product-card__image flex items-center justify-center'}>
                 <img src={product?.thumbnail} height="300" width="300" alt={product.title}/>
@@ -40,7 +41,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
                 <DiscountBadge discountPercentage={product.discountPercentage}/>
             )}
             <div className="product-card__details">
-                <h3 className={'product-card__name mt-2 font-semibold truncate ' + (!categoryCard ? 'text-sm ' : 'text-center absolute top-1/3 left-1/2 -translate-x-1/2 text-white text-3xl font-extrabold shadow-2xl z-10 ')}>
+                <h3 className={'product-card__name mt-2 truncate ' + (!categoryCard ? 'text-sm font-semibold' : '')}>
                     {!categoryCard ? product.title : capitalizeFirstLetter(product.category)}
                 </h3>
                 {(!product.featured && isMobile && !categoryCard || !isMobile && !categoryCard) && (

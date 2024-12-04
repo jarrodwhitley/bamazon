@@ -5,10 +5,8 @@ export default function Cart() {
     const cart = useCart();
     const setCart = useSetCart();
     
-    const handleRemoveFromCart = (e) => {
-        let newCart = [...cart.items];
-        let productIndex = newCart.findIndex(product => product.id === parseInt(e.target.parentNode.id));
-        newCart.splice(productIndex, 1);
+    const handleRemoveFromCart = (e, id) => {
+        let newCart = cart.items.filter(product => product.id !== id);
         setCart({
             showCart: cart.showCart,
             items: newCart
@@ -27,8 +25,10 @@ export default function Cart() {
     
     return (
         <div className={(cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ') +
-            'cart__container fixed w-full lg:w-fit h-full top-[100px] lg:top-[118px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4'}>
-            <div className={'text-2xl font-semibold pl-6 py-4 border-b'}>Your cart</div>
+            'cart__container fixed w-full lg:w-[400px] h-full top-[100px] lg:top-[118px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4'}>
+            { cart.items.length > 0 && (
+                <div className={'text-2xl font-semibold pl-6 py-4 border-b'}>Your cart</div>
+            )}
             {cart.items.map((product, index) => (
                 <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 p-4 border-b border-gray-200'}>
                     <img src={product.images[0]} alt={product.title} className={'w-16 h-16 object-cover row-start-1'}/>
@@ -43,7 +43,7 @@ export default function Cart() {
                             ))}
                         </select>
                     </div>
-                    <i className={'fa-solid fa-trash-alt text-gray-300 cursor-pointer row-start-1'} onClick={handleRemoveFromCart}></i>
+                    <i className={'fa-solid fa-trash-alt text-gray-300 cursor-pointer row-start-1'} onClick={(e) => handleRemoveFromCart(e, product.id)}></i>
                 </div>
             ))}
             
@@ -60,7 +60,7 @@ export default function Cart() {
             
             {/* Cart empty */}
             {cart.items.length === 0 && (
-                <div className={'cart__empty flex flex-col items-center justify-center h-full'}>
+                <div className={'cart__empty flex flex-col items-center justify-center h-full select-none'}>
                     <span className={'text-2xl font-semibold text-center'}>Your cart is empty 😅</span>
                     <span className={'text-xl font-base text-center mt-4 mx-6 leading-[1]'}>Come back after you add a few things!</span>
                 </div>

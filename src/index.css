@@ -24,6 +24,10 @@ html {
     scrollbar-gutter: stable;
 }
 
+body {
+    @apply selection:bg-blue-400 selection:text-white;
+}
+
 body.no-animation {
     .animate__animated {
         animation-duration: 0s;
@@ -219,6 +223,20 @@ main {
 }
 
 .category-card {
+    .product-card__details {
+        @apply text-3xl text-center absolute top-1/3 left-1/2 -translate-x-1/2 border-2 border-white text-white flex items-center justify-center px-2 py-1 bg-black bg-opacity-20 font-extrabold z-10 transition-all;
+
+        h3 {
+            @apply m-0;
+        }
+    }
+
+    &:hover {
+        img {
+            @apply scale-110 transition-transform;
+        }
+    }
+
     &::after {
         content: '';
         position: absolute;
@@ -228,7 +246,6 @@ main {
         bottom: 0;
         z-index: 0;
     }
-
     &:nth-child(1) {
         @apply bg-red-400;
 
