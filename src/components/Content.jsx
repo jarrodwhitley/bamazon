@@ -37,9 +37,6 @@ export default function Content({isLoading}) {
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
     
-    useEffect(() => {
-        console.log('Products updated:', products);
-    }, [products]);
     // Create array for categories section
     const categories = products.reduce((acc, product) => {
         const categorySet = new Set(acc.map(item => item.category));
@@ -116,10 +113,8 @@ export default function Content({isLoading}) {
         filterProducts();
     }, [selectedFilters.searchString]);
     
-    console.log('Products:', products);
-    
     return (
-        <main className={'overflow-x-hidden relative ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
+        <main className={'overflow-x-hidden relative pb-2 ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
             
             {/* Loading Overlay */}
             {isLoading && (
@@ -138,11 +133,10 @@ export default function Content({isLoading}) {
             {!isFiltering && (
                 <>
                     {/* Header Image */}
-                    <div className={'content__header p-6'}>
+                    <div className={'content__header lg:p-6'}>
                         <div className={'content__header-grid grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center max-w-[1400px] mx-auto'}>
                             <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 lg:pl-20 pr-6 z-[1] font-semibold'}>
-                                <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion
-                                </div>
+                                <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
                                 <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
                                 <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-blue-500 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
                             </div>
@@ -162,7 +156,7 @@ export default function Content({isLoading}) {
                                     <div className="w-full hidden lg:block text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
                                 </div>
                             </div>
-                            <div className="content__featured__grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 gap-y-4 md:gap-8 col-span-2 max-w-6xl my-6 md:mt-4 mx-auto">
+                            <div className="content__featured__grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 col-span-2 max-w-6xl my-6 md:mt-4 mx-auto">
                                 {featuredProducts.map(product => (
                                     <ProductCard key={product.id} product={product} showDiscount={true} showLowStock={true}/>
                                 ))}

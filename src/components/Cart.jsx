@@ -15,21 +15,35 @@ export default function Cart() {
         })
     }
     
+    const handleQuantityChange = (e, id) => {
+        let newCart = [...cart.items];
+        let productIndex = newCart.findIndex(product => product.id === id);
+        newCart[productIndex].quantity = parseInt(e.target.value);
+        setCart({
+            showCart: cart.showCart,
+            items: newCart
+        })
+    }
+    
     return (
         <div className={(cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ') +
-            'cart__container fixed w-full lg:w-1/4 h-full top-[100px] lg:top-[110px] right-0 bg-white shadow-lg animate__animated animate__faster z-10'}>
+            'cart__container fixed w-full lg:w-fit h-full top-[100px] lg:top-[118px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4'}>
+            <div className={'text-2xl font-semibold pl-6 py-4 border-b'}>Your cart</div>
             {cart.items.map((product, index) => (
                 <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 p-4 border-b border-gray-200'}>
                     <img src={product.images[0]} alt={product.title} className={'w-16 h-16 object-cover row-start-1'}/>
-                    <div className={'details flex flex-col row-start-1 self-start gap-2'}>
-                        <span className={'font-base'}>{product.title}</span>
+                    <div className={'details flex flex-col row-start-1 self-start gap-2 leading-[1]'}>
+                        <span className={'text-sm whitespace-nowrap max-w-[150px] text-ellipsis overflow-hidden'}>{product.title}</span>
                         <span className={'font-semibold'}>${product.price.toFixed(2)}</span>
                     </div>
                     <div className={'quantity flex items-center row-start-1 gap-2'}>
-                        <span className={'font-base'}>Qty:</span>
-                        <span className={'font-semibold'}>{product.quantity}</span>
+                        <select className={'font-base bg-gray-100 rounded'} value={product.quantity} onChange={(e) => handleQuantityChange(e, product.id)}>
+                            {[...Array(10).keys()].map(i => (
+                                <option key={i + 1} value={i + 1}>{i + 1}</option>
+                            ))}
+                        </select>
                     </div>
-                    <i className={'fa-solid fa-trash-alt cursor-pointer row-start-1'} onClick={handleRemoveFromCart}></i>
+                    <i className={'fa-solid fa-trash-alt text-gray-300 cursor-pointer row-start-1'} onClick={handleRemoveFromCart}></i>
                 </div>
             ))}
             
