@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import {useMemo, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
@@ -19,9 +19,10 @@ import BamazonBam from '../assets/images/bamazon_logo_text_bam.png';
 import HeaderImage from '../assets/images/header_image.png';
 import SingleProductView from "./SingleProductView.jsx";
 import SearchBar from "./SearchBar.jsx";
+import Cart from "./Cart.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
-export default function Content({ isLoading }) {
+export default function Content({isLoading}) {
     const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
@@ -33,10 +34,12 @@ export default function Content({ isLoading }) {
     const selectedCategory = useSelectedCategory();
     const isFiltering = useIsFiltering();
     const setIsFiltering = useSetIsFiltering();
-    // const searchString = useSearchString();
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
     
+    useEffect(() => {
+        console.log('Products updated:', products);
+    }, [products]);
     // Create array for categories section
     const categories = products.reduce((acc, product) => {
         const categorySet = new Set(acc.map(item => item.category));
@@ -45,7 +48,7 @@ export default function Content({ isLoading }) {
         }
         return acc;
     }, []);
-
+    
     const defaultFilters = {
         categories: [],
         brands: [],
@@ -100,12 +103,7 @@ export default function Content({ isLoading }) {
             activeFilters = filterValues.filter((value, index) => value?.length > 0 && value !== defaultValues[index]);
         }
         filterProducts(activeFilters.length > 0);
-    },[selectedFilters]);
-    
-    // useEffect(() => {
-    //     if (!filteredProducts) return;
-    //     // console.log('filterProducts:', filteredProducts);
-    // },[filteredProducts]);
+    }, [selectedFilters]);
     
     useEffect(() => {
         if (!selectedFilters.searchString) return;
@@ -116,10 +114,13 @@ export default function Content({ isLoading }) {
             price: ''
         })
         filterProducts();
-    },[selectedFilters.searchString]);
+    }, [selectedFilters.searchString]);
+    
+    console.log('Products:', products);
     
     return (
-        <main className={'relative ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
+        <main className={'overflow-x-hidden relative ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
+            
             {/* Loading Overlay */}
             {isLoading && (
                 <div className="content__loading-overlay absolute top-0 left-0 w-full h-screen bg-white z-[2] grid grid-cols-1 grid-rows-1 items-center justify-items-center">
@@ -140,7 +141,8 @@ export default function Content({ isLoading }) {
                     <div className={'content__header p-6'}>
                         <div className={'content__header-grid grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center max-w-[1400px] mx-auto'}>
                             <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 lg:pl-20 pr-6 z-[1] font-semibold'}>
-                                <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
+                                <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion
+                                </div>
                                 <div className="content__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
                                 <div className={'w-fit mt-4 px-4 py-2 text-lg rounded-3xl bg-blue-500 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
                             </div>
@@ -155,13 +157,14 @@ export default function Content({ isLoading }) {
                         <div className="content__featured-grid grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 py-4 max-w-[1400px] mx-auto">
                             <div className="content__featured__cta text-8xl flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
-                                    <div className="w-full text-2xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals</div>
+                                    <div className="w-full text-2xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals
+                                    </div>
                                     <div className="w-full hidden lg:block text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
                                 </div>
                             </div>
                             <div className="content__featured__grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 gap-y-4 md:gap-8 col-span-2 max-w-6xl my-6 md:mt-4 mx-auto">
                                 {featuredProducts.map(product => (
-                                    <ProductCard key={product.id} product={product} size="lg" showDiscount={true} showLowStock={true}/>
+                                    <ProductCard key={product.id} product={product} showDiscount={true} showLowStock={true}/>
                                 ))}
                             </div>
                         </div>
@@ -202,6 +205,7 @@ export default function Content({ isLoading }) {
                     )}
                 </>
             )}
+            
             {/* Filtered Products */}
             {isFiltering && (
                 <div className={'content__filtered place-self-start w-full max-w-[1400px] mx-auto'}>
@@ -218,6 +222,8 @@ export default function Content({ isLoading }) {
             )}
             
             <SingleProductView className={'animate__animated ' + (selectedProduct ? 'zoomIn' : 'zoomOut')} selectedProduct={selectedProduct}/>
+            
+            <Cart/>
             
             {/*<div className="chat-widget-btn flex items-center justify-center w-14 h-14 bg-blue-600 border-blue-400 border-2 rounded-full top-[90%] mb-4 right-4 float-right sticky">*/}
             {/*    <FontAwesomeIcon icon="fa-comments" classes="text-white text-2xl"/>*/}

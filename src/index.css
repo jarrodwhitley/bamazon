@@ -24,6 +24,12 @@ html {
     scrollbar-gutter: stable;
 }
 
+body.no-animation {
+    .animate__animated {
+        animation-duration: 0s;
+    }
+}
+
 a {
     font-weight: 500 transition-colors;
     color: #646cff;
