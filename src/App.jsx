@@ -15,9 +15,6 @@ export default function App() {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [filteredProducts, setFilteredProducts] = useState([]);
     const selectedCategory = useSelectedCategory();
-    function enterPress() {
-        console.log('Enter pressed');
-    }
     
     useEffect(() => {
         setProducts(productsData.map(product => {
@@ -43,7 +40,7 @@ export default function App() {
     return (
         <ErrorBoundary>
             <Context cart={cart} products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
-                <NavigationBar onEnterPress={enterPress}/>
+                <NavigationBar />
                 <LoadingOverlay isLoading={isLoading}/>
                 <Content />
                 <Footer/>
