@@ -44,7 +44,7 @@ export default function NavigationBar() {
                             <span className={'ml-2'}>See Project</span>
                         </a>
                         <a className="nav-links__link" href="https://jarrodwhitley.com">JW</a>
-                        <i className={'fa-solid fa-times cursor-pointer'} onClick={() => setUpperNavHidden(true)}></i>
+                        {/*<i className={'fa-solid fa-times cursor-pointer'} onClick={() => setUpperNavHidden(true)}></i>*/}
                     </div>
                 </div>
             </div>
