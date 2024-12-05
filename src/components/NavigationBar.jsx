@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
 import BamazonLogoDark from "../assets/images/bamazon_logo_dark_v1.1.png";
 import { useSelectedFilters, useSetSelectedFilters, useSelectedProduct, useSetSelectedProduct, useCart, useSetCart } from "./ContextProvider.jsx";
 
-export default function NavigationBar({ onEnterPress }) {
+export default function NavigationBar() {
     const isMobile = window.innerWidth < 768;
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
@@ -90,7 +89,3 @@ export default function NavigationBar({ onEnterPress }) {
         </nav>
     );
 }
-
-NavigationBar.propTypes = {
-    onEnterPress: PropTypes.func,
-};

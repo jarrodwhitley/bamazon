@@ -86,6 +86,5 @@ export default function SearchBar({classes}) {
 }
 
 SearchBar.propTypes = {
-    onEnterPress: PropTypes.func,
     classes: PropTypes.string
 };
