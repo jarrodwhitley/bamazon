@@ -95,17 +95,17 @@ export default function Sidebar() {
     
     return (
         <>
-            {isMobile && (
-                <div className="sidebar__mobile-filter-btn w-[160px] fixed bottom-0 right-4 z-50 bg-blue-500 text-white font-semibold p-4 rounded-t-xl" onClick={() => setShowFilters(!showFilters)}>
-                    {(showFilters ? 'Hide' : 'Show') + ' filters'}
-                    <i className="text-xl fa-solid fa-filter pl-2"></i>
-                </div>
-            )}
-            <div className={'sidebar px-4 h-fit top-0 left-0 ' +
-                (isMobile ? 'block' : 'sticky')  +
-                (isMobile ? ' animate__animated fixed bg-white w-3/4 left-0 shadow-2xl text-xl p-6 z-10 ' : '') +
-                ((isFiltering && isMobile && !showFilters) ? 'hidden' : '') +
-                ((isFiltering && isMobile && showFilters) ? 'block top-[80px]' : '')}>
+            <div className={'sidebar px-4 h-fit left-0 ' +
+                (!isMobile ? 'sticky ' : '')  +
+                (isMobile ? 'block bg-white fixed top-auto bottom-0 right-0 shadow-2xl shadow-black text-xl p-6 z-10 transition ' : '') +
+                ((isFiltering && isMobile && !showFilters) ? 'translate-y-full' : '') +
+                ((isFiltering && isMobile && showFilters) ? ' ' : '')}>
+                {isMobile && (
+                    <div className="sidebar__mobile-filter-btn w-[160px] flex items-center justify-center absolute -top-10 right-0 z-50 bg-blue-500 text-white text-base font-semibold p-2 rounded-t shadow " onClick={() => setShowFilters(!showFilters)}>
+                        {(showFilters ? 'Hide' : 'Show') + ' filters'}
+                        <i className="text-lg fa-solid fa-filter pl-2"></i>
+                    </div>
+                )}
                 <div className={'sidebar__filter-title text-xl font-semibold'}>Filters</div>
                 <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400 pb-4 border-b-2'} onClick={clearFilters}>Clear filters</div>
                 <div className={'sidebar__filter-container'}>
@@ -116,7 +116,7 @@ export default function Sidebar() {
                                 {categories.map((category, index) => (
                                     <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`category-${category}`}>
                                         <input type="checkbox" id={`category-${category}`} onChange={handleCheckboxChange}/>
-                                        <span>{capitalizeFirstLetter(category)}</span>
+                                        <span className={'text-base'}>{capitalizeFirstLetter(category)}</span>
                                     </label>
                                 ))}
                             </div>
@@ -129,7 +129,7 @@ export default function Sidebar() {
                                 {brands.map((brand, index) => (
                                     <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`brands-${brand}`}>
                                         <input type="checkbox" id={`brands-${brand}`} onChange={handleCheckboxChange}/>
-                                        <span>{capitalizeFirstLetter(brand)}</span>
+                                        <span className={'text-base'}>{capitalizeFirstLetter(brand)}</span>
                                     </label>
                                 ))}
                             </div>
@@ -141,7 +141,7 @@ export default function Sidebar() {
                             {prices.map((price, index) => (
                                 <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`price-${price.min}_${price.max}`}>
                                     <input type="checkbox" id={`price-${price.min}_${price.max}`} onChange={handleCheckboxChange}/>
-                                    <span>${price.min} - ${price.max}</span>
+                                    <span className={'text-base'}>${price.min} - ${price.max}</span>
                                 </label>
                             ))}
                         </div>
