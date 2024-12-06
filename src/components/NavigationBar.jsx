@@ -55,7 +55,7 @@ export default function NavigationBar() {
                         <>
                             <SearchBar classes={'search-bar w-1/2 relative'} onSetSearchString={handleOnSetSearchString} onSetSelectedProduct={handleOnSetSelectedProduct}/>
                             <div className={'navigation-bar__lower__links w-fit flex items-center'}>
-                                <div className={'user cursor-pointer hover:text-blue-400'}>
+                                <div className={'user cursor-not-allowed hover:text-blue-400'}>
                                     <i className="fa-solid fa-user"></i>
                                     <span className={'font-semibold ml-2'}>Account</span>
                                 </div>

@@ -1,4 +1,4 @@
-import {useMemo, useState, useEffect} from 'react';
+import {useMemo, useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ProductCard from './ProductCard.jsx';
 import Sidebar from "./Sidebar.jsx";
@@ -20,7 +20,7 @@ import SearchBar from "./SearchBar.jsx";
 import Cart from "./Cart.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
-export default function Content() {
+export default function Content({isLoading}) {
     const isMobile = window.innerWidth < 768;
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
@@ -105,9 +105,17 @@ export default function Content() {
         })
         filterProducts();
     }, [selectedFilters.searchString]);
+    useEffect(() => {
+        if (selectedFilters.categories.length > 0) {
+            const rootElement = document.getElementById('root');
+            if (rootElement) {
+                rootElement.scrollIntoView({ behavior: 'instant', block: 'start' });
+            }
+        }
+    }, [selectedFilters.categories]);
     
     return (
-        <main className={'overflow-x-hidden relative pb-2 ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
+        <main className={'overflow-x-hidden relative scroll-mt-[80px] pb-2 ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
             
             {isMobile && (
                 <div className={'content__search-bar__container bg-blue-950 w-full flex justify-center'}>
@@ -118,7 +126,7 @@ export default function Content() {
             {!isFiltering && (
                 <>
                     {/* Header Image */}
-                    <div className={'content__header lg:p-6'}>
+                    <div className={'content__header h-[65vh] lg:h-full lg:px-6 lg:py-10'}>
                         <div className={'content__header-grid grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center max-w-[1400px] mx-auto'}>
                             <div className={'content__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 lg:pl-20 pr-6 z-[1] font-semibold'}>
                                 <div className="content__header-text__title font-bold text-5xl md:text-7xl">Find Your <br className={'md:hidden'}></br>Fashion</div>
@@ -169,8 +177,8 @@ export default function Content() {
                     )}
                     
                     {/* Products Filtered By Category*/}
-                    {selectedCategory && (
-                        <div className="content__category-products w-full pt-4 px-6 md:px-8">
+                    {selectedCategory &&  (
+                        <div className={'content__category-products w-full pt-4 px-6 md:px-8'}>
                             <div className="content__category-products-title text-3xl font-semibold text-center">{capitalizeFirstLetter(selectedCategory)}</div>
                             <div className="content__category-products-inner w-full max-w-[1400px] mx-auto mt-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:pl-4 mt-4 md:mt-0">
@@ -209,4 +217,8 @@ export default function Content() {
             {/*</div>*/}
         </main>
     )
+}
+
+Content.propTypes = {
+    isLoading: PropTypes.bool.isRequired
 }

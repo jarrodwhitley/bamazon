@@ -30,7 +30,6 @@ export default function App() {
     useEffect(() => {
         if (products.length > 0 && isLoading) {
             setTimeout(() => {
-                console.log('Setting loading to false');
                 setIsLoading(false);
             },2000);
         }
@@ -42,7 +41,7 @@ export default function App() {
             <Context cart={cart} products={products} filteredProducts={filteredProducts} selectedProduct={selectedProduct} selectedCategory={selectedCategory}>
                 <NavigationBar />
                 <LoadingOverlay isLoading={isLoading}/>
-                <Content />
+                <Content isLoading={isLoading} />
                 <Footer/>
             </Context>
         </ErrorBoundary>

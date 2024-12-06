@@ -57,12 +57,6 @@ export default function SingleProductView() {
         setCloseModal(true);
         setTimeout(() => {
             setSelectedProduct({});
-            setSelectedFilters(() => ({
-                searchString: '',
-                categories: [],
-                brands: [],
-                price: ''
-            }));
             setCloseModal(false);
         },1000);
     }
