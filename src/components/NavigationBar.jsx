@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import PropTypes from "prop-types";
 import SearchBar from "./SearchBar.jsx";
 import BamazonLogo from "../assets/images/bamazon_logo_v1.1.png";
 import BamazonLogoDark from "../assets/images/bamazon_logo_dark_v1.1.png";
 import { useSelectedFilters, useSetSelectedFilters, useSelectedProduct, useSetSelectedProduct, useCart, useSetCart } from "./ContextProvider.jsx";
 
-export default function NavigationBar() {
-    const isMobile = window.innerWidth < 768;
+export default function NavigationBar({isMobile}) {
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
     const selectedProduct = useSelectedProduct();
@@ -89,3 +89,8 @@ export default function NavigationBar() {
         </nav>
     );
 }
+
+NavigationBar.propTypes = {
+    isMobile: PropTypes.bool
+}
+

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
     useProducts,
     useSetSelectedProduct,
@@ -10,7 +10,7 @@ import {
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 
 export default function SearchBar({classes}) {
-    const isMobile = window.innerWidth < 768;
+    const isMobile = useMemo(() => window.innerWidth < 768, []);
     const products = useProducts();
     const setSelectedProduct = useSetSelectedProduct();
     const setIsFiltering = useSetIsFiltering();
@@ -57,7 +57,7 @@ export default function SearchBar({classes}) {
                 onClear={handleOnClear}
                 fuseOptions={{ keys: ['title', 'tags', 'brand'] }}
                 resultStringKeyName="title"
-                autoFocus
+                autoFocus={false}
                 placeholder="Search products..."
                 styling={
                     isMobile
