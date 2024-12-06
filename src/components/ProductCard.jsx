@@ -30,7 +30,6 @@ export default function ProductCard({product, showDiscount = false, showLowStock
                 price: selectedFilters.price || ''
             }
         );
-        
     }
     const showLowStockWarning = product.stock < 10 && showLowStock;
     
