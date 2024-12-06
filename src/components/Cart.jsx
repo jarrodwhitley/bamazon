@@ -73,7 +73,7 @@ export default function Cart() {
             
             {/* Subtotal and Checkout Button */}
             {cart.items.length > 0 && (
-                <div className={'flex flex-col justify-evenly items-center h-fit w-full bg-white p-4 shadow-2xl absolute top-auto left-0 right-0 bottom-[100px] md:relative overflow-auto shadow-[0_0_8px_rgba(0,0,0,0.2)] lg:shadow-none'}>
+                <div className={'flex flex-col justify-evenly items-center h-fit w-full bg-white p-4 lg:pb-10 shadow-2xl absolute top-auto left-0 right-0 bottom-[100px] overflow-auto shadow-[0_0_8px_rgba(0,0,0,0.2)]'}>
                     <div className={'cart__savings w-full flex items-center justify-between pt-2'}>
                         <span className={'text-sm font-semibold'}>Total Savings:</span>
                         <span className={'font-semibold'}>-${totalSavings.toFixed(2)}</span>
