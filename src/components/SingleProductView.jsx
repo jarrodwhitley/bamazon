@@ -22,6 +22,7 @@ export default function SingleProductView() {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [showBam, setShowBam] = useState(false);
     const [closingModal, setCloseModal] = useState(false);
+    const [screenHeight, setScreenHeight] = useState(window.innerHeight);
     const cart = useCart();
     const setCart = useSetCart();
     const handleAddToCart = () => {
@@ -44,12 +45,6 @@ export default function SingleProductView() {
         setTimeout(() => {
             setShowBam(false)
             setSelectedProduct({});
-            setSelectedFilters(() => ({
-                searchString: '',
-                categories: [],
-                brands: [],
-                price: ''
-            }));
             setCloseModal(false);
         },2000);
     }
@@ -63,12 +58,19 @@ export default function SingleProductView() {
     function setImageIndex(index) {
         setCurrentImageIndex(index);
     }
+    // on window resize, update the screen height
+    window.addEventListener('resize', () => {
+        setScreenHeight(window.innerHeight);
+    });
     
     return (
         <>
             {selectedProduct && Object.keys(selectedProduct).length > 0 && (
-                <div className={(!closingModal ? 'animate__fadeIn animate__faster ' : 'animate__fadeOut ') + 'single-product-view animate__animated fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 z-10'} onClick={closeModal}>
-                    <div className={((!closingModal ? 'animate__slideInUp animate__faster ' : 'animate__zoomOut ')) + 'single-product-view__modal animate__animated w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white grid grid-rows-[1fr_2fr] lg:grid-rows-1 grid-cols-1 lg:grid-cols-2 items-start gap-4 md:p-6 shadow-2xl overflow-auto relative'} onClick={(e) => e.stopPropagation()}>
+                <div className={'single-product-view animate__animated fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 ' +
+                    (screenHeight > 900 ? 'z-10' : 'z-50') +
+                    (!closingModal ? ' animate__fadeIn animate__faster ' : ' animate__fadeOut ')}>
+                    <div className={'single-product-view__modal animate__animated w-full md:w-3/4 lg:w-[1000px] h-full lg:min-h-[650px] md:max-h-[60vh] bg-white grid grid-rows-[1fr_2fr] lg:grid-rows-1 grid-cols-1 lg:grid-cols-2 items-start gap-4 md:p-6 shadow-2xl overflow-auto relative ' +
+                        ((!closingModal ? 'animate__slideInUp animate__faster' : 'animate__zoomOut'))} onClick={(e) => e.stopPropagation()}>
                         <div className="single-product-view__close fixed top-0 right-0 px-4 py-2 text-2xl cursor-pointer" onClick={() => closeModal(null)}>
                             <FontAwesomeIcon icon="fa-times"/>
                         </div>
