@@ -20,8 +20,7 @@ import SearchBar from "./SearchBar.jsx";
 import Cart from "./Cart.jsx";
 import {capitalizeFirstLetter} from "../utils/functions.jsx";
 
-export default function Content({isLoading}) {
-    const isMobile = window.innerWidth < 768;
+export default function Content({isMobile, isLoading}) {
     const products = useProducts();
     const filteredProducts = useFilteredProducts();
     const setFilteredProducts = useSetFilteredProducts();
@@ -84,7 +83,10 @@ export default function Content({isLoading}) {
             setIsFiltering(false);
         }
     };
-    
+    const clearFilters = () => {
+        setSelectedFilters(defaultFilters);
+        setIsFiltering(false);
+    }
     useEffect(() => {
         if (!selectedFilters) return;
         let activeFilters = [];
@@ -117,7 +119,7 @@ export default function Content({isLoading}) {
     return (
         <main className={'overflow-x-hidden relative scroll-mt-[80px] pb-2 ' + (isFiltering ? 'flex md:mt-4 ' : '')}>
             
-            {isMobile && (
+            {isMobile && !isFiltering && (
                 <div className={'content__search-bar__container bg-blue-950 w-full flex justify-center'}>
                     <SearchBar classes={'search-bar w-full relative p-4'}/>
                 </div>
@@ -195,7 +197,7 @@ export default function Content({isLoading}) {
             
             {/* Filtered Products */}
             {isFiltering && (
-                <div className={'content__filtered place-self-start w-full max-w-[1400px] mx-auto'}>
+                <div className={'content__filtered flex-col place-self-start w-full max-w-[1400px] mx-auto'}>
                     <div className="content__product-grid w-full grid grid-cols-2 lg:grid-cols-4 gap-4 px-4">
                         {filteredProducts.map(product => (
                             <ProductCard key={product.id} product={product} showLowStock={true}/>
@@ -204,6 +206,9 @@ export default function Content({isLoading}) {
                             <div className="content__no-results text-2xl font-semibold text-center w-full row-span-full col-span-full place-self-center mt-4">No results found</div>
                         )}
                     </div>
+                    { isMobile && (
+                        <div className={'content__filter-clear flex items-center justify-center text-base font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400 p-4'} onClick={clearFilters}><i className={'fa-solid fa-arrow-left pr-2'}></i>Back</div>
+                    )}
                     <Sidebar/>
                 </div>
             )}
@@ -220,5 +225,6 @@ export default function Content({isLoading}) {
 }
 
 Content.propTypes = {
+    isMobile: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired
 }
