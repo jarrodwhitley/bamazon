@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useCart, useSetCart } from './ContextProvider.jsx';
 import Boombam from "../assets/images/bamazon_logo_boombam.png";
 import {useState} from "react";
@@ -32,42 +33,57 @@ export default function Cart() {
             setShowBam(false);
         },1000);
     }
+    // calculate the total savings using each item's price and discount percentage
+    // Then add them all together
+    // use memo to prevent recalculation on every render
+    const totalSavings = useMemo(() => {
+        return cart.items.reduce((acc, product) => {
+            return acc + (product.price * product.discountPercentage / 100);
+        }, 0);
+    }, [cart.items]);
     
     return (
-        <div className={(cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ') +
-            'cart__container fixed w-full lg:w-[400px] h-full top-[100px] lg:top-[109px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4'}>
+        <div className={
+            'cart__container fixed w-full lg:w-[400px] h-full overflow-hidden pb-32 top-[100px] lg:top-[109px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4 ' +
+            (cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ')}>
             { cart.items.length > 0 && (
-                <div className={'text-2xl font-semibold pl-6 py-4 border-b'}>Your cart</div>
+                <div className={'text-base lg:text-2xl font-semibold pl-6 py-2 lg:py-4 border-b'}>Your cart</div>
             )}
             
             {/* Cart Items */}
-            {cart.items.map((product, index) => (
-                <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 p-4 border-b border-gray-200'}>
-                    <img src={product.images[0]} alt={product.title} className={'w-16 h-16 object-cover row-start-1'}/>
-                    <div className={'details flex flex-col row-start-1 self-start gap-2 leading-[1]'}>
-                        <span className={'text-sm whitespace-nowrap max-w-[150px] text-ellipsis overflow-hidden'}>{product.title}</span>
-                        <span className={'font-semibold'}>${product.price.toFixed(2)}</span>
+            <div className={'cart__items h-[calc(100%-64px)] pb-[100px] overflow-auto'}>
+                {cart.items.map((product, index) => (
+                    <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 p-4 border-b border-gray-200'}>
+                        <img src={product.images[0]} alt={product.title} className={'w-16 h-16 object-cover row-start-1'}/>
+                        <div className={'details flex flex-col row-start-1 self-start gap-2 leading-[1]'}>
+                            <span className={'text-sm whitespace-nowrap max-w-[150px] text-ellipsis overflow-hidden'}>{product.title}</span>
+                            <span className={'font-semibold'}>${product.price.toFixed(2)}</span>
+                        </div>
+                        <div className={'quantity flex items-center row-start-1 gap-2'}>
+                            <select className={'font-base bg-gray-100 rounded'} value={product.quantity} onChange={(e) => handleQuantityChange(e, product.id)}>
+                                {[...Array(10).keys()].map(i => (
+                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <i className={'fa-solid fa-trash-alt text-gray-300 cursor-pointer row-start-1'} onClick={(e) => handleRemoveFromCart(e, product.id)}></i>
                     </div>
-                    <div className={'quantity flex items-center row-start-1 gap-2'}>
-                        <select className={'font-base bg-gray-100 rounded'} value={product.quantity} onChange={(e) => handleQuantityChange(e, product.id)}>
-                            {[...Array(10).keys()].map(i => (
-                                <option key={i + 1} value={i + 1}>{i + 1}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <i className={'fa-solid fa-trash-alt text-gray-300 cursor-pointer row-start-1'} onClick={(e) => handleRemoveFromCart(e, product.id)}></i>
-                </div>
-            ))}
+                ))}
+            </div>
             
             {/* Subtotal and Checkout Button */}
             {cart.items.length > 0 && (
-                <>
-                    <div className={'cart__subtotal flex items-center justify-between p-4'}>
-                        <span className={'font-semibold'}>Subtotal:</span>
+                <div className={'flex flex-col justify-evenly items-center h-fit w-full bg-white p-4 shadow-2xl absolute top-auto left-0 right-0 bottom-[100px] md:relative overflow-auto shadow-[0_0_8px_rgba(0,0,0,0.2)] lg:shadow-none'}>
+                    <div className={'cart__savings w-full flex items-center justify-between pt-2'}>
+                        <span className={'text-sm font-semibold'}>Total Savings:</span>
+                        <span className={'font-semibold'}>-${totalSavings.toFixed(2)}</span>
+                    </div>
+                    <div className={'cart__subtotal w-full flex items-center justify-between pt-2'}>
+                        <span className={'text-sm font-semibold'}>Subtotal:</span>
                         <span className={'font-semibold'}>${cart.items.reduce((acc, product) => acc + (product.price * product.quantity), 0).toFixed(2)}</span>
                     </div>
-                    <div className={'cart__checkout w-fit h-fit py-2 px-8 mt-6 cursor-pointer mx-auto text-white bg-orange-400 font-semibold rounded'} onClick={handleCheckout}>Checkout</div>
-                </>
+                    <div className={'cart__checkout w-fit h-fit mt-4 py-2 px-8 cursor-pointer text-white bg-orange-400 font-semibold rounded'} onClick={handleCheckout}>Checkout</div>
+                </div>
             )}
             
             {/* Cart empty */}
