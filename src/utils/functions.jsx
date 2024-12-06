@@ -4,7 +4,7 @@ export const formattedPrice = (product, isMobile = false) => {
     return (
         <div className="items-start flex font-semibold">
             <span className="text-sm translate-y-[3px]">$</span>
-            <span className={(isMobile) ? 'text-lg' : 'text-3xl'}>{dollars}</span>
+            <span className={(isMobile) ? 'text-lg' : 'text-2xl'}>{dollars}</span>
             <span className={((product.featured && isMobile || isMobile) ? 'text-[10px] translate-y-[6px] leading-3' : 'text-sm translate-y-[3px]')}>{cents}</span>
         </div>
     );

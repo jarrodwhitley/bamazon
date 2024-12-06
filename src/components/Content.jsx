@@ -142,8 +142,8 @@ export default function Content({isMobile, isLoading}) {
                     </div>
                     
                     {/* Featured Products */}
-                    <div className="content__featured featured-items w-full max-h-fit bg-gradient-to-tr from-blue-800 to-blue-500 px-6">
-                        <div className="content__featured-grid grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 py-4 max-w-[1400px] mx-auto">
+                    <div className="content__featured featured-items w-full lg:max-h-fit bg-gradient-to-tr from-blue-800 to-blue-500 lg:p-6">
+                        <div className="content__featured-grid lg:grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 pt-6 pb-8 max-w-[1400px] mx-auto">
                             <div className="content__featured__cta text-8xl flex items-center w-fit lg:w-full text-white mt-4 p-2 lg:p-6 mx-auto rounded font-bold">
                                 <div className="cta__text">
                                     <div className="w-full text-3xl lg:text-7xl">Today&#39;s<br className={'hidden lg:block'}/> Deals
@@ -151,9 +151,9 @@ export default function Content({isMobile, isLoading}) {
                                     <div className="w-full hidden lg:block text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
                                 </div>
                             </div>
-                            <div className="content__featured__grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 col-span-2 max-w-6xl my-6 md:mt-4 mx-auto">
+                            <div className="content__featured__grid flex lg:grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 col-span-2 lg:max-w-6xl my-6 md:mt-4 mx-auto px-6 lg:pl-0 overflow-x-auto snap-x snap-mandatory">
                                 {featuredProducts.map(product => (
-                                    <ProductCard key={product.id} product={product} showDiscount={true} showLowStock={true}/>
+                                    <ProductCard key={product.id} product={product} showDiscount={true} showLowStock={true} featuredCard={true}/>
                                 ))}
                             </div>
                         </div>
@@ -161,7 +161,7 @@ export default function Content({isMobile, isLoading}) {
                     
                     {/* Category Selection */}
                     {!selectedCategory && (
-                        <div className="content__categories w-full py-4 px-6 md:px-8">
+                        <div className="content__categories w-full py-8 px-6 md:px-8">
                             <div className={'content__categories-grid max-w-[1400px] mx-auto'}>
                                 <h2 className="content__categories-title text-3xl font-semibold text-blue-950 text-center">Categories</h2>
                                 <div className="content__categories-inner lg:flex flex-row md:block w-full mx-auto mt-8">
@@ -171,7 +171,7 @@ export default function Content({isMobile, isLoading}) {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="content__categories-ad w-full max-w-[1400px] mx-auto mt-8">
+                                <div className="content__categories-ad w-full max-w-[1400px] mx-auto mt-12">
                                     <img src={BamazonAd} alt="Bamazon Ad" className="w-full"/>
                                 </div>
                             </div>

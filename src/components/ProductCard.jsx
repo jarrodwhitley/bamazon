@@ -9,7 +9,7 @@ import {
 } from './ContextProvider.jsx';
 import {formattedPrice, capitalizeFirstLetter} from '../utils/functions.jsx';
 
-export default function ProductCard({product, showDiscount = false, showLowStock = false, categoryCard = false}) {
+export default function ProductCard({product, showDiscount = false, showLowStock = false, categoryCard = false, featuredCard = false}) {
     const isMobile = window.innerWidth < 768;
     const selectedFilters = useSelectedFilters();
     const setSelectedFilters = useSetSelectedFilters();
@@ -36,10 +36,11 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     return (
         <div key={product.id}
              className={(categoryCard ? 'category-card border-t-0 h-full flex items-center justify-center ' : '') +
+                 (featuredCard ? 'featured-card min-w-[260px] md:w-full snap-center mt-2 ml-2 ' : '') +
                  'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'}
              onClick={!categoryCard ? selectProduct : selectCategory}>
             <div className={'product-card__image flex items-center justify-center'}>
-                <img src={product?.thumbnail} className={((categoryCard && isMobile)? 'pt-4 h-3/4 w-auto' : '') + ((categoryCard && !isMobile) ? 'h-32 w-auto' : '')} height="300" width="300" alt={product.title}/>
+                <img src={product?.thumbnail} className={((categoryCard && isMobile)? 'pt-4 h-3/4 w-auto' : '') + ((categoryCard && !isMobile) ? 'h-32 w-auto' : '')} height="160" width="160" alt={product.title}/>
             </div>
             {showDiscount && !categoryCard && (
                 <DiscountBadge discountPercentage={product.discountPercentage}/>
@@ -52,7 +53,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
                 {(!categoryCard) && (
                     <>
                         <RatingStars value={product.rating}/>
-                        <div className={'product-card__price text-lg font-semibold' + ((isMobile && product.featured) ? 'text-xs' : '')}>{formattedPrice(product, isMobile)}</div>
+                        <div className={'product-card__price text-lg lg:text-base font-semibold ' + ((isMobile && product.featured) ? 'text-xs' : '')}>{formattedPrice(product, isMobile)}</div>
                     </>
                 )}
             </div>
@@ -77,5 +78,6 @@ ProductCard.propTypes = {
     }).isRequired,
     showDiscount: PropTypes.bool,
     showLowStock: PropTypes.bool,
-    categoryCard: PropTypes.bool
+    categoryCard: PropTypes.bool,
+    featuredCard: PropTypes.bool
 };
