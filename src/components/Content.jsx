@@ -136,7 +136,7 @@ export default function Content({isMobile, isLoading}) {
                                 <div className={'w-fit mt-4 px-4 py-2 text-lg rounded bg-blue-500 text-white font-semibold flex items-center cursor-pointer'}>Shop Now</div>
                             </div>
                             <figure className="content__header-image w-full h-full col-span-full row-span-full overflow-hidden">
-                                <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[400px] lg:min-h-[600px] max-w-[unset] object-cover object-left md:object-fit"/>
+                                <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[65vh] lg:h-[400px] lg:min-h-[600px] max-w-[unset] object-cover object-left md:object-fit"/>
                             </figure>
                         </div>
                     </div>
