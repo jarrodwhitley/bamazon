@@ -151,7 +151,7 @@ export default function Content({isMobile, isLoading}) {
                                     <div className="w-full hidden lg:block text-xl lg:text-[1.5vw]">Get em&#39; before they&#39;re gone!</div>
                                 </div>
                             </div>
-                            <div className="content__featured__grid flex lg:grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 col-span-2 lg:max-w-6xl my-6 md:mt-4 mx-auto px-6 lg:pl-0 overflow-x-auto snap-x snap-mandatory">
+                            <div className="content__featured__grid flex lg:grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 col-span-2 lg:max-w-6xl my-6 md:mt-4 mx-auto px-6 lg:pl-0 overflow-x-auto lg:overflow-hidden snap-x snap-mandatory">
                                 {featuredProducts.map(product => (
                                     <ProductCard key={product.id} product={product} showDiscount={true} showLowStock={true} featuredCard={true}/>
                                 ))}
