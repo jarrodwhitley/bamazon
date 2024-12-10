@@ -1,35 +1,30 @@
-import { useMemo } from 'react';
-import { useCart, useSetCart } from './ContextProvider.jsx';
+import { useSelector, useDispatch } from 'react-redux';
+import {setCart, updateItem, removeItem, clearCart} from '../store/cartSlice';
+import { useMemo, useState } from 'react';
+// import { useCart, useSetCart } from './ContextProvider.jsx';
 import Boombam from "../assets/images/bamazon_logo_boombam.png";
-import {useState} from "react";
 
 export default function Cart() {
-    const cart = useCart();
-    const setCart = useSetCart();
+    const cart = useSelector(state => state.cart);
+    const dispatch = useDispatch();
     const [showBam, setShowBam] = useState(false);
     const handleRemoveFromCart = (e, id) => {
-        let newCart = cart.items.filter(product => product.id !== id);
-        setCart({
-            showCart: cart.showCart,
-            items: newCart
-        })
-    }
+        dispatch(removeItem(id));
+    };
     const handleQuantityChange = (e, id) => {
-        let newCart = [...cart.items];
-        let productIndex = newCart.findIndex(product => product.id === id);
-        newCart[productIndex].quantity = parseInt(e.target.value);
-        setCart({
-            showCart: cart.showCart,
-            items: newCart
-        })
+        // let newCart = [...cart.items];
+        // let productIndex = newCart.findIndex(product => product.id === id);
+        // newCart[productIndex].quantity = parseInt(e.target.value);
+        // dispatch(setCart({
+        //     showCart: cart.showCart,
+        //     items: newCart
+        // }));
+        dispatch(updateItem({id, quantity: parseInt(e.target.value)}));
     }
     const handleCheckout = () => {
         setShowBam(true);
         setTimeout(() => {
-            setCart({
-                showCart: false,
-                items: []
-            });
+            dispatch(clearCart());
             setShowBam(false);
         },1000);
     }

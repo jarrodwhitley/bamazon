@@ -32,6 +32,24 @@ export const Context = ({ products, filteredProducts, selectedProduct, selectedC
         localStorage.setItem('cart', JSON.stringify(cartState));
     }, [cartState]);
     
+    useEffect(() => {
+        // update the url with a hash for the current filters
+        let hash = '';
+        if (selectedFiltersState.searchString) {
+            hash += `search=${selectedFiltersState.searchString}`;
+        }
+        if (selectedFiltersState.categories.length > 0) {
+            hash += `&categories=${selectedFiltersState.categories.join(',')}`;
+        }
+        if (selectedFiltersState.brands.length > 0) {
+            hash += `&brands=${selectedFiltersState.brands.join(',')}`;
+        }
+        if (selectedFiltersState.price) {
+            hash += `&price=${selectedFiltersState.price}`;
+        }
+        window.location.hash = hash;
+    }, [selectedFiltersState]);
+    
     return (
         <CartContext.Provider value={cartState}>
             <SetCartContext.Provider value={setCartState}>
