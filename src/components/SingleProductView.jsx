@@ -1,31 +1,25 @@
-import {useState} from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
+import store from "../store.js";
+import { setSelectedProduct } from "../store/productsSlice.js";
+import { setFilters } from "../store/filtersSlice.js";
+import { setCart } from "../store/cartSlice.js";
 import DiscountBadge from "./DiscountBadge.jsx";
 import RatingStars from "./RatingStars.jsx";
-import {formattedPrice} from "../utils/functions.jsx";
-import {
-    useSelectedProduct,
-    useSetSelectedProduct,
-    useSetSelectedFilters,
-    useCart,
-    useSetCart
-} from "./ContextProvider.jsx";
+import { formattedPrice } from "../utils/functions.jsx";
 import FontAwesomeIcon from "./FontAwesomeIcon.jsx";
 import Boombam from "../assets/images/bamazon_logo_boombam.png";
 
-export default function SingleProductView() {
-    const isMobile = window.innerWidth < 768;
-    const selectedProduct = useSelectedProduct();
-    const setSelectedProduct = useSetSelectedProduct();
-    const setSelectedFilters = useSetSelectedFilters();
+export default function SingleProductView({ isMobile }) {
+    const { dispatch } = store;
+    const selectedProduct = store.getState().selectedProduct;
+    const cart = store.getState().cart;
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [showBam, setShowBam] = useState(false);
     const [closingModal, setCloseModal] = useState(false);
     const [screenHeight, setScreenHeight] = useState(window.innerHeight);
     const [showAddedMessage, setShowAddedMessage] = useState(false);
-    const cart = useCart();
-    const setCart = useSetCart();
     const handleAddToCart = () => {
         let newCart = [...cart.items];
         let productIndex = newCart.findIndex(product => product.id === selectedProduct.id);
@@ -35,10 +29,10 @@ export default function SingleProductView() {
             newCart.push(selectedProduct);
             selectedProduct.quantity = 1;
         }
-        setCart({
+        dispatch(setCart({
             showCart: cart.showCart,
             items: newCart
-        });
+        }));
         setShowBam(true);
         setShowAddedMessage(true);
         setTimeout(() => {
@@ -51,6 +45,7 @@ export default function SingleProductView() {
             setShowAddedMessage(false);
         },2000);
     }
+    
     function closeModal() {
         setCloseModal(true);
         setTimeout(() => {
@@ -61,7 +56,7 @@ export default function SingleProductView() {
     function setImageIndex(index) {
         setCurrentImageIndex(index);
     }
-    // on window resize, update the screen height
+
     window.addEventListener('resize', () => {
         setScreenHeight(window.innerHeight);
     });
@@ -177,5 +172,5 @@ export default function SingleProductView() {
 }
 
 SingleProductView.propTypes = {
-    selectedProduct: PropTypes.object,
+    isMobile: PropTypes.bool
 };

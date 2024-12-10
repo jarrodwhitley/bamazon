@@ -1,33 +1,23 @@
 import PropTypes from "prop-types";
-import {useState, useEffect} from "react";
-import {
-    useFilteredProducts,
-    useSelectedCategory,
-    useSetSelectedCategory,
-    useSetSearchString,
-    useIsFiltering,
-    useSetIsFiltering,
-    useSelectedFilters,
-    useSetSelectedFilters,
-    useSearchString
-} from "./ContextProvider.jsx";
-import {capitalizeFirstLetter} from "../utils/functions.jsx";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setFilters, updateFilters, clearFilters, filtersActive } from "../store/filtersSlice";
+import { capitalizeFirstLetter } from "../utils/functions";
 
 export default function Sidebar() {
     const isMobile = window.innerWidth < 768;
-    const filteredProducts = useFilteredProducts();
+    const dispatch = useDispatch();
+    const filteredProducts = useSelector(state => state.filteredProducts);
+    const selectedFilters = useSelector(state => state.filters);
+    const isFiltering = useSelector(filtersActive);
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const prices = [
-        {min: 0, max: 50},
-        {min: 51, max: 100},
-        {min: 101, max: 1000}
+        { min: 0, max: 50 },
+        { min: 51, max: 100 },
+        { min: 101, max: 1000 }
     ];
     const [showFilters, setShowFilters] = useState(false);
-    const isFiltering = useIsFiltering();
-    const setIsFiltering = useSetIsFiltering();
-    const selectedFilters = useSelectedFilters();
-    const setSelectedFilters = useSetSelectedFilters();
     
     useEffect(() => {
         if (Array.isArray(filteredProducts)) {
@@ -37,7 +27,7 @@ export default function Sidebar() {
                 }
                 return acc;
             }, []);
-            setCategories(newCategories); // Static categories for filtering
+            setCategories(newCategories);
             
             const newBrands = filteredProducts.reduce((acc, product) => {
                 if (!acc.includes(product.brand) && product.brand !== undefined) {
@@ -45,20 +35,23 @@ export default function Sidebar() {
                 }
                 return acc;
             }, []);
-            setBrands(newBrands); // Static brands for filtering
-            
-            setSelectedFilters({
-                categories: newCategories || [],
-                brands: newBrands || [],
-                price: selectedFilters.price || '',
-                searchString: selectedFilters.searchString || ''
-            })
+            setBrands(newBrands);
         }
-    }, []);
+    }, [filteredProducts]);
+    
+    useEffect(() => {
+        dispatch(updateFilters({
+            categories: categories || [],
+            brands: brands || [],
+            price: selectedFilters.price || '',
+            searchString: selectedFilters.searchString || ''
+        }));
+    }, [categories, brands, selectedFilters.price, selectedFilters.searchString, dispatch]);
     
     const handleCheckboxChange = () => {
         let checkboxes = document.querySelectorAll('input[type="checkbox"]');
         let checkboxesObj = {
+            categories: [],
             brands: [],
             price: ''
         };
@@ -68,35 +61,29 @@ export default function Sidebar() {
                 if (type === 'price') {
                     checkboxesObj[type] = value;
                 } else {
+                    console.log('checkboxesObj', checkboxesObj);
                     checkboxesObj[type].push(value);
                 }
             }
         });
-        setSelectedFilters({
+        dispatch(setFilters({
             ...checkboxesObj,
             categories: selectedFilters.categories || [],
             searchString: selectedFilters.searchString || ''
-        });
-    }
+        }));
+    };
     
-    function clearFilters() {
-        // setSelectedCategory([])
-        setSelectedFilters({
-            categories: [],
-            brands: [],
-            price: '',
-            searchString: ''
-        })
-        setIsFiltering(false)
+    const clearFilters = () => {
+        dispatch(clearFilters());
         if (document.querySelector('.clear-icon')) {
             document.querySelector('.clear-icon').click();
         }
-    }
+    };
     
     return (
         <>
             <div className={'sidebar px-4 h-fit left-0 ' +
-                (!isMobile ? 'sticky ' : '')  +
+                (!isMobile ? 'sticky ' : '') +
                 (isMobile ? 'block bg-white fixed top-auto bottom-0 right-0 shadow-2xl shadow-black text-xl p-6 z-10 transition ' : '') +
                 ((isFiltering && isMobile && !showFilters) ? 'translate-y-full' : '') +
                 ((isFiltering && isMobile && showFilters) ? ' ' : '')}>
@@ -115,7 +102,7 @@ export default function Sidebar() {
                             <div className="sidebar__filter-list">
                                 {categories.map((category, index) => (
                                     <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`category-${category}`}>
-                                        <input type="checkbox" id={`category-${category}`} onChange={handleCheckboxChange}/>
+                                        <input type="checkbox" id={`category-${category}`} onChange={handleCheckboxChange} />
                                         <span className={'text-base'}>{capitalizeFirstLetter(category)}</span>
                                     </label>
                                 ))}
@@ -128,7 +115,7 @@ export default function Sidebar() {
                             <div className="sidebar__filter-list">
                                 {brands.map((brand, index) => (
                                     <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`brands-${brand}`}>
-                                        <input type="checkbox" id={`brands-${brand}`} onChange={handleCheckboxChange}/>
+                                        <input type="checkbox" id={`brands-${brand}`} onChange={handleCheckboxChange} />
                                         <span className={'text-base'}>{capitalizeFirstLetter(brand)}</span>
                                     </label>
                                 ))}
@@ -140,7 +127,7 @@ export default function Sidebar() {
                         <div className="sidebar__filter-list">
                             {prices.map((price, index) => (
                                 <label className="w-fit flex items-center select-none gap-2" key={index} htmlFor={`price-${price.min}_${price.max}`}>
-                                    <input type="checkbox" id={`price-${price.min}_${price.max}`} onChange={handleCheckboxChange}/>
+                                    <input type="checkbox" id={`price-${price.min}_${price.max}`} onChange={handleCheckboxChange} />
                                     <span className={'text-base'}>${price.min} - ${price.max}</span>
                                 </label>
                             ))}
@@ -149,7 +136,7 @@ export default function Sidebar() {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 Sidebar.propTypes = {

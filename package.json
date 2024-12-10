@@ -8,17 +8,19 @@
         "build": "vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "postbuild": "cp CNAME build/",
+        "postbuild": "cp CNAME build/ && cp -r favicon build/",
         "deploy": "rm -rf node_modules/.cache/gh-pages && npm run build && npm run postbuild && gh-pages -d build"
     },
     "dependencies": {
         "@headlessui/react": "^2.2.0",
         "@heroicons/react": "^2.2.0",
+        "@reduxjs/toolkit": "^2.4.0",
         "animate.css": "^4.1.1",
         "gh-pages": "^6.2.0",
         "prop-types": "^15.8.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
+        "react-redux": "^9.1.2",
         "react-search-autocomplete": "^8.5.2"
     },
     "devDependencies": {
