@@ -1,57 +1,108 @@
-import PropTypes from "prop-types";
-import store from '../store.js';
-import { setSelectedProduct } from '../store/selectedProductSlice.js';
-import { updateFilters } from '../store/filtersSlice.js';
-import RatingStars from "./RatingStars.jsx";
-import DiscountBadge from "./DiscountBadge.jsx";
-import {formattedPrice, capitalizeFirstLetter} from '../utils/functions.jsx';
-import {useSelector} from "react-redux";
+import PropTypes from 'prop-types'
+import store from '../store.js'
+import { setSelectedProduct } from '../store/selectedProductSlice.js'
+import { updateFilters } from '../store/filtersSlice.js'
+import RatingStars from './RatingStars.jsx'
+import DiscountBadge from './DiscountBadge.jsx'
+import { formattedPrice, capitalizeFirstLetter } from '../utils/functions.jsx'
+import { useSelector } from 'react-redux'
 
-export default function ProductCard({product, showDiscount = false, showLowStock = false, categoryCard = false, featuredCard = false, isMobile = false}) {
-    const { dispatch } = store;
-    const selectedFilters = useSelector(state => state.filters);
+export default function ProductCard({
+    product,
+    showDiscount = false,
+    showLowStock = false,
+    categoryCard = false,
+    featuredCard = false,
+}) {
+    const { dispatch } = store
+    const isMobile = useSelector((state) => state.ui.isMobile)
+    const selectedFilters = useSelector((state) => state.filters)
     function selectProduct(product) {
-        dispatch(setSelectedProduct(product));
+        dispatch(setSelectedProduct(product))
     }
 
     const selectCategory = (product) => {
-        let newCategories = [...selectedFilters.categories];
-        !newCategories.includes(product.category) && newCategories.push(product.category);
-        dispatch(updateFilters(
-            { categories: newCategories || []}
-        ));
+        let newCategories = [...selectedFilters.categories]
+        !newCategories.includes(product.category) &&
+            newCategories.push(product.category)
+        dispatch(updateFilters({ categories: newCategories || [] }))
     }
-    const showLowStockWarning = product.stock < 10 && showLowStock;
-    
+    const showLowStockWarning = product.stock < 10 && showLowStock
+
     return (
-        <div key={product.id}
-             className={(categoryCard ? 'category-card border-t-0 h-full flex items-center justify-center ' : '') +
-                 (featuredCard ? 'featured-card min-w-[260px] md:w-full snap-center mt-2 ml-2 ' : '') +
-                 'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'}
-             onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
-            <div className={'product-card__image flex items-center justify-center'}>
-                <img src={product?.thumbnail} className={((categoryCard && isMobile)? 'pt-4 h-3/4 w-auto' : '') + ((categoryCard && !isMobile) ? 'h-32 w-auto' : '')} height="160" width="160" alt={product.title}/>
+        <div
+            key={product.id}
+            className={
+                (categoryCard
+                    ? 'category-card border-t-0 h-full flex items-center justify-center '
+                    : '') +
+                (featuredCard
+                    ? 'featured-card min-w-[260px] md:w-full snap-center mt-2 ml-2 '
+                    : '') +
+                'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'
+            }
+            onClick={
+                !categoryCard
+                    ? () => selectProduct(product)
+                    : () => selectCategory(product)
+            }
+        >
+            <div
+                className={
+                    'product-card__image flex items-center justify-center'
+                }
+            >
+                <img
+                    src={product?.thumbnail}
+                    className={
+                        (categoryCard && isMobile ? 'pt-4 h-3/4 w-auto' : '') +
+                        (categoryCard && !isMobile ? 'h-32 w-auto' : '')
+                    }
+                    height="160"
+                    width="160"
+                    alt={product.title}
+                />
             </div>
             {showDiscount && !categoryCard && (
-                <DiscountBadge discountPercentage={product.discountPercentage}/>
+                <DiscountBadge
+                    discountPercentage={product.discountPercentage}
+                />
             )}
             <div className="product-card__details">
-                <h3 className={'product-card__name mt-2 truncate ' +
-                    (((!categoryCard && !isMobile) || (categoryCard && isMobile)) ? 'text-base font-semibold' : 'font-normal')}>
-                    {!categoryCard ? product.title : capitalizeFirstLetter(product.category)}
+                <h3
+                    className={
+                        'product-card__name mt-2 truncate ' +
+                        ((!categoryCard && !isMobile) ||
+                        (categoryCard && isMobile)
+                            ? 'text-base font-semibold'
+                            : 'font-normal')
+                    }
+                >
+                    {!categoryCard
+                        ? product.title
+                        : capitalizeFirstLetter(product.category)}
                 </h3>
-                {(!categoryCard) && (
+                {!categoryCard && (
                     <>
-                        <RatingStars value={product.rating}/>
-                        <div className={'product-card__price text-lg lg:text-base font-semibold ' + ((isMobile && product.featured) ? 'text-xs' : '')}>{formattedPrice(product, isMobile)}</div>
+                        <RatingStars value={product.rating} />
+                        <div
+                            className={
+                                'product-card__price text-lg lg:text-base font-semibold ' +
+                                (isMobile && product.featured ? 'text-xs' : '')
+                            }
+                        >
+                            {formattedPrice(product, isMobile)}
+                        </div>
                     </>
                 )}
             </div>
             {showLowStockWarning && !categoryCard && (
-                <div className="product-card__low-stock text-red-500 text-xs font-semibold">Low Stock - only {product.stock} remaining</div>
+                <div className="product-card__low-stock text-red-500 text-xs font-semibold">
+                    Low Stock - only {product.stock} remaining
+                </div>
             )}
         </div>
-    );
+    )
 }
 
 ProductCard.propTypes = {
@@ -70,5 +121,4 @@ ProductCard.propTypes = {
     showLowStock: PropTypes.bool,
     categoryCard: PropTypes.bool,
     featuredCard: PropTypes.bool,
-    isMobile: PropTypes.bool
-};
+}
