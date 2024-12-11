@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setFilters, updateFilters, clearFilters, filtersActive } from "../store/filtersSlice";
 import { capitalizeFirstLetter } from "../utils/functions";
+import { filteredProducts } from "../store/productsSlice.js";
 
-export default function Sidebar() {
-    const isMobile = window.innerWidth < 768;
+export default function Sidebar({ isMobile }) {
     const dispatch = useDispatch();
-    const filteredProducts = useSelector(state => state.filteredProducts);
+    const filteredProductsState = useSelector(filteredProducts);
     const selectedFilters = useSelector(state => state.filters);
-    const isFiltering = useSelector(filtersActive);
+    const filtersActiveState = useSelector(filtersActive);
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const prices = [
@@ -20,33 +20,37 @@ export default function Sidebar() {
     const [showFilters, setShowFilters] = useState(false);
     
     useEffect(() => {
-        if (Array.isArray(filteredProducts)) {
-            const newCategories = filteredProducts.reduce((acc, product) => {
-                if (!acc.includes(product.category) && product.category !== undefined) {
-                    acc.push(product.category);
-                }
-                return acc;
-            }, []);
-            setCategories(newCategories);
+        if (Array.isArray(filteredProductsState)) {
+            if (categories.length < 1) {
+                const newCategories = filteredProductsState.reduce((acc, product) => {
+                    if (!acc.includes(product.category) && product.category !== undefined) {
+                        acc.push(product.category);
+                    }
+                    return acc;
+                }, []);
+                setCategories(newCategories);
+            }
             
-            const newBrands = filteredProducts.reduce((acc, product) => {
-                if (!acc.includes(product.brand) && product.brand !== undefined) {
-                    acc.push(product.brand);
-                }
-                return acc;
-            }, []);
-            setBrands(newBrands);
+            if (brands.length < 1) {
+                const newBrands = filteredProductsState.reduce((acc, product) => {
+                    if (!acc.includes(product.brand) && product.brand !== undefined) {
+                        acc.push(product.brand);
+                    }
+                    return acc;
+                }, []);
+                setBrands(newBrands);
+            }
         }
-    }, [filteredProducts]);
+    }, [brands, categories.length, filteredProductsState]);
     
-    useEffect(() => {
-        dispatch(updateFilters({
-            categories: categories || [],
-            brands: brands || [],
-            price: selectedFilters.price || '',
-            searchString: selectedFilters.searchString || ''
-        }));
-    }, [categories, brands, selectedFilters.price, selectedFilters.searchString, dispatch]);
+    // useEffect(() => {
+        // dispatch(updateFilters({
+        //     categories: categories || [],
+        //     brands: brands || [],
+        //     price: selectedFilters.price || '',
+        //     searchString: selectedFilters.searchString || ''
+        // }));
+    // }, [categories, brands, selectedFilters.price, selectedFilters.searchString, dispatch]);
     
     const handleCheckboxChange = () => {
         let checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -73,7 +77,7 @@ export default function Sidebar() {
         }));
     };
     
-    const clearFilters = () => {
+    const handleClearFilters = () => {
         dispatch(clearFilters());
         if (document.querySelector('.clear-icon')) {
             document.querySelector('.clear-icon').click();
@@ -85,8 +89,8 @@ export default function Sidebar() {
             <div className={'sidebar px-4 h-fit left-0 ' +
                 (!isMobile ? 'sticky ' : '') +
                 (isMobile ? 'block bg-white fixed top-auto bottom-0 right-0 shadow-2xl shadow-black text-xl p-6 z-10 transition ' : '') +
-                ((isFiltering && isMobile && !showFilters) ? 'translate-y-full' : '') +
-                ((isFiltering && isMobile && showFilters) ? ' ' : '')}>
+                ((filtersActiveState && isMobile && !showFilters) ? 'translate-y-full' : '') +
+                ((filtersActiveState && isMobile && showFilters) ? ' ' : '')}>
                 {isMobile && (
                     <div className="sidebar__mobile-filter-btn w-[160px] flex items-center justify-center absolute -top-10 right-0 z-50 bg-blue-500 text-white text-base font-semibold p-2 rounded-t shadow " onClick={() => setShowFilters(!showFilters)}>
                         {(showFilters ? 'Hide' : 'Show') + ' filters'}
@@ -94,7 +98,7 @@ export default function Sidebar() {
                     </div>
                 )}
                 <div className={'sidebar__filter-title text-xl font-semibold'}>Filters</div>
-                <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400 pb-4 border-b-2'} onClick={clearFilters}>Clear filters</div>
+                <div className={'sidebar__filter-clear text-sm font-semibold text-gray-400 cursor-pointer w-fit hover:text-blue-400 pb-4 border-b-2'} onClick={handleClearFilters}>Clear filters</div>
                 <div className={'sidebar__filter-container'}>
                     {categories.length >= 2 && (
                         <div className="sidebar__filter-section category-filter mt-2">
@@ -140,5 +144,5 @@ export default function Sidebar() {
 }
 
 Sidebar.propTypes = {
-    onFilterProducts: PropTypes.func,
+    isMobile: PropTypes.bool
 };

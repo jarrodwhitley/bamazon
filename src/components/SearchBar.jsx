@@ -1,57 +1,56 @@
 import PropTypes from "prop-types";
-import { useEffect, useMemo, useRef } from "react";
-import {
-    useProducts,
-    useSetSelectedProduct,
-    useSetIsFiltering,
-    useSelectedFilters,
-    useSetSelectedFilters
-} from "./ContextProvider.jsx";
+import { useEffect, useRef } from "react";
+import { setSelectedProduct } from "../store/selectedProductSlice.js";
+import { updateFilters, clearFilters, filtersActive } from "../store/filtersSlice.js";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+import { useSelector, useDispatch } from "react-redux";
 
 export default function SearchBar({classes}) {
-    const isMobile = useMemo(() => window.innerWidth < 768, []);
-    const products = useProducts();
-    const setSelectedProduct = useSetSelectedProduct();
-    const setIsFiltering = useSetIsFiltering();
-    const selectedFilters = useSelectedFilters();
-    const setSelectedFilters = useSetSelectedFilters();
+    const dispatch = useDispatch();
+    const isMobile = useSelector(state => state.ui.isMobile);
+    const products = useSelector(state => state.products);
+    const filtersActiveState = useSelector(filtersActive);
+    const selectedFiltersState = useSelector(state => state.filters);
     const parentAutocompleteRef = useRef(null);
+    
+    const handleSelectProduct = (product) => {
+        dispatch(setSelectedProduct(product));
+    }
+    
+    const handleSetFilters = (filters) => {
+        dispatch(updateFilters(filters));
+    }
+    
     const handleOnSearch = (string) => {
-        // Update the search string in state
-        setSelectedFilters((prevFilters) => ({
+        handleSetFilters((prevFilters) => ({
             ...prevFilters,
             searchString: string || ''
         }));
     };
+    
     const handleOnSelect = (product) => {
-        setSelectedFilters((prevFilters) => ({
+        handleSetFilters((prevFilters) => ({
             ...prevFilters,
             searchString: product.title
         }));
-        setSelectedProduct(product);
+        handleSelectProduct(product);
         parentAutocompleteRef.current.querySelector('input').blur();
     };
     const handleOnClear = () => {
-        setSelectedFilters(() => ({
-            searchString: '',
-            categories: [],
-            brands: [],
-            price: ''
-        }));
+        dispatch(clearFilters());
     }
     
-    useEffect(() => {
-        if (selectedFilters.searchString.length < 3) {
-            setIsFiltering(false);
-        }
-    }, [selectedFilters.searchString, setIsFiltering]);
+    // useEffect(() => {
+    //     if (selectedFiltersState.searchString.length < 3) {
+    //         setIsFiltering(false);
+    //     }
+    // }, [selectedFilters.searchString, setIsFiltering]);
     
     return (
         <div className={classes} ref={parentAutocompleteRef}>
             <ReactSearchAutocomplete
                 items={products}
-                inputSearchString={selectedFilters.searchString || ''}
+                inputSearchString={selectedFiltersState.searchString || ''}
                 onSearch={handleOnSearch}
                 onSelect={handleOnSelect}
                 onClear={handleOnClear}
@@ -86,5 +85,5 @@ export default function SearchBar({classes}) {
 }
 
 SearchBar.propTypes = {
-    classes: PropTypes.string
+    classes: PropTypes.string,
 };

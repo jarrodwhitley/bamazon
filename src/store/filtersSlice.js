@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-const storedFilters = JSON.parse(localStorage.getItem('filters'));
-const initialFiltersState = storedFilters || { searchString: '', categories: [], brands: [], price: '' };
+export const initialFiltersState = { searchString: '', categories: [], brands: [], price: '' };
 
 const filtersSlice = createSlice({
     name: 'filters',
@@ -15,12 +14,15 @@ const filtersSlice = createSlice({
         },
         clearFilters() {
             return { searchString: '', categories: [], brands: [], price: '' };
-        },
-        filtersActive(state) {
-            return Object.values(state).some(value => value !== '' || []);
         }
     }
 });
 
-export const { setFilters, updateFilters, clearFilters, filtersActive } = filtersSlice.actions;
+export const { setFilters, updateFilters, clearFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;
+
+export const filtersActive = createSelector(
+    (state) => state.filters,
+    () => initialFiltersState,
+    (filters, initialFilters) => JSON.stringify(filters) !== JSON.stringify(initialFilters)
+);

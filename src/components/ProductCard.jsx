@@ -1,32 +1,24 @@
 import PropTypes from "prop-types";
 import store from '../store.js';
 import { setSelectedProduct } from '../store/selectedProductSlice.js';
-import { setFilters } from '../store/filtersSlice.js';
+import { updateFilters } from '../store/filtersSlice.js';
 import RatingStars from "./RatingStars.jsx";
 import DiscountBadge from "./DiscountBadge.jsx";
 import {formattedPrice, capitalizeFirstLetter} from '../utils/functions.jsx';
+import {useSelector} from "react-redux";
 
 export default function ProductCard({product, showDiscount = false, showLowStock = false, categoryCard = false, featuredCard = false, isMobile = false}) {
     const { dispatch } = store;
-    const selectedFilters = store.getState().filters;
-    const setSelectedFilters = (filters) => {
-        dispatch(setFilters(filters));
-    }
-    const setSelectedProduct = (product) => {
+    const selectedFilters = useSelector(state => state.filters);
+    function selectProduct(product) {
         dispatch(setSelectedProduct(product));
     }
 
-    const setSelectedCategory = () => {
-        // setSelectedCategory(product.category);
-        let newCategories = selectedFilters.categories;
+    const selectCategory = (product) => {
+        let newCategories = [...selectedFilters.categories];
         !newCategories.includes(product.category) && newCategories.push(product.category);
-        dispatch(setSelectedFilters(
-            {
-                searchString: selectedFilters.searchString || '',
-                categories: newCategories || [],
-                brands: selectedFilters.brands || [],
-                price: selectedFilters.price || ''
-            }
+        dispatch(updateFilters(
+            { categories: newCategories || []}
         ));
     }
     const showLowStockWarning = product.stock < 10 && showLowStock;
@@ -36,7 +28,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
              className={(categoryCard ? 'category-card border-t-0 h-full flex items-center justify-center ' : '') +
                  (featuredCard ? 'featured-card min-w-[260px] md:w-full snap-center mt-2 ml-2 ' : '') +
                  'product-card w-full h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'}
-             onClick={!categoryCard ? setSelectedProduct : setSelectedCategory}>
+             onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
             <div className={'product-card__image flex items-center justify-center'}>
                 <img src={product?.thumbnail} className={((categoryCard && isMobile)? 'pt-4 h-3/4 w-auto' : '') + ((categoryCard && !isMobile) ? 'h-32 w-auto' : '')} height="160" width="160" alt={product.title}/>
             </div>
@@ -72,7 +64,7 @@ ProductCard.propTypes = {
         discountPercentage: PropTypes.number,
         stock: PropTypes.number,
         featured: PropTypes.bool,
-        categories: PropTypes.string,
+        category: PropTypes.string,
     }).isRequired,
     showDiscount: PropTypes.bool,
     showLowStock: PropTypes.bool,
