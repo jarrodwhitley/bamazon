@@ -6,9 +6,12 @@ const selectedProductSlice = createSlice({
     reducers: {
         setSelectedProduct(state, action) {
             return action.payload;
+        },
+        clearSelectedProduct() {
+            return {};
         }
     }
 })
 
-export const { setSelectedProduct } = selectedProductSlice.actions;
+export const { setSelectedProduct, clearSelectedProduct } = selectedProductSlice.actions;
 export default selectedProductSlice.reducer;

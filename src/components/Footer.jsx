@@ -1,8 +1,10 @@
-import {useIsFiltering} from "./ContextProvider.jsx";
+import { useSelector } from "react-redux";
+import { filtersActive} from "../store/filtersSlice.js";
 import BamazonLogo from '../assets/images/bamazon_logo_v1.1.png';
 
 export default function Footer() {
-    const isFiltering = useIsFiltering();
+    const isFiltering = useSelector(filtersActive);
+    
     return (
         <>
             {!isFiltering && (

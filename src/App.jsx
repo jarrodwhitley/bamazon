@@ -1,23 +1,31 @@
 import {useState, useEffect} from 'react';
+import { setIsMobile } from './store/uiSlice';
+import { setProducts } from './store/productsSlice.js';
+import { useSelector, useDispatch } from "react-redux";
 import NavigationBar from './components/NavigationBar.jsx';
 import Content from './components/Content.jsx';
 import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-// import { Context, useSelectedCategory } from "./components/ContextProvider.jsx";
 import productsData from './assets/data/products.json';
 import LoadingOverlay from "./components/LoadingOverlay.jsx";
-import store from './store.js';
-import { setProducts } from './store/productsSlice.js';
 
 export default function App() {
-    const { dispatch, getState } = store;
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const dispatch = useDispatch();
+    const isMobile = useSelector(state => state.ui.isMobile);
     const [isLoading, setIsLoading] = useState(true);
-    const products = getState().products;
-    const cart = getState().cart;
-    const selectedProduct = getState().selectedProduct;
-    // const [filteredProducts, setFilteredProducts] = useState([]);
-    // const selectedCategory = useSelectedCategory();
+    const products = useSelector(state => state.products);
+    
+    useEffect(() => {
+        const updateIsMobile = () => {
+            const isMobile = window.innerWidth <= 768; // Define your mobile breakpoint
+            dispatch(setIsMobile(isMobile));
+        };
+        
+        updateIsMobile();
+        window.addEventListener('resize', updateIsMobile); // Add event listener
+        
+        return () => window.removeEventListener('resize', updateIsMobile); // Clean up
+    }, [dispatch]);
     
     useEffect(() => {
         dispatch(setProducts(productsData.map(product => {
@@ -27,7 +35,7 @@ export default function App() {
             }
             return newObj;
         })));
-    }, [isMobile]);
+    }, [dispatch, isMobile]);
     // TODO: Actually use window load state
     useEffect(() => {
         if (products.length > 0 && isLoading) {
@@ -35,17 +43,14 @@ export default function App() {
                 setIsLoading(false);
             },2000);
         }
-    },[products]);
-    window.addEventListener('resize', () => {
-        setIsMobile(window.innerWidth < 768);
-    })
+    },[products, isLoading]);
     
     return (
         <ErrorBoundary>
-                {/*<NavigationBar isMobile={isMobile}/>*/}
-                {/*<LoadingOverlay isMobile={isMobile} isLoading={isLoading}/>*/}
-                <Content isMobile={isMobile} isLoading={isLoading} />
-                {/*<Footer/>*/}
+                <NavigationBar />
+                {/*<LoadingOverlay isLoading={isLoading}/>*/}
+                <Content isLoading={isLoading} />
+                <Footer/>
         </ErrorBoundary>
     );
 }

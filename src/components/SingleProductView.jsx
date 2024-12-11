@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import store from "../store.js";
-import { setSelectedProduct } from "../store/productsSlice.js";
-import { setFilters } from "../store/filtersSlice.js";
-import { setCart } from "../store/cartSlice.js";
+import { clearSelectedProduct } from "../store/selectedProductSlice.js";
+import { addItem } from "../store/cartSlice.js";
 import DiscountBadge from "./DiscountBadge.jsx";
 import RatingStars from "./RatingStars.jsx";
 import { formattedPrice } from "../utils/functions.jsx";
@@ -12,8 +12,8 @@ import Boombam from "../assets/images/bamazon_logo_boombam.png";
 
 export default function SingleProductView({ isMobile }) {
     const { dispatch } = store;
-    const selectedProduct = store.getState().selectedProduct;
-    const cart = store.getState().cart;
+    const selectedProduct = useSelector(state => state.selectedProduct);
+    const cart = useSelector(state => state.cart);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [showBam, setShowBam] = useState(false);
@@ -21,35 +21,26 @@ export default function SingleProductView({ isMobile }) {
     const [screenHeight, setScreenHeight] = useState(window.innerHeight);
     const [showAddedMessage, setShowAddedMessage] = useState(false);
     const handleAddToCart = () => {
-        let newCart = [...cart.items];
-        let productIndex = newCart.findIndex(product => product.id === selectedProduct.id);
-        if (productIndex > -1) {
-            newCart[productIndex].quantity += 1;
-        } else {
-            newCart.push(selectedProduct);
-            selectedProduct.quantity = 1;
-        }
-        dispatch(setCart({
-            showCart: cart.showCart,
-            items: newCart
-        }));
+        dispatch(addItem(selectedProduct));
         setShowBam(true);
         setShowAddedMessage(true);
         setTimeout(() => {
             setCloseModal(true);
         },1000);
         setTimeout(() => {
-            setShowBam(false)
-            setSelectedProduct({});
+            setShowBam(false);
+            handleClearSelectedProduct();
             setCloseModal(false);
             setShowAddedMessage(false);
         },2000);
     }
-    
+    const handleClearSelectedProduct = () => {
+        dispatch(clearSelectedProduct());
+    }
     function closeModal() {
         setCloseModal(true);
         setTimeout(() => {
-            setSelectedProduct({});
+            handleClearSelectedProduct();
             setCloseModal(false);
         },1000);
     }
@@ -63,7 +54,7 @@ export default function SingleProductView({ isMobile }) {
     
     return (
         <>
-            {selectedProduct && Object.keys(selectedProduct).length > 0 && (
+            { selectedProduct && Object.keys(selectedProduct).length > 0 && (
                 <div className={'single-product-view animate__animated fixed top-0 left-0 right-0 h-full max-h-screen flex items-center justify-center bg-white bg-opacity-80 ' +
                     (screenHeight > 900 ? 'z-10' : 'z-50') +
                     (!closingModal ? ' animate__fadeIn animate__faster ' : ' animate__fadeOut ')}>
@@ -77,7 +68,7 @@ export default function SingleProductView({ isMobile }) {
                             {isMobile && (
                                 <div className="single-product-view__mobile-image-gallery overflow-hidden w-screen">
                                     <div className="single-product-view__mobile-image-gallery-snap-container h-full lg:h-[400px] snap-x snap-mandatory flex overflow-auto">
-                                        {selectedProduct.images.map((image, index) => (
+                                        { selectedProduct.images.length > 0 && selectedProduct.images.map((image, index) => (
                                             <figure key={index} className="snap-center row-start-1 w-screen h-full">
                                                 <img
                                                     src={image}
@@ -96,7 +87,7 @@ export default function SingleProductView({ isMobile }) {
                                 </div>
                             )}
                             {/* Image with thumbnails */}
-                            {!isMobile && (
+                            {!isMobile && selectedProduct.images.length > 0 && (
                                 <>
                                     <div className="single-product-view__thumbnails flex flex-col mr-4">
                                         {selectedProduct.images.map((image, index) => (
@@ -134,7 +125,7 @@ export default function SingleProductView({ isMobile }) {
                                 <h3 className="single-product-view text-2xl font-semibold truncate">{selectedProduct.title}</h3>
                                 <RatingStars value={selectedProduct.rating}/>
                                 <div className="flex flex-row items-center">
-                                    <div className="single-product-view__price text-lg font-semibold ">{formattedPrice(selectedProduct)}</div>
+                                    <div className="single-product-view__price text-lg font-semibold ">{formattedPrice(selectedProduct, isMobile)}</div>
                                     <DiscountBadge discountPercentage={selectedProduct.discountPercentage} singleProductView={true}/>
                                 </div>
                                 {selectedProduct.stock < 10 && (
