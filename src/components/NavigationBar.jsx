@@ -33,14 +33,6 @@ export default function NavigationBar() {
         dispatch(toggleCart())
     }
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu)
-    // const handleSetSearchString = (string) => {
-    //     handleSetFilters({
-    //         searchString: string,
-    //         categories: selectedFilters.category,
-    //         brands: selectedFilters.brands,
-    //         price: selectedFilters.price
-    //     })
-    // };
 
     return (
         <nav
@@ -84,7 +76,6 @@ export default function NavigationBar() {
                         >
                             JW
                         </a>
-                        {/*<i className={'fa-solid fa-times cursor-pointer'} onClick={() => setUpperNavHidden(true)}></i>*/}
                     </div>
                 </div>
             </div>
@@ -124,29 +115,27 @@ export default function NavigationBar() {
                                         Account
                                     </span>
                                 </div>
-                                {cart.items.length > 0 && (
-                                    <div
-                                        className={
-                                            'cart cursor-pointer hover:text-blue-400 ml-2'
-                                        }
-                                        onClick={handleToggleCart}
-                                    >
-                                        <i className="fa-solid fa-cart-shopping relative">
-                                            {cart.items.length > 0 && (
-                                                <span
-                                                    className={
-                                                        'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'
-                                                    }
-                                                >
-                                                    {cart.items.length}
-                                                </span>
-                                            )}
-                                        </i>
-                                        <span className={'font-semibold ml-2'}>
-                                            Cart
-                                        </span>
-                                    </div>
-                                )}
+                                <div
+                                    className={
+                                        'cart cursor-pointer hover:text-blue-400 ml-2'
+                                    }
+                                    onClick={handleToggleCart}
+                                >
+                                    <i className="fa-solid fa-cart-shopping relative">
+                                        {cart.items.length > 0 && (
+                                            <span
+                                                className={
+                                                    'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'
+                                                }
+                                            >
+                                                {cart.items.length}
+                                            </span>
+                                        )}
+                                    </i>
+                                    <span className={'font-semibold ml-2'}>
+                                        Cart
+                                    </span>
+                                </div>
                             </div>
                         </>
                     )}
