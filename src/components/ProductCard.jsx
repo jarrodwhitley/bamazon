@@ -33,7 +33,11 @@ export default function ProductCard({product, showDiscount = false, showLowStock
                 {!categoryCard && (
                     <>
                         <RatingStars value={product.rating} />
-                        <div className={'product-card__price text-lg lg:text-base font-semibold ' + (isMobile && product.featured ? 'text-xs' : '')}>{formattedPrice(product, isMobile)}</div>
+                        {/*list price - use price and discount to get list price*/}
+                        <div className={'flex gap-2'}>
+                            <span className={'product-card__details__sale-price ' + (isMobile && product.featured ? 'text-xs' : '')}>{formattedPrice(product, 'sale', isMobile)}</span>
+                            <span className={'product-card__details__list-price ' + (isMobile && product.featured ? 'text-xs' : '')}>{formattedPrice(product, 'list', isMobile)}</span>
+                        </div>
                     </>
                 )}
             </div>

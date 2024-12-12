@@ -218,9 +218,19 @@ main {
     scrollbar-width: none; /* Firefox */
 }
 
+/* Product Card */
 .product-card {
     filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
 }
+
+.product-card__details__list-price {
+    @apply w-fit inline-flex items-center text-gray-300 font-semibold text-sm line-through;
+}
+
+.product-card__details__sale-price {
+    @apply w-fit inline-flex items-center text-lg lg:text-base font-semibold;
+}
+
 
 .category-card {
     @apply bg-gray-100;
