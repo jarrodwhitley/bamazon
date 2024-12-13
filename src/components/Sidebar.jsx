@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { setFilters, updateFilters, clearFilters, filtersActive } from '../store/filtersSlice'
-import { capitalizeFirstLetter } from '../utils/functions'
+import { capitalizeFirstLetter, arrayMatch } from '../utils/functions'
 import { filteredProducts } from '../store/productsSlice.js'
 import { Link } from 'react-router-dom'
 
-export default function Sidebar({ productsArray = [] }) {
+export default function Sidebar({ productsArray = null }) {
     const dispatch = useDispatch()
     const isMobile = useSelector((state) => state.ui.isMobile)
     const products = useSelector((state) => state.products)
@@ -34,8 +34,11 @@ export default function Sidebar({ productsArray = [] }) {
             }, [])
             setCategories(newCategories)
         }
-        if (brands.length !== productsArray.length) {
-            const newBrands = productsArray.reduce((acc, product) => {
+        if (brands.length === 0) {
+            console.log('1')
+            console.log('brands', brands)
+            console.log('productsArr', productsArr)
+            const newBrands = productsArr.reduce((acc, product) => {
                 if (!acc.includes(product.brand) && product.brand !== undefined) {
                     acc.push(product.brand)
                 }
