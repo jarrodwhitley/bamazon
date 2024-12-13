@@ -18,7 +18,6 @@ export default function CategoryView() {
         scrollToTop()
         if (filters.categories.length === 0) {
             const category = window.location.pathname.split('/').pop()
-            console.log('category', category)
             dispatch(updateFilters({categories: [category]}))
         }
     }, [dispatch, filters])
@@ -29,7 +28,7 @@ export default function CategoryView() {
                 <div className={'results-view'}>
                     <h1 className={'results-view__heading'}>Search Results</h1>
                     <div className={'results-view__content'}>
-                        <Sidebar />
+                        <Sidebar productsArray={filteredProductsState}/>
                         <div className="results-view__content__grid">
                             {filteredProductsState.map(product => (
                                 <ProductCard key={product.id} product={product} />

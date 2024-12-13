@@ -27,9 +27,9 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     const showLowStockWarning = product.stock < 10 && showLowStock
 
     return (
-        <div key={product.id} className={(categoryCard ? 'category-card border-t-0 h-full flex items-center justify-center ' : '') +
-            (featuredCard ? 'featured-card min-w-[260px] md:w-full snap-center mt-2 ml-2 ' : '') +
-            'product-card w-full lg:max-w-[20vw] h-fit bg-white shadow-md p-4 rounded-md border-t-1 border-t-gray-25 cursor-pointer relative'} onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
+        <div key={product.id} className={'product-card ' +
+            (categoryCard ? 'category-card border-t-0 h-full flex items-center justify-center ' : '') +
+            (featuredCard ? 'featured-card min-w-[260px] md:w-full snap-center mt-2 ml-2 ' : '')} onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
             <div className={'product-card__image flex items-center justify-center'}>
                 <img src={product?.thumbnail} className={(categoryCard && isMobile ? 'pt-4 h-3/4 w-auto' : '') + (categoryCard && !isMobile ? 'h-32 w-auto' : '')} height="160" width="160" alt={product.title} />
             </div>
