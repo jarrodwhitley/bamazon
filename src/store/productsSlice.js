@@ -49,3 +49,8 @@ export const filteredProducts = createSelector(
         return products
     }
 )
+
+export const productsLoaded = createSelector(
+    (state) => state.products,
+    (products) => products.length > 0
+)

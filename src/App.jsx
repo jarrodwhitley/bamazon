@@ -1,20 +1,26 @@
-import {useState, useEffect} from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
 import { setIsMobile } from './store/uiSlice';
 import { setProducts } from './store/productsSlice.js';
 import { useSelector, useDispatch } from "react-redux";
 import NavigationBar from './components/NavigationBar.jsx';
-import Content from './components/Content.jsx';
 import Footer from './components/Footer.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import productsData from './assets/data/products.json';
 import LoadingOverlay from "./components/LoadingOverlay.jsx";
+import Home from './pages/Home.jsx';
+import SingleProductView from './pages/SingleProductView.jsx'
+import RelatedProductsView from './pages/RelatedProductsView.jsx';
+import SearchResultsView from './pages/SearchResultsView.jsx';
+import CategoryView from './pages/CategoryView.jsx'
+import Cart from './components/Cart.jsx'
+import { setIsLoading } from './store/uiSlice'
 
 export default function App() {
     const dispatch = useDispatch();
+    const isLoading = useSelector(state => state.ui.isLoading);
     const isMobile = useSelector(state => state.ui.isMobile);
-    const [isLoading, setIsLoading] = useState(true);
     const products = useSelector(state => state.products);
-    
     useEffect(() => {
         const updateIsMobile = () => {
             const isMobile = window.innerWidth <= 768; // Define your mobile breakpoint
@@ -26,7 +32,6 @@ export default function App() {
         
         return () => window.removeEventListener('resize', updateIsMobile); // Clean up
     }, [dispatch]);
-    
     useEffect(() => {
         dispatch(setProducts(productsData.map(product => {
             let newObj = {...product, featured: false};
@@ -36,21 +41,30 @@ export default function App() {
             return newObj;
         })));
     }, [dispatch, isMobile]);
-    // TODO: Actually use window load state
     useEffect(() => {
         if (products.length > 0 && isLoading) {
             setTimeout(() => {
-                setIsLoading(false);
+                dispatch(setIsLoading(false));
             },2000);
         }
-    },[products, isLoading]);
+    }, [products, isLoading, dispatch]);
     
     return (
         <ErrorBoundary>
+            <Router>
                 <NavigationBar />
-                {/*<LoadingOverlay isLoading={isLoading}/>*/}
-                <Content isLoading={isLoading} />
+                <LoadingOverlay isLoading={isLoading}/>
+                <Routes>
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/product/:id" element={<SingleProductView/>} />
+                    <Route path="/product/:id/related" element={<RelatedProductsView/>} />
+                    <Route path="/results/:searchString" element={<SearchResultsView/>} />
+                    <Route path="/category/:category" element={<CategoryView/>} />
+                    <Route path={"*"} element={<h1>404 Not Found</h1>} />
+                </Routes>
+                <Cart />
                 <Footer/>
+            </Router>
         </ErrorBoundary>
     );
 }

@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types'
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef, useCallback} from 'react'
 import {setSelectedProduct} from '../store/selectedProductSlice.js'
 import {updateFilters, clearFilters, filtersActive} from '../store/filtersSlice.js'
 import {ReactSearchAutocomplete} from 'react-search-autocomplete'
 import {useSelector, useDispatch} from 'react-redux'
+import {useNavigate } from 'react-router-dom'
 
 export default function SearchBar({classes}) {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const isMobile = useSelector((state) => state.ui.isMobile)
+    const filters = useSelector((state) => state.filters)
     const products = useSelector((state) => state.products)
     const filtersActiveState = useSelector(filtersActive)
     const selectedFiltersState = useSelector((state) => state.filters)
@@ -16,11 +19,6 @@ export default function SearchBar({classes}) {
     const handleSelectProduct = (product) => {
         dispatch(setSelectedProduct(product))
     }
-
-    const handleSetFilters = (filters) => {
-        dispatch(updateFilters(filters))
-    }
-
     const handleOnSearch = (string) => {
         dispatch(
             updateFilters({
@@ -29,7 +27,6 @@ export default function SearchBar({classes}) {
             })
         )
     }
-
     const handleOnSelect = (product) => {
         dispatch(
             updateFilters({
@@ -38,22 +35,34 @@ export default function SearchBar({classes}) {
             })
         )
         handleSelectProduct(product)
-        parentAutocompleteRef.current.querySelector('input').blur()
+        navigate('/product/' + product.id)
+        handleOnClear();
     }
-
     const handleOnClear = () => {
         dispatch(clearFilters())
     }
+    const handleOnEnterPress = useCallback((e) => {
+        if (e.key === 'Enter') {
+            navigate('/results/' + selectedFiltersState.searchString)
+        }
+    }, [navigate, selectedFiltersState.searchString])
+    
+    useEffect(() => {
+        window.addEventListener('keypress', handleOnEnterPress)
+        return () => {
+            window.removeEventListener('keypress', handleOnEnterPress)
+        }
+    }, [handleOnEnterPress])
 
     return (
-        <div className={classes} ref={parentAutocompleteRef}>
+        <div className={classes}>
             <ReactSearchAutocomplete
                 items={products}
                 inputSearchString={selectedFiltersState.searchString || ''}
                 onSearch={handleOnSearch}
                 onSelect={handleOnSelect}
                 onClear={handleOnClear}
-                fuseOptions={{keys: ['title', 'tags', 'brand']}}
+                fuseOptions={{keys: ['title', 'brand']}}
                 resultStringKeyName="title"
                 autoFocus={false}
                 placeholder="Search products..."

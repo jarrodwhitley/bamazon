@@ -1,28 +1,27 @@
-import PropTypes from "prop-types";
 import {useEffect, useState } from "react";
+import {useSelector} from "react-redux";
 import BamazonBam from "../assets/images/bamazon_logo_text_bam.png";
 import BamazonBoom from "../assets/images/bamazon_logo_boom.png";
-export default function LoadingOverlay({ isLoading }) {
+import { setIsLoading } from '../store/uiSlice.js'
+
+export default function LoadingOverlay() {
+    const isLoading = useSelector(state => state.ui.isLoading);
     const [showOverlay, setShowOverlay] = useState(true);
     
     useEffect(() => {
         if (!isLoading) {
-            // setTimeout(() => {
-                setShowOverlay(false);
-            // }, 1000);
+            setShowOverlay(false);
+        } else {
+            setShowOverlay(true);
         }
     }, [isLoading]);
     
     
     return (
-        <div className={(showOverlay ? '' : 'animate__fadeOut pointer-events-none ') + 'loading-overlay animate__animated fixed top-0 left-0 w-full h-screen bg-white z-20 grid grid-cols-1 grid-rows-1 items-center justify-items-center'}>
-            <img src={BamazonBam} alt="Bamazon Bam" className="w-1/2 lg:w-1/6 animate__animated animate__rotateOut animate__infinite row-start-1 col-start-1 z-10"/>
-            <img src={BamazonBoom} alt="Bamazon Boom" className="w-1/2 lg:w-1/6 animate__animated animate__pulse animate__infinite row-start-1 col-start-1"/>
+        <div className={'loading-overlay animate__animated ' + (showOverlay ? '' : 'animate__fadeOut pointer-events-none ')}>
+            <img src={BamazonBam} className={'loading-overlay__bam animate__animated animate__rotateOut animate__infinite'} alt="Bamazon Bam"/>
+            <img src={BamazonBoom} className={'loading-overlay__boom animate__animated animate__pulse animate__infinite'} alt="Bamazon Boom"/>
         </div>
     );
-}
-
-LoadingOverlay.propTypes = {
-    isLoading: PropTypes.bool
 }
 

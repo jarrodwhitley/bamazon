@@ -23,6 +23,21 @@ export const formattedPrice = (product, type, isMobile = false) => {
     }
 }
 
+export const formattedDate = (date) => {
+    const options = {year: 'numeric', month: 'long', day: 'numeric'}
+    return new Date(date).toLocaleDateString(undefined, options)
+}
+
 export const capitalizeFirstLetter = (val) => {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1)
+}
+
+export const scrollToTop = () => {
+    const rootElement = document.getElementById('root')
+    if (rootElement) {
+        rootElement.scrollIntoView({
+            behavior: 'instant',
+            block: 'start',
+        })
+    }
 }
