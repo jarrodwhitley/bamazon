@@ -1,20 +1,37 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { removeItem, toggleCart } from '../store/cartSlice.js'
 import { setSelectedProduct } from '../store/selectedProductSlice.js'
 import { updateFilters } from '../store/filtersSlice.js'
 import SearchBar from './SearchBar.jsx'
 import BamazonLogo from '../assets/images/bamazon_logo_v1.1.png'
+import { capitalizeFirstLetter } from '../utils/functions.jsx'
 
 export default function NavigationBar() {
     const dispatch = useDispatch()
     const isMobile = useSelector((state) => state.ui.isMobile)
+    const products = useSelector((state) => state.products)
     const selectedFilters = useSelector((state) => state.filters)
     const selectedProduct = useSelector((state) => state.selectedProduct)
     const cart = useSelector((state) => state.cart)
     const [showMobileMenu, setShowMobileMenu] = useState(false)
     const [upperNavHidden, setUpperNavHidden] = useState(false)
+    const [categories, setCategories] = useState([])
+    
+    useEffect(() => {
+        if (Array.isArray(products)) {
+            if (categories.length < 1) {
+                const newCategories = products.reduce((acc, product) => {
+                    if (!acc.includes(product.category) && product.category !== undefined) {
+                        acc.push(product.category)
+                    }
+                    return acc
+                }, [])
+                setCategories(newCategories)
+            }
+        }
+    }, [products])
 
     const handleSetSearchString = (string) => {
         dispatch(
@@ -35,56 +52,29 @@ export default function NavigationBar() {
     const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu)
 
     return (
-        <nav
-            className={
+        <nav className={
                 (isMobile ? 'mobile ' : '') +
                 ((isMobile && !selectedProduct.title) || !isMobile
                     ? 'sticky '
                     : 'block ') +
-                'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-30'
-            }
-        >
-            <div
-                className={
-                    (upperNavHidden ? 'hidden' : 'block') +
-                    ' upper bg-blue-950 px-6'
-                }
-            >
-                <div
-                    className={
-                        'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'
-                    }
-                >
-                    <span
-                        className={
-                            'w-fit text-sm text-[#EAB308] font-bold justify-self-start col-span-full row-start-1'
-                        }
-                    >
+                'w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-30'}>
+            <div className={(upperNavHidden ? 'hidden' : 'block') + ' upper bg-blue-950 px-6'}>
+                <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
+                    <span className={'w-fit text-sm text-[#EAB308] font-bold justify-self-start col-span-full row-start-1'}>
                         Under Construction
                     </span>
                     <div className="text-sm row-start-1 flex items-center gap-4 justify-end">
-                        <a
-                            className="nav-links__link flex items-center hover:text-blue-400"
-                            href="https://github.com/jarrodwhitley/bamazon"
-                        >
+                        <a className="nav-links__link flex items-center hover:text-blue-400"
+                            href="https://github.com/jarrodwhitley/bamazon">
                             <i className="fa-brands fa-github text-lg"></i>
                             <span className={'ml-2'}>See Project</span>
                         </a>
-                        <a
-                            className="nav-links__link"
-                            href="https://jarrodwhitley.com"
-                        >
-                            JW
-                        </a>
+                        <a className="nav-links__link" href="https://jarrodwhitley.com">JW</a>
                     </div>
                 </div>
             </div>
-            <div className="lower px-6 py-2">
-                <div
-                    className={
-                        'flex items-center justify-between max-w-[1400px] mx-auto'
-                    }
-                >
+            <div className="lower px-6 ">
+                <div className={'flex items-stretch justify-between max-w-[1400px] mx-auto'}>
                     <a href={'/'}>
                         <img
                             className="bamazon-logo"
@@ -95,8 +85,21 @@ export default function NavigationBar() {
                     </a>
                     {!isMobile && (
                         <>
+                            <div className={'nav-links__link'}>
+                                <span className={'font-semibold'}>Categories</span>
+                                <div className={'nav-links__link__dropdown'}>
+                                    {categories.map((category, index) => (
+                                        <Link to={'/category/' + category} key={index}
+                                           className={'nav-links__link__dropdown-item'}
+                                           onClick={() => dispatch(updateFilters({categories: [category]}))}>
+                                            {capitalizeFirstLetter(category)}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                            
                             <SearchBar
-                                classes={'search-bar w-1/2 relative'}
+                                classes={'search-bar w-1/2 relative my-auto'}
                                 onSetSearchString={handleSetSearchString}
                                 onSetSelectedProduct={handleSetSelectedProduct}
                             />
@@ -140,34 +143,18 @@ export default function NavigationBar() {
                         </>
                     )}
                     {isMobile && (
-                        <div
-                            className={
-                                'grid grid-rows-1 grid-cols-2 gap-6 items-center'
-                            }
-                        >
+                        <div className={'grid grid-rows-1 grid-cols-2 gap-6 items-center'}>
                             <div className={'mobile-cart-btn'}>
-                                <i
-                                    className="fa-solid text-lg fa-cart-shopping relative"
-                                    onClick={handleToggleCart}
-                                >
+                                <i className="fa-solid text-lg fa-cart-shopping relative" onClick={handleToggleCart}>
                                     {cart.items.length > 0 && (
-                                        <span
-                                            className={
-                                                'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'
-                                            }
-                                        >
+                                        <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>
                                             {cart.items.length}
                                         </span>
                                     )}
                                 </i>
                             </div>
-                            <div
-                                className="mobile-menu-btn"
-                                onClick={toggleMobileMenu}
-                            >
-                                <i
-                                    className={`text-2xl min-w-[21px] fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}
-                                ></i>
+                            <div className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                                <i className={`text-2xl min-w-[21px] fa-solid ${showMobileMenu ? 'fa-times' : 'fa-bars'}`}></i>
                             </div>
                         </div>
                     )}

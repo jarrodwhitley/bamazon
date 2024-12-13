@@ -7,11 +7,6 @@ export default function Cart() {
     const cart = useSelector((state) => state.cart)
     const dispatch = useDispatch()
     const [showBam, setShowBam] = useState(false)
-
-    useEffect(() => {
-        console.log('cart.items', cart.items)
-    }, [cart.items])
-
     const handleRemoveFromCart = (e, id) => {
         dispatch(removeItem(id))
     }
