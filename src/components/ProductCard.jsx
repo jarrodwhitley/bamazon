@@ -28,10 +28,10 @@ export default function ProductCard({product, showDiscount = false, showLowStock
 
     return (
         <div key={product.id} className={'product-card ' +
-            (categoryCard ? 'category-card border-t-0 h-full flex items-center justify-center ' : '') +
-            (featuredCard ? 'featured-card min-w-[260px] md:w-full snap-center mt-2 ml-2 ' : '')} onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
-            <div className={'product-card__image flex items-center justify-center'}>
-                <img src={product?.thumbnail} className={(categoryCard && isMobile ? 'pt-4 h-3/4 w-auto' : '') + (categoryCard && !isMobile ? 'h-32 w-auto' : '')} height="160" width="160" alt={product.title} />
+            (categoryCard ? 'category-card ' : '') +
+            (featuredCard ? 'featured-card ' : '')} onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
+            <div className={'product-card__image-container'}>
+                <img src={product?.thumbnail} className={'product-card__image'} height="160" width="160" alt={product.title} />
             </div>
             {showDiscount && !categoryCard && <DiscountBadge discountPercentage={product.discountPercentage} />}
             <div className="product-card__details">
