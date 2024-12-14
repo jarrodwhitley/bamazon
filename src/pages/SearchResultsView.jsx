@@ -72,7 +72,7 @@ export default function SearchResultsView() {
         <div className={'results-view'}>
             <h1 className={'results-view__heading'}>{`Results for "${staticSearchString}"`}</h1>
             <div className={'results-view__content'}>
-                <Sidebar productsArray={sideBarFilters} />
+                <Sidebar initialProducts={sideBarFilters} filterType={'search'} filterString={staticSearchString} />
                 {staticSearchResults.length > 0 && (
                     <div className={'results-view__content__grid'}>
                         {staticSearchResults.map(product => (
