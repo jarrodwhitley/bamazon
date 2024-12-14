@@ -26,7 +26,7 @@ export default function CategoryView() {
         <>
             {selectedCategory && (
                 <div className={'results-view'}>
-                    <h1 className={'results-view__heading'}>Search Results</h1>
+                    <h1 className={'results-view__heading'}>{capitalizeFirstLetter(selectedCategory)}</h1>
                     <div className={'results-view__content'}>
                         <Sidebar productsArray={filteredProductsState}/>
                         <div className="results-view__content__grid">

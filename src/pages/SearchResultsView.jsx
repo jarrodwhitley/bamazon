@@ -64,6 +64,10 @@ export default function SearchResultsView() {
         }
     }, [staticSearchString, selectedBrands, selectedPrice, staticFilters, searchString])
     
+    useEffect(() => {
+        console.log('sideBarFilters updated', sideBarFilters)
+    }, [sideBarFilters])
+    
     return (
         <div className={'results-view'}>
             <h1 className={'results-view__heading'}>{`Results for "${staticSearchString}"`}</h1>

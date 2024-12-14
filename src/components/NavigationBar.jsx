@@ -73,8 +73,8 @@ export default function NavigationBar() {
                     </div>
                 </div>
             </div>
-            <div className="lower px-6 ">
-                <div className={'flex items-stretch justify-between max-w-[1400px] mx-auto'}>
+            <div className={'lower'}>
+                <div className={'lower__wrapper'}>
                     <a href={'/'}>
                         <img
                             className="bamazon-logo"
