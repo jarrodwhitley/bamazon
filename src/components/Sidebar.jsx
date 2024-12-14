@@ -7,7 +7,7 @@ import { filteredProducts } from '../store/productsSlice.js'
 import { Link } from 'react-router-dom'
 import selectedProductSlice from '../store/selectedProductSlice.js'
 
-export default function Sidebar({ productsArray = null }) {
+export default function Sidebar({ initialProducts = null, filterString = null, filterType = null}) {
     const dispatch = useDispatch()
     const isMobile = useSelector((state) => state.ui.isMobile)
     const products = useSelector((state) => state.products)
@@ -28,13 +28,31 @@ export default function Sidebar({ productsArray = null }) {
     console.log('------------------------------')
     
     useEffect(() => {
-        if (!arrayMatch(brands, selectedFilters.brands)) {
-            setBrands(selectedFilters.brands)
-        }
-    },[selectedFilters])
+        console.log('Sidebar initialProducts:', initialProducts)
+        console.log('Sidebar filterString:', filterString)
+        console.log('Sidebar filterType:', filterType)
+    },[initialProducts, filterType, filterString])
+    
     
     useEffect(() => {
-        let productsArr = productsArray || products
+        if (filterType === 'category') {
+            if (selectedFilters.categories.length > 0) {
+                const selectedCategory = selectedFilters.categories[0]
+                if (selectedCategory !== prevCategory) {
+                    const newBrands = products.reduce((acc, product) => {
+                        if (product.category === selectedCategory && product.brand !== undefined && !acc.includes(product.brand)) {
+                            acc.push(product.brand)
+                        }
+                        return acc
+                    }, [])
+                    setBrands(newBrands)
+                    setPrevCategory(selectedCategory)
+                }
+            }
+        } else if (filterType === 'search') {
+        
+        }
+        // Create category links
         if (categoryLinks.length === 0) {
             const newCategories = products.reduce((acc, product) => {
                 if (!acc.includes(product.category) && product.category !== undefined) {
@@ -45,36 +63,7 @@ export default function Sidebar({ productsArray = null }) {
             setCategoryLinks(newCategories)
             setPrevCategory(newCategories[0])
         }
-        const selectedCategoryHasBrands = productsArr.some((product) => {
-            return product.category === selectedFilters.categories[0] && product.brand !== undefined
-        })
-        console.log('productsArr', productsArr)
-        console.log('productsArray', productsArray)
-        console.log('selectedCategoryHasBrands', selectedCategoryHasBrands)
-        console.log('brands array empty => ', brands.length === 0)
-        console.log('isRouteActive(\'results\')', isRouteActive('/results'))
-        console.log('----')
-        console.log('prevCategory !== selectedFilters.categories[0]', prevCategory !== selectedFilters.categories[0])
-        console.log('prevCategory', prevCategory)
-        console.log('selectedFilters.categories[0]', selectedFilters.categories[0])
-        
-        if (brands.length > 0) {
-            // Do nothing
-        } else if (isRouteActive('/results') && selectedCategoryHasBrands && brands.length === 0 ||
-            brands.length === 0 && selectedCategoryHasBrands ||
-            prevCategory !== selectedFilters.categories[0]) {
-            console.log('UPDATING BRANDS')
-            // console.log('productsArr 2', productsArray)
-            const newBrands = productsArray.reduce((acc, product) => {
-                if (!acc.includes(product.brand) && product.brand !== undefined) {
-                    acc.push(product.brand)
-                }
-                return acc
-            }, [])
-            setBrands(newBrands)
-            setPrevCategory(selectedFilters.categories[0])
-        }
-    }, [brands.length, categoryLinks.length, prevCategory, products, productsArray, selectedFilters.categories])
+    },[filterString, filterType])
     
     const handleCheckboxChange = () => {
         let checkboxes = document.querySelectorAll('input[type="checkbox"]')
@@ -187,5 +176,6 @@ export default function Sidebar({ productsArray = null }) {
 }
 
 Sidebar.propTypes = {
-    productsArray: PropTypes.array,
+    string: PropTypes.string,
+    type: PropTypes.string,
 }

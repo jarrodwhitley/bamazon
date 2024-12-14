@@ -28,7 +28,7 @@ export default function CategoryView() {
                 <div className={'results-view'}>
                     <h1 className={'results-view__heading'}>{capitalizeFirstLetter(selectedCategory)}</h1>
                     <div className={'results-view__content'}>
-                        <Sidebar productsArray={filteredProductsState}/>
+                        <Sidebar initialProducts={filteredProductsState} filterType={'category'} filterString={selectedCategory}/>
                         <div className="results-view__content__grid">
                             {filteredProductsState.map(product => (
                                 <ProductCard key={product.id} product={product} />
