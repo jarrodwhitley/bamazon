@@ -133,6 +133,12 @@ nav {
         }
     }
     .lower {
+        @apply grid items-center h-16 px-6;
+
+        .lower__wrapper {
+            @apply flex items-stretch justify-between w-full max-w-[1400px] mx-auto;
+        }
+
         .navigation-bar__lower__links {
             @apply flex gap-8 items-stretch w-fit;
         }
@@ -296,17 +302,17 @@ nav {
 
 }
 
-/* Results View ******************************/
+/* Results View (category view & search results view)******************************/
 .results-view {
-    @apply max-w-[1400px] mx-auto min-h-screen;
+    @apply max-w-[1400px] mx-auto min-h-screen px-4;
     .results-view__heading {
-        @apply col-span-full w-full text-5xl text-center mt-4 mb-6;
+        @apply col-span-full w-full font-semibold text-2xl lg:text-5xl text-center mt-4 mb-6;
     }
     .results-view__content {
         @apply flex place-self-start w-full;
     }
     .results-view__content__grid {
-        @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4;
+        @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
     }
 }
 
