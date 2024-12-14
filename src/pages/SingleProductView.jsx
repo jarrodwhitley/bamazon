@@ -106,7 +106,7 @@ export default function SingleProductView() {
                         </div>
                         <div className={'single-product-view__details row-start-2 lg:row-start-1 col-start-1 lg:col-start-2 w-full p-4 md:p-0 '}>
                             <div className={'single-product-view__title-price'}>
-                                <h3 className={'single-product-view text-2xl font-semibold truncate'}>{selectedProduct.title}</h3>
+                                <h3 className={'single-product-view__heading text-2xl font-semibold truncate'}>{selectedProduct.title}</h3>
                                 <RatingStars value={selectedProduct.rating} onClick={scrollToReviews}/>
                                 <div className={'flex flex-row items-center'}>
                                     <div className={'single-product-view__price text-lg font-semibold'}>

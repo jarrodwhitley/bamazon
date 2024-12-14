@@ -57,12 +57,12 @@ export default function App() {
                 <NavigationBar />
                 <LoadingOverlay/>
                 <Routes>
-                    <Route path="/" element={<Home/>} />
-                    <Route path="/product/:id" element={<SingleProductView/>} />
-                    <Route path="/product/:id/related" element={<RelatedProductsView/>} />
-                    <Route path="/results/:searchString" element={<SearchResultsView/>} />
-                    <Route path="/category/:category" element={<CategoryView/>} />
-                    <Route path={"*"} element={<PageNotFound/>} />
+                    <Route path={'/'} element={<Home/>} />
+                    <Route path={'/product/:id'} element={<SingleProductView/>} />
+                    <Route path={'/product/:id/related'} element={<RelatedProductsView/>} />
+                    <Route path={'/results/:searchString'} element={<SearchResultsView/>} />
+                    <Route path={'/category/:category'} element={<CategoryView/>} />
+                    <Route path={'*'} element={<PageNotFound/>} />
                 </Routes>
                 <Cart />
                 <MobileMenu />
