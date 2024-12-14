@@ -23,16 +23,6 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
         { min: 101, max: 1000 },
     ]
     const [showFilters, setShowFilters] = useState(false)
-    const isRouteActive = (path) => location.pathname.startsWith(path)
-    
-    console.log('------------------------------')
-    
-    useEffect(() => {
-        console.log('Sidebar initialProducts:', initialProducts)
-        console.log('Sidebar filterString:', filterString)
-        console.log('Sidebar filterType:', filterType)
-    },[initialProducts, filterType, filterString])
-    
     
     useEffect(() => {
         if (filterType === 'category') {
@@ -50,7 +40,13 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
                 }
             }
         } else if (filterType === 'search') {
-        
+            const newBrands = initialProducts.reduce((acc, product) => {
+                if (product.brand !== undefined && !acc.includes(product.brand)) {
+                    acc.push(product.brand)
+                }
+                return acc
+            }, [])
+            setBrands(newBrands)
         }
         // Create category links
         if (categoryLinks.length === 0) {
@@ -63,7 +59,7 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
             setCategoryLinks(newCategories)
             setPrevCategory(newCategories[0])
         }
-    },[filterString, filterType])
+    },[categoryLinks.length, filterString, filterType, initialProducts, prevCategory, products, selectedFilters.categories])
     
     const handleCheckboxChange = () => {
         let checkboxes = document.querySelectorAll('input[type="checkbox"]')
@@ -97,7 +93,7 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
         }
     }
     const handleLinkClick = (category) => {
-        dispatch(updateFilters({ categories: [category], brands: [] }))
+        dispatch(updateFilters({ categories: [category], brands: [], searchString: '' }))
         document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
             checkbox.checked = false
         })
@@ -176,6 +172,7 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
 }
 
 Sidebar.propTypes = {
-    string: PropTypes.string,
-    type: PropTypes.string,
+    initialProducts: PropTypes.array,
+    filterString: PropTypes.string,
+    filterType: PropTypes.string,
 }

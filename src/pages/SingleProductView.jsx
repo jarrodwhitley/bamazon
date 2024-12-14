@@ -40,6 +40,11 @@ export default function SingleProductView() {
     function setImageIndex(index) {
         setCurrentImageIndex(index)
     }
+    function scrollToReviews() {
+        console.log('scrolling');
+        const reviews = document.getElementById('reviews')
+        reviews.scrollIntoView({behavior: 'smooth', block: 'start'})
+    }
     
     useEffect(() => {
         if (itemAdded) {
@@ -61,10 +66,7 @@ export default function SingleProductView() {
         <>
             {selectedProduct && Object.keys(selectedProduct).length > 0 && (
                 <>
-                    <div className={'single-product-view w-full md:w-3/4 lg:max-w-[1400px] mx-auto h-full bg-white grid grid-cols-1 lg:grid-cols-2 items-start gap-4 md:p-6 overflow-auto relative ' + (!closingModal ? 'animate__slideInUp animate__faster' : 'animate__zoomOut')} onClick={(e) => e.stopPropagation()}>
-                        <div className={'single-product-view__close fixed top-0 right-0 px-4 py-2 text-2xl cursor-pointer'} onClick={() => closeModal(null)}>
-                            <FontAwesomeIcon icon={'fa-times'} />
-                        </div>
+                    <div className={'single-product-view ' + (!closingModal ? 'animate__slideInUp animate__faster' : 'animate__zoomOut')} onClick={(e) => e.stopPropagation()}>
                         <div className={'single-product-view__images row-start-1 col-start-1 grid grid-cols-1 md:grid-cols-[auto_1fr] grid-rows-1 w-full h-[30vh] lg:h-full'}>
                             {/* Image, no thumbnails */}
                             {isMobile && (
@@ -105,7 +107,7 @@ export default function SingleProductView() {
                         <div className={'single-product-view__details row-start-2 lg:row-start-1 col-start-1 lg:col-start-2 w-full p-4 md:p-0 '}>
                             <div className={'single-product-view__title-price'}>
                                 <h3 className={'single-product-view text-2xl font-semibold truncate'}>{selectedProduct.title}</h3>
-                                <RatingStars value={selectedProduct.rating} />
+                                <RatingStars value={selectedProduct.rating} onClick={scrollToReviews}/>
                                 <div className={'flex flex-row items-center'}>
                                     <div className={'single-product-view__price text-lg font-semibold'}>
                                         <div className={'flex gap-2'}>
@@ -115,8 +117,9 @@ export default function SingleProductView() {
                                     </div>
                                     <DiscountBadge discountPercentage={selectedProduct.discountPercentage} singleProductView={true} />
                                 </div>
-                                {selectedProduct.stock < 10 &&
-                                    <div className={'single-product-view__low-stock text-red-500 text-xs font-semibold'}>Low Stock - only {selectedProduct.stock} remaining</div>}
+                                {selectedProduct.stock < 10 && (
+                                    <div className={'single-product-view__low-stock text-red-500 text-xs font-semibold'}>Low Stock - only {selectedProduct.stock} remaining</div>
+                                )}
                             </div>
                             <div className={'single-product-view__in-stock text-sm font-semibold text-emerald-500'}>{selectedProduct.availabilityStatus}</div>
                             <div className={'single-product-view__add-to-cart'}>
@@ -162,7 +165,7 @@ export default function SingleProductView() {
                             </div>
                         </div>
                         {/* Reviews */}
-                        <div className={'single-product-view__reviews'}>
+                        <div id={'reviews'} className={'single-product-view__reviews'}>
                             <h3 className={'single-product-view__reviews-heading'}>Reviews</h3>
                             <div className={'single-product-view__reviews-grid'}>
                                 {selectedProduct.reviews.map((review, index) => (

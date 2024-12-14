@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     isMobile: false,
     isLoading: true,
+    showMobileMenu: false,
 }
 
 const uiSlice = createSlice({
@@ -14,9 +15,12 @@ const uiSlice = createSlice({
         },
         setIsLoading(state, action) {
             state.isLoading = action.payload;
+        },
+        setShowMobileMenu(state, action) {
+            state.showMobileMenu = action.payload;
         }
     }
 });
 
-export const { setIsMobile, setIsLoading } = uiSlice.actions;
+export const { setIsMobile, setIsLoading, setShowMobileMenu } = uiSlice.actions;
 export default uiSlice.reducer;
