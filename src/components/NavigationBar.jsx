@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { setShowMobileMenu } from '../store/uiSlice.js'
 import { removeItem, toggleCart } from '../store/cartSlice.js'
 import { setSelectedProduct } from '../store/selectedProductSlice.js'
 import { updateFilters } from '../store/filtersSlice.js'
@@ -12,10 +13,10 @@ export default function NavigationBar() {
     const dispatch = useDispatch()
     const isMobile = useSelector((state) => state.ui.isMobile)
     const products = useSelector((state) => state.products)
+    const showMobileMenu = useSelector((state) => state.ui.showMobileMenu)
     const selectedFilters = useSelector((state) => state.filters)
     const selectedProduct = useSelector((state) => state.selectedProduct)
     const cart = useSelector((state) => state.cart)
-    const [showMobileMenu, setShowMobileMenu] = useState(false)
     const [upperNavHidden, setUpperNavHidden] = useState(false)
     const [categories, setCategories] = useState([])
     
@@ -49,7 +50,7 @@ export default function NavigationBar() {
     const handleToggleCart = () => {
         dispatch(toggleCart())
     }
-    const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu)
+    const toggleMobileMenu = () => dispatch(setShowMobileMenu(!showMobileMenu))
 
     return (
         <nav className={

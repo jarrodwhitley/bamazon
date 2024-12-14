@@ -168,6 +168,8 @@ nav {
     }
 }
 
+/* Mobile Navigation */
+
 /* Header */
 .content__header {
     grid-area: header;
@@ -249,6 +251,9 @@ nav {
 }
 
 /* Single Product View ******************************/
+.single-product-view {
+    @apply w-full md:w-3/4 lg:max-w-[1400px] mx-auto h-full bg-white grid grid-cols-1 lg:grid-cols-2 items-start gap-4 md:p-6 overflow-auto relative;
+}
 .single-product-view__mobile-image-gallery-snap-container::-webkit-scrollbar {
     display: none;
 }
@@ -286,7 +291,7 @@ nav {
     }
 }
 .single-product-view__reviews {
-    @apply col-start-2 row-start-2 mt-4 pt-4;
+    @apply col-start-1 lg:col-start-2 lg:row-start-2 mt-4 px-4 py-4;
 
     .single-product-view__reviews-heading {
         @apply  text-xl font-semibold mb-4;
@@ -302,7 +307,7 @@ nav {
 
 }
 
-/* Results View (category view & search results view)******************************/
+/* Results View (category view & search results view)************/
 .results-view {
     @apply max-w-[1400px] mx-auto min-h-screen px-4;
     .results-view__heading {
@@ -350,4 +355,12 @@ nav {
     right: 0;
     bottom: 0;
     z-index: 0;
+}
+
+/* 404 */
+.four-oh-four {
+    @apply flex flex-col items-center justify-center h-screen;
+    background-image: url("./assets/images/four-oh-four.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
 }

@@ -14,7 +14,9 @@ import RelatedProductsView from './pages/RelatedProductsView.jsx';
 import SearchResultsView from './pages/SearchResultsView.jsx';
 import CategoryView from './pages/CategoryView.jsx'
 import Cart from './components/Cart.jsx'
+import MobileMenu from './components/MobileMenu.jsx'
 import { setIsLoading } from './store/uiSlice'
+import PageNotFound from './components/404.jsx'
 
 export default function App() {
     const dispatch = useDispatch();
@@ -53,16 +55,17 @@ export default function App() {
         <ErrorBoundary>
             <Router>
                 <NavigationBar />
-                <LoadingOverlay isLoading={isLoading}/>
+                <LoadingOverlay/>
                 <Routes>
                     <Route path="/" element={<Home/>} />
                     <Route path="/product/:id" element={<SingleProductView/>} />
                     <Route path="/product/:id/related" element={<RelatedProductsView/>} />
                     <Route path="/results/:searchString" element={<SearchResultsView/>} />
                     <Route path="/category/:category" element={<CategoryView/>} />
-                    <Route path={"*"} element={<h1>404 Not Found</h1>} />
+                    <Route path={"*"} element={<PageNotFound/>} />
                 </Routes>
                 <Cart />
+                <MobileMenu />
                 <Footer/>
             </Router>
         </ErrorBoundary>
