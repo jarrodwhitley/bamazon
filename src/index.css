@@ -193,7 +193,7 @@ nav {
     grid-area: content;
 }
 .home__categories__grid-outer {
-    @apply flex flex-col gap-4 px-8;
+    @apply flex flex-col gap-4 px-8 max-w-[1400px] mx-auto;
 
     @screen md {
         display: grid;
