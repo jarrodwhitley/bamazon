@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setShowMobileMenu } from '../store/uiSlice.js'
 import { removeItem, toggleCart } from '../store/cartSlice.js'
@@ -19,6 +19,9 @@ export default function NavigationBar() {
     const cart = useSelector((state) => state.cart)
     const [upperNavHidden, setUpperNavHidden] = useState(false)
     const [categories, setCategories] = useState([])
+    const location = useLocation()
+    const navigate = useNavigate()
+    
     
     useEffect(() => {
         if (Array.isArray(products)) {
@@ -48,7 +51,11 @@ export default function NavigationBar() {
         dispatch(setSelectedProduct(product))
     }
     const handleToggleCart = () => {
-        dispatch(toggleCart())
+        if (location.pathname === '/checkout') {
+            navigate('/checkout')
+        } else {
+            dispatch(toggleCart())
+        }
     }
     const toggleMobileMenu = () => dispatch(setShowMobileMenu(!showMobileMenu))
 
@@ -76,14 +83,15 @@ export default function NavigationBar() {
             </div>
             <div className={'lower'}>
                 <div className={'lower__wrapper'}>
-                    <a href={'/'}>
-                        <img
-                            className="bamazon-logo"
-                            src={BamazonLogo}
-                            width={isMobile ? '100' : '120'}
-                            alt="BAMazon logo"
-                        />
-                    </a>
+                    <Link to={'/'}>
+                        <figure className={'logo'}>
+                            <img
+                                className={'bamazon-logo'}
+                                src={BamazonLogo}
+                                alt={'BAMazon logo'}
+                            />
+                        </figure>
+                    </Link>
                     {!isMobile && (
                         <>
                             <SearchBar

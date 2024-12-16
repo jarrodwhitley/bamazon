@@ -1,4 +1,4 @@
-export const formattedPrice = (product, type, isMobile = false) => {
+export const formattedPrice = (product, type = 'sale', isMobile = false) => {
     if (!product) return
     if (type === 'list') {
         const listPrice = product.price + product.price * (product.discountPercentage / 100)

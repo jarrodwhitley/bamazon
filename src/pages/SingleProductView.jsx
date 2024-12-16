@@ -28,13 +28,15 @@ export default function SingleProductView() {
     const [itemAdded, setItemAdded] = useState(false)
     const handleAddToCart = () => {
         dispatch(addItem(selectedProduct))
-        const itemInCart = cart.items.find((item) => item.id === selectedProduct.id)
-        if (itemInCart) {
-            setShowBam(true)
-            setItemAdded(true)
-        } else {
-            setShowErrorMessage(true)
-        }
+        setShowBam(true)
+        setItemAdded(true)
+        // const itemInCart = cart.items.find((item) => item.id === selectedProduct.id)
+        // if (itemInCart) {
+        //     setShowBam(true)
+        //     setItemAdded(true)
+        // } else {
+        //     setShowErrorMessage(true)
+        // }
     }
     
     function setImageIndex(index) {
