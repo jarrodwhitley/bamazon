@@ -3,18 +3,19 @@ import React, {useState, useEffect} from 'react';
 import { setIsMobile } from './store/uiSlice';
 import { setProducts } from './store/productsSlice.js';
 import { useSelector, useDispatch } from "react-redux";
-import NavigationBar from './components/NavigationBar.jsx';
-import Footer from './components/Footer.jsx';
-import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import productsData from './assets/data/products.json';
-import LoadingOverlay from "./components/LoadingOverlay.jsx";
 import Home from './pages/Home.jsx';
 import SingleProductView from './pages/SingleProductView.jsx'
 import RelatedProductsView from './pages/RelatedProductsView.jsx';
 import SearchResultsView from './pages/SearchResultsView.jsx';
 import CategoryView from './pages/CategoryView.jsx'
+import Checkout from './pages/Checkout.jsx'
+import NavigationBar from './components/NavigationBar.jsx';
+import Footer from './components/Footer.jsx';
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import LoadingOverlay from "./components/LoadingOverlay.jsx";
 import Cart from './components/Cart.jsx'
 import MobileMenu from './components/MobileMenu.jsx'
+import productsData from './assets/data/products.json';
 import { setIsLoading } from './store/uiSlice'
 import PageNotFound from './components/404.jsx'
 
@@ -62,6 +63,7 @@ export default function App() {
                     <Route path={'/product/:id/related'} element={<RelatedProductsView/>} />
                     <Route path={'/results/:searchString'} element={<SearchResultsView/>} />
                     <Route path={'/category/:category'} element={<CategoryView/>} />
+                    <Route path={'/checkout'} element={<Checkout/>} />
                     <Route path={'*'} element={<PageNotFound/>} />
                 </Routes>
                 <Cart />
