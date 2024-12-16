@@ -5,7 +5,6 @@ import { setFilters, updateFilters, clearFilters, filtersActive } from '../store
 import { capitalizeFirstLetter, arrayMatch } from '../utils/functions'
 import { filteredProducts } from '../store/productsSlice.js'
 import { Link } from 'react-router-dom'
-import selectedProductSlice from '../store/selectedProductSlice.js'
 
 export default function Sidebar({ initialProducts = null, filterString = null, filterType = null}) {
     const dispatch = useDispatch()

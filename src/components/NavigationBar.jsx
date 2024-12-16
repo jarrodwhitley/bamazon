@@ -119,14 +119,12 @@ export default function NavigationBar() {
                                 </div>
                                 <div className={'nav-links__link cart cursor-pointer'}
                                      onClick={handleToggleCart}>
-                                    <span className={'font-semibold mr-2'}>Cart</span>
-                                    <i className={'fa-solid fa-cart-shopping relative'}>
-                                        {cart.items.length > 0 && (
-                                            <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>
+                                    <span className={'font-semibold relative'}>Cart</span>
+                                    {cart.items.length > 0 && (
+                                        <span className={'cart-count bg-red-600 absolute top-2 -right-3 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>
                                                 {cart.items.length}
-                                            </span>
-                                        )}
-                                    </i>
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </>
