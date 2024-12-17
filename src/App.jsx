@@ -11,6 +11,7 @@ import CategoryView from './pages/CategoryView.jsx';
 import Checkout from './pages/Checkout.jsx';
 import NavigationBar from './components/NavigationBar.jsx';
 import Footer from './components/Footer.jsx';
+import Modal from './components/Modal.jsx';
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import LoadingOverlay from "./components/LoadingOverlay.jsx";
 import Cart from './components/Cart.jsx';
@@ -67,6 +68,7 @@ export default function App() {
                     <Route path={'*'} element={<PageNotFound />} />
                 </Routes>
                 <Cart />
+                <Modal />
                 <MobileMenu />
                 <Footer />
             </Router>

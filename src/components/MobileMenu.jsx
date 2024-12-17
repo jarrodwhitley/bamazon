@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { capitalizeFirstLetter } from '../utils/functions.jsx'
-import { setShowMobileMenu } from '../store/uiSlice.js'
+import {setModal, setShowMobileMenu} from '../store/uiSlice.js'
 import { updateFilters } from '../store/filtersSlice.js'
 
 export default function MobileMenu() {
@@ -40,7 +40,7 @@ export default function MobileMenu() {
             <div className={'mobile-menu animate__animated animate__faster ' + (showMobileMenu ? 'animate__slideInRight' : 'animate__slideOutRight')}>
                 <div className="mobile-menu__content">
                     <ul className="mobile-menu__content__list">
-                        <Link to={'/'} className="mobile-menu__content__list__item">Home</Link>
+                        <Link to={'/'} className="mobile-menu__content__list__item" onClick={() => dispatch(setShowMobileMenu(false))}>Home</Link>
                         <li className="mobile-menu__content__list__item" onClick={menuToggle('categories')}>
                             <span>Categories </span>
                             <i className={'fa-solid ' + (menuToggles.categories ? 'fa-angle-down' : 'fa-angle-right') }></i>
@@ -53,7 +53,13 @@ export default function MobileMenu() {
                             </ul>
                         )}
                         <li className={'mobile-menu__content__list__item'} onClick={() => alert('Coming soon!')}>Account</li>
-                        <li className={'mobile-menu__content__list__item'} onClick={() => alert('Coming soon!')}>Contact</li>
+                        <li className={'mobile-menu__content__list__item'} onClick={() => dispatch(setModal('contact'))}>Contact</li>
+                        <li className={'mobile-menu__content__list__item border-t-2 border-gray-100'}>
+                            <a className={'flex items-center gap-4 text-blue-950'} href={'https://jarrodwhitley.com'}>My main website <i className={'fa-solid fa-arrow-up-right-from-square text-base'}></i></a>
+                        </li>
+                        <li className={'mobile-menu__content__list__item'}>
+                            <a className={'flex items-center gap-4 text-blue-950'} href={'https://github.com/jarrodwhitley'}>Github Project <i className={'fa-solid fa-arrow-up-right-from-square text-base'}></i></a>
+                        </li>
                     </ul>
                 </div>
             </div>

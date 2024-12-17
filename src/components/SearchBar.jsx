@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import {useEffect, useRef, useCallback} from 'react'
 import {setSelectedProduct} from '../store/selectedProductSlice.js'
 import {updateFilters, clearFilters, filtersActive} from '../store/filtersSlice.js'
+import { setShowMobileSearch } from '../store/uiSlice.js'
 import {ReactSearchAutocomplete} from 'react-search-autocomplete'
 import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate } from 'react-router-dom'
@@ -26,6 +27,7 @@ export default function SearchBar({classes}) {
                 searchString: string || '',
             })
         )
+        dispatch(setShowMobileSearch(false))
     }
     const handleOnSelect = (product) => {
         dispatch(
@@ -34,6 +36,7 @@ export default function SearchBar({classes}) {
                 searchString: product.title,
             })
         )
+        dispatch(setShowMobileSearch(false))
         handleSelectProduct(product)
         navigate('/product/' + product.id)
         handleOnClear();
