@@ -54,22 +54,27 @@ export default function Checkout() {
                                 <img src={product.images[0]} alt={product.title} className={'checkout-cart__item__image'} />
                             </figure>
                             <div className={'checkout-cart__item__details'}>
-                                <span className={'checkout-cart__item__details__title'}>{product.title}</span>
-                                <span className={'checkout-cart__item__details__price'}>${product.price.toFixed(2)}</span>
+                                <div className={'checkout-cart__item__title-price'}>
+                                    <span className={'checkout-cart__item__details__title'}>{product.title}</span>
+                                    <span className={'checkout-cart__item__details__price'}>${product.price.toFixed(2)}</span>
+                                </div>
+                                <div className={'checkout-cart__item__quantity'}>
+                                    <div className={'cart__item__quantity__selector'}>
+                                        <select className={'font-base bg-gray-100 rounded'} value={product.quantity || ''} onChange={(e) => handleQuantityChange(e, product.id)}>
+                                            {[...Array(10).keys()].map((i) => (
+                                                <option key={i + 1} value={i + 1}>
+                                                    {i + 1}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <i className={'checkout-cart__item__remove-btn fa-solid fa-trash-alt'} onClick={(e) => handleRemoveFromCart(e, product.id)}></i>
+                                </div>
                             </div>
-                            <div className={'quantity flex items-center row-start-1 gap-2'}>
-                                <select className={'font-base bg-gray-100 rounded'} value={product.quantity || ''} onChange={(e) => handleQuantityChange(e, product.id)}>
-                                    {[...Array(10).keys()].map((i) => (
-                                        <option key={i + 1} value={i + 1}>
-                                            {i + 1}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <i className={'fa-solid fa-trash-alt text-gray-300 cursor-pointer row-start-1'} onClick={(e) => handleRemoveFromCart(e, product.id)}></i>
                         </div>
                     ))}
-                    {showBam && <img src={Boombam} alt="Bamazon logo" className={'checkout__bam animate__animated animate__bounceIn animate__faster'} />}
+                    {showBam &&
+                        <img src={Boombam} alt={'Bamazon logo'} className={'checkout__bam animate__animated animate__bounceIn animate__faster'} />}
                 </div>
                 <div className={'checkout__sidebar'}>
                     <div className={'checkout__sidebar__subtotal checkout__sidebar__row'}>
@@ -85,7 +90,7 @@ export default function Checkout() {
                         <div className={'checkout__sidebar__value'}>{`$${total}`}</div>
                     </div>
                     <div className={'checkout__sidebar__button-container checkout__sidebar__row'}>
-                        <div className={'checkout__sidebar__checkout-btn'} onClick={handleCheckoutClick}>Checkout</div>
+                        <div className={'checkout__sidebar__checkout-btn'} onClick={handleCheckoutClick}>Submit Payment</div>
                     </div>
                 </div>
             </div>

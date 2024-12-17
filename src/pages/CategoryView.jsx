@@ -12,15 +12,15 @@ export default function CategoryView() {
     const filters = useSelector(state => state.filters);
     const products = useSelector(state => state.products);
     const filteredProductsState = useSelector(filteredProducts)
-    const selectedCategory = useSelector(state => state.filters.categories[0])
+    const selectedCategory = useSelector(state => state.filters.category)
     
     useEffect(() => {
         scrollToTop()
-        if (filters.categories.length === 0) {
+        if (!filters.category) {
             const category = window.location.pathname.split('/').pop()
-            dispatch(updateFilters({categories: [category]}))
+            dispatch(updateFilters({category: category}))
         }
-    }, [dispatch, filters])
+    }, [dispatch, filters.category])
     
     return (
         <>

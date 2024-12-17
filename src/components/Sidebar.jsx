@@ -25,8 +25,8 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
     
     useEffect(() => {
         if (filterType === 'category') {
-            if (selectedFilters.categories.length > 0) {
-                const selectedCategory = selectedFilters.categories[0]
+            if (selectedFilters.category) {
+                const selectedCategory = selectedFilters.category
                 if (selectedCategory !== prevCategory) {
                     const newBrands = products.reduce((acc, product) => {
                         if (product.category === selectedCategory && product.brand !== undefined && !acc.includes(product.brand)) {
@@ -58,12 +58,12 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
             setCategoryLinks(newCategories)
             setPrevCategory(newCategories[0])
         }
-    },[categoryLinks.length, filterString, filterType, initialProducts, prevCategory, products, selectedFilters.categories])
+    },[categoryLinks.length, filterString, filterType, initialProducts, prevCategory, products, selectedFilters.category])
     
     const handleCheckboxChange = () => {
         let checkboxes = document.querySelectorAll('input[type="checkbox"]')
         let checkboxesObj = {
-            categories: [],
+            categories: '',
             brands: [],
             price: '',
         }
@@ -80,7 +80,7 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
         dispatch(
             setFilters({
                 ...checkboxesObj,
-                categories: selectedFilters.categories || [],
+                categories: selectedFilters.category || '',
                 searchString: selectedFilters.searchString || '',
             }),
         )
@@ -92,7 +92,7 @@ export default function Sidebar({ initialProducts = null, filterString = null, f
         }
     }
     const handleLinkClick = (category) => {
-        dispatch(updateFilters({ categories: [category], brands: [], searchString: '' }))
+        dispatch(updateFilters({ category: category, brands: [], searchString: '' }))
         document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
             checkbox.checked = false
         })

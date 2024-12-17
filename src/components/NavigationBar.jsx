@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setShowMobileMenu } from '../store/uiSlice.js'
 import { removeItem, toggleCart } from '../store/cartSlice.js'
 import { setSelectedProduct } from '../store/selectedProductSlice.js'
-import { updateFilters } from '../store/filtersSlice.js'
+import { updateFilters, clearFilters } from '../store/filtersSlice.js'
 import SearchBar from './SearchBar.jsx'
 import BamazonLogo from '../assets/images/bamazon_logo_v1.1.png'
 import { capitalizeFirstLetter } from '../utils/functions.jsx'
@@ -51,6 +51,7 @@ export default function NavigationBar() {
         dispatch(setSelectedProduct(product))
     }
     const handleToggleCart = () => {
+        dispatch(setShowMobileMenu(false))
         if (location.pathname === '/checkout') {
             navigate('/checkout')
         } else {
@@ -83,7 +84,7 @@ export default function NavigationBar() {
             </div>
             <div className={'lower'}>
                 <div className={'lower__wrapper'}>
-                    <Link to={'/'}>
+                    <Link to={'/'} onClick={() => dispatch(clearFilters())}>
                         <figure className={'logo'}>
                             <img
                                 className={'bamazon-logo'}

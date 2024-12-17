@@ -1,13 +1,15 @@
-import {useSelector} from 'react-redux'
-import {filtersActive} from '../store/filtersSlice.js'
-import BamazonLogo from '../assets/images/bamazon_logo_v1.1.png'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 export default function Footer() {
-    const isFiltering = useSelector(filtersActive)
-
+    const location = useLocation()
+    const showFooterRoutes = ['/product/', '/results/']
+    const showFooter = !showFooterRoutes.some((route) => location.pathname.includes(route))
+    
     return (
         <>
-            {!isFiltering && (
+        {showFooter && (
                 <footer className="">
                     <div className="footer-content">
                         <div className="footer-links__navigation">

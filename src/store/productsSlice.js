@@ -36,8 +36,8 @@ export const filteredProducts = createSelector(
         if (filters.searchString && typeof filters.searchString === 'string' && filters.searchString.length > 3) {
             products = products.filter((product) => product.title.toLowerCase().includes(filters.searchString.toLowerCase()))
         }
-        if (filters.categories.length > 0) {
-            products = products.filter((product) => filters.categories.includes(product.category))
+        if (filters.category) {
+            products = products.filter((product) => filters.category === product.category)
         }
         if (filters.brands.length > 0) {
             products = products.filter((product) => filters.brands.includes(product.brand))

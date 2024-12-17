@@ -22,7 +22,7 @@ export default function Home() {
     const filteredProductsState = useSelector(filteredProducts) // other values accessed this way
     const selectedFilters = useSelector((state) => state.filters)
     const filtersActiveState = useSelector(filtersActive)
-    const selectedCategories = useSelector((state) => state.filters.categories)
+    const selectedCategory = useSelector((state) => state.filters.category)
     const selectedProduct = useSelector((state) => state.selectedProduct)
     const featuredProducts = useMemo(() => {
         return products?.filter((product) => product.featured)
@@ -38,7 +38,7 @@ export default function Home() {
         dispatch(clearFilters())
     }
     useEffect(() => {
-        if (selectedFilters.categories.length > 0) {
+        if (selectedFilters.category) {
             const rootElement = document.getElementById('root')
             if (rootElement) {
                 rootElement.scrollIntoView({
@@ -47,7 +47,7 @@ export default function Home() {
                 })
             }
         }
-    }, [selectedFilters.categories])
+    }, [selectedFilters.category])
     useEffect(() => {
         if (products.length > 0 && isLoading) {
             dispatch(setIsLoading(false));
@@ -99,23 +99,19 @@ export default function Home() {
                 </div>
             
                 {/* Categories Section */}
-                {selectedCategories.length < 1 && (
-                    <div className="home__categories">
-                        <div className={'home__categories__grid-outer'}>
-                            <h2 className={'home__categories__title'}>Categories</h2>
-                            <div className={'home__categories__grid-inner'}>
-                                <div className={'w-full grid grid-cols-2 lg:grid-cols-4 gap-6 md:pl-8 mt-4 md:mt-0'}>
-                                    {categories.map((product) => (
-                                        <ProductCard key={product.id} product={product} size="lg" categoryCard={true} showDiscount={true} showLowStock={true} />
-                                    ))}
-                                </div>
-                            </div>
-                            <div className={'home__categories-ad'}>
-                                <img src={BamazonAd} alt="Bamazon Ad" className="w-full" />
-                            </div>
-                        </div>
+            <div className="home__categories">
+                <div className={'home__categories__grid-outer'}>
+                    <h2 className={'home__categories__title'}>Categories</h2>
+                    <div className={'home__categories__grid-inner'}>
+                        {categories.map((product) => (
+                            <ProductCard key={product.id} product={product} size="lg" categoryCard={true} showDiscount={true} showLowStock={true} />
+                        ))}
                     </div>
-                )}
+                    <div className={'home__categories-ad'}>
+                        <img src={BamazonAd} alt="Bamazon Ad" className="w-full" />
+                    </div>
+                </div>
+            </div>
         </main>
     )
 }
