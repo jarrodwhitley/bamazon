@@ -45,3 +45,13 @@ export const scrollToTop = () => {
 export const arrayMatch = (arr1, arr2) => {
     return arr1.length === arr2.length && arr1.every((val, index) => val === arr2[index])
 }
+
+export const scrollToElementByID = (elementId) => {
+    console.log('scrolling to', elementId)
+    const element = document.getElementById(elementId)
+    console.log('element', element)
+    element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+    })
+}
