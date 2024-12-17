@@ -52,7 +52,8 @@ export default function MobileMenu() {
                                 ))}
                             </ul>
                         )}
-                        <li className="mobile-menu__content__list__item">Cart</li>
+                        <li className={'mobile-menu__content__list__item'} onClick={() => alert('Coming soon!')}>Account</li>
+                        <li className={'mobile-menu__content__list__item'} onClick={() => alert('Coming soon!')}>Contact</li>
                     </ul>
                 </div>
             </div>
