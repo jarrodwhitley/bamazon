@@ -17,7 +17,7 @@ export default function CategoryView() {
     useEffect(() => {
         scrollToTop()
         if (!filters.category) {
-            const category = window.location.pathname.split('/').pop()
+            const category = window.location.hash.split('/')[2]
             dispatch(updateFilters({category: category}))
         }
     }, [dispatch, filters.category])

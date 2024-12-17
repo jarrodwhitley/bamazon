@@ -50,6 +50,9 @@ export default function NavigationBar() {
     const handleSetSelectedProduct = (product) => {
         dispatch(setSelectedProduct(product))
     }
+    const handleDropDownItemClick = (category) => () => {
+        dispatch(updateFilters({ category: category }))
+    }
     const handleToggleCart = () => {
         dispatch(setShowMobileMenu(false))
         if (location.pathname === '/checkout') {
@@ -107,7 +110,7 @@ export default function NavigationBar() {
                                         {categories.map((category, index) => (
                                             <Link to={'/category/' + category} key={index}
                                                   className={'nav-links__link__dropdown-item'}
-                                                  onClick={() => dispatch(updateFilters({ categories: [category] }))}>
+                                                  onClick={handleDropDownItemClick(category)}>
                                                 {capitalizeFirstLetter(category)}
                                             </Link>
                                         ))}

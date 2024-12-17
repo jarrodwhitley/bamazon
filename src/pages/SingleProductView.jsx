@@ -58,7 +58,7 @@ export default function SingleProductView() {
     useEffect(() => {
         scrollToTop()
         if (Object.keys(selectedProduct).length === 0) {
-            const id = window.location.pathname.split('/').pop()
+            const id = window.location.hash.split('/')[2]
             const product = store.getState().products.find((product) => product.id === parseInt(id))
             dispatch(setSelectedProduct(product))
         }
