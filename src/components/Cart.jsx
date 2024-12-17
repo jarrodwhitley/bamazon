@@ -21,6 +21,19 @@ export default function Cart() {
             return acc + (product.price * product.discountPercentage) / 100
         }, 0)
     }, [cart.items])
+    
+    // if the use clicks outside the cart, close it
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (event.target.closest('.cart__container') === null && cart.showCart) {
+                dispatch(toggleCart())
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [cart, dispatch])
 
     return (
         <div className={'cart__container fixed w-full lg:w-[400px] h-full overflow-hidden pb-32 top-[100px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4 ' + (cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ')}>

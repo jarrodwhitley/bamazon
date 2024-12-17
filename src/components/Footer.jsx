@@ -12,14 +12,8 @@ export default function Footer() {
         {showFooter && (
                 <footer className="">
                     <div className="footer-content">
-                        <div className="footer-links__navigation">
-                            <div className={'text-lg font-semibold'}>Site</div>
-                            <a href="#">Home</a>
-                            <a href="#">About</a>
-                            <a href="#">Contact</a>
-                        </div>
                         <div className="footer-links__legal">
-                            <div className={'text-lg font-semibold mt-6'}>Legal</div>
+                            <div className={'text-lg font-semibold'}>Legal</div>
                             <a href="#">Privacy Policy</a>
                             <a href="#">Terms of Service</a>
                             <a href="#">Accessibility</a>
@@ -46,7 +40,7 @@ export default function Footer() {
                             </a>
                         </div>
                         <div className={'footer-links__help'}>
-                            <div className={'text-lg font-semibold mt-6'}>Help</div>
+                            <div className={'text-lg font-semibold'}>Help</div>
                             <a href="#">FAQ</a>
                             <a href="#">Returns</a>
                             <a href="#">Shipping</a>
