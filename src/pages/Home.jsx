@@ -6,11 +6,9 @@ import { clearFilters, filtersActive } from '../store/filtersSlice'
 import { filteredProducts, productsLoaded } from '../store/productsSlice'
 import { setIsLoading } from '../store/uiSlice'
 import ProductCard from '../components/ProductCard'
-import Sidebar from '../components/Sidebar'
-import SearchBar from '../components/SearchBar'
 import BamazonAd from '../assets/images/bamazon_ad.png'
 import HeaderImage from '../assets/images/header_image.png'
-import {capitalizeFirstLetter} from '../utils/functions'
+import { scrollToElementByID } from '../utils/functions'
 import { Link } from 'react-router-dom'
 
 export default function Home() {
@@ -56,12 +54,6 @@ export default function Home() {
 
     return (
         <main className={'overflow-x-hidden relative scroll-mt-[80px] pb-2 '}>
-            {/*{isMobile && (*/}
-            {/*    <div className={'home__search-bar__container bg-blue-950 w-full flex justify-center'}>*/}
-            {/*        <SearchBar classes={'search-bar w-full relative p-4'} />*/}
-            {/*    </div>*/}
-            {/*)}*/}
-            
                 <div className={'home__header h-[65vh] lg:h-full lg:px-6 lg:py-10'}>
                     <div className={'home__header-grid grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center max-w-[1400px] mx-auto'}>
                         <div className={'home__header-text h-full w-fit flex flex-col items-start place-self-start lg:place-self-end justify-center text-white col-span-full lg:col-start-2 lg:col-span-2 row-start-1 pl-4 lg:pl-20 pr-6 z-[1] font-semibold'}>
@@ -70,7 +62,7 @@ export default function Home() {
                                 Fashion
                             </div>
                             <div className="home__header-text__subtitle text-lg md:text-4xl">Starting at only $19.99</div>
-                            <div className={'w-fit mt-4 px-4 py-2 text-lg rounded bg-blue-500 text-white font-semibold flex items-center cursor-not-allowed'}>Shop Now</div>
+                            <div className={'w-fit mt-4 px-4 py-2 text-lg rounded bg-blue-500 text-white font-semibold flex items-center cursor-pointer'} onClick={() => scrollToElementByID('categories')}>Shop Now</div>
                         </div>
                         <figure className="home__header-image w-full h-full col-span-full row-span-full overflow-hidden">
                             <img src={HeaderImage} alt="Bamazon Ad" className="w-full h-[65vh] lg:h-[400px] lg:min-h-[600px] max-w-[unset] object-cover object-left md:object-fit" />
@@ -99,7 +91,7 @@ export default function Home() {
                 </div>
             
                 {/* Categories Section */}
-            <div className="home__categories">
+            <div className="home__categories" id={'categories'}>
                 <div className={'home__categories__grid-outer'}>
                     <h2 className={'home__categories__title'}>Categories</h2>
                     <div className={'home__categories__grid-inner'}>
