@@ -23,7 +23,7 @@ export default function SearchResultsView() {
     useEffect(() => {
         scrollToTop()
         if (!searchString) {
-            const search = window.location.pathname.split('/').pop()
+            const search = window.location.hash.split('/')[2]
             setStaticSearchString(search)
         } else {
             setStaticSearchString(searchString)
