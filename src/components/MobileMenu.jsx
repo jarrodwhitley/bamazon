@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { capitalizeFirstLetter } from '../utils/functions.jsx'
+import { setShowMobileMenu } from '../store/uiSlice.js'
+import { updateFilters } from '../store/filtersSlice.js'
 
 export default function MobileMenu() {
     const dispatch = useDispatch()
@@ -14,6 +16,11 @@ export default function MobileMenu() {
         return () => {
             setMenuToggles({...menuToggles, [string]: !menuToggles[string]})
         }
+    }
+    function handleMenuItemClick(category) {
+        dispatch(updateFilters({ category: category, brands: [], searchString: '' }))
+        dispatch(setShowMobileMenu(false))
+        setMenuToggles({categories: false})
     }
     
     useEffect(() => {
@@ -30,8 +37,7 @@ export default function MobileMenu() {
     
     return (
         <>
-            {showMobileMenu && (
-            <div className="mobile-menu">
+            <div className={'mobile-menu animate__animated animate__faster ' + (showMobileMenu ? 'animate__slideInRight' : 'animate__slideOutRight')}>
                 <div className="mobile-menu__content">
                     <ul className="mobile-menu__content__list">
                         <Link to={'/'} className="mobile-menu__content__list__item">Home</Link>
@@ -42,7 +48,7 @@ export default function MobileMenu() {
                         {menuToggles.categories && (
                             <ul className="mobile-menu__content__list__sublist">
                                 {categoryLinks.map((category, index) => (
-                                    <Link key={index} to={`/category/${category}`} className={'mobile-menu__content__list__sublist__item'}>{capitalizeFirstLetter(category)}</Link>
+                                    <Link key={index} to={`/category/${category}`} onClick={() => handleMenuItemClick(category)} className={'mobile-menu__content__list__sublist__item'}>{capitalizeFirstLetter(category)}</Link>
                                 ))}
                             </ul>
                         )}
@@ -50,7 +56,6 @@ export default function MobileMenu() {
                     </ul>
                 </div>
             </div>
-            )}
         </>
     
     )

@@ -19,9 +19,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     }
 
     const selectCategory = (product) => {
-        let newCategories = [...selectedFilters.categories]
-        !newCategories.includes(product.category) && newCategories.push(product.category)
-        dispatch(updateFilters({categories: newCategories || []}))
+        dispatch(updateFilters({category: product.category}))
         navigate('/category/' + product.category)
     }
     const showLowStockWarning = product.stock < 10 && showLowStock
@@ -30,9 +28,9 @@ export default function ProductCard({product, showDiscount = false, showLowStock
         <div key={product.id} className={'product-card ' +
             (categoryCard ? 'category-card ' : '') +
             (featuredCard ? 'featured-card ' : '')} onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
-            <div className={'product-card__image-container'}>
-                <img src={product?.thumbnail} className={'product-card__image'} height="160" width="160" alt={product.title} />
-            </div>
+            <figure className={'product-card__image-container'}>
+                <img src={product?.thumbnail} className={'product-card__image'} alt={product.title} />
+            </figure>
             {showDiscount && !categoryCard && <DiscountBadge discountPercentage={product.discountPercentage} />}
             <div className="product-card__details">
                 <h3 className={'product-card__name mt-2 truncate ' + ((!categoryCard && !isMobile) || (categoryCard && isMobile) ? 'text-base font-semibold' : 'font-normal')}>{!categoryCard ? product.title : capitalizeFirstLetter(product.category)}</h3>

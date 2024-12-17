@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-export const initialFiltersState = { searchString: '', categories: [], brands: [], price: '' };
+export const initialFiltersState = { searchString: '', category: '', brands: [], price: '' };
 
 const filtersSlice = createSlice({
     name: 'filters',
@@ -13,7 +13,7 @@ const filtersSlice = createSlice({
             return { ...state, ...action.payload };
         },
         clearFilters() {
-            return { searchString: '', categories: [], brands: [], price: '' };
+            return { searchString: '', category: '', brands: [], price: '' };
         }
     }
 });
