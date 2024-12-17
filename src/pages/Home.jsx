@@ -56,11 +56,11 @@ export default function Home() {
 
     return (
         <main className={'overflow-x-hidden relative scroll-mt-[80px] pb-2 '}>
-            {isMobile && (
-                <div className={'home__search-bar__container bg-blue-950 w-full flex justify-center'}>
-                    <SearchBar classes={'search-bar w-full relative p-4'} />
-                </div>
-            )}
+            {/*{isMobile && (*/}
+            {/*    <div className={'home__search-bar__container bg-blue-950 w-full flex justify-center'}>*/}
+            {/*        <SearchBar classes={'search-bar w-full relative p-4'} />*/}
+            {/*    </div>*/}
+            {/*)}*/}
             
                 <div className={'home__header h-[65vh] lg:h-full lg:px-6 lg:py-10'}>
                     <div className={'home__header-grid grid grid-cols-1 md:grid-cols-3 grid-rows-1 items-center max-w-[1400px] mx-auto'}>

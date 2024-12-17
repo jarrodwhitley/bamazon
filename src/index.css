@@ -157,15 +157,49 @@ button:focus-visible {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
 
+/* Modal ********************/
+.modal__container {
+    @apply fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50;
+
+    .modal__content {
+        @apply bg-white p-4 rounded-md shadow-lg w-full lg:w-1/2 mx-auto mt-20;
+
+        .modal__close-button {
+            @apply absolute top-2 right-2 cursor-pointer;
+        }
+
+        .form-heading {
+            @apply text-3xl font-semibold;
+        }
+
+        .contact-form {
+            @apply grid grid-cols-1 lg:grid-cols-2 gap-2 mt-4;
+
+            input, textarea {
+                @apply bg-gray-100 text-blue-950 min-h-10 mt-2 mb-4 p-2;
+            }
+
+            button {
+                @apply bg-blue-400 text-white row-start-4 col-span-full;
+            }
+
+            fieldset {
+                @apply flex flex-col;
+                &.message {
+                    @apply row-start-3 col-span-full flex flex-col;
+                }
+            }
+        }
+    }
+}
+
 /* Loading Overlay ************************/
 .loading-overlay {
     @apply fixed top-0 left-0 w-full h-screen bg-white z-20 grid grid-cols-1 grid-rows-1 items-center justify-items-center;
 }
-
 .loading-overlay__boom {
     @apply w-1/2 lg:w-1/6 row-start-1 col-start-1;
 }
-
 .loading-overlay__bam {
     @apply w-1/2 lg:w-1/6 row-start-1 col-start-1 z-10;
 }
@@ -187,13 +221,16 @@ main {
 
 /* Navigation */
 nav {
+    @apply sticky w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-30;
     .upper {
+        @apply z-10;
+
         .nav-links__link {
             @apply text-white hover:text-blue-400;
         }
     }
     .lower {
-        @apply grid items-center h-16 px-6;
+        @apply grid items-center h-16 px-6 bg-blue-900 z-10;
 
         .lower__wrapper {
             @apply flex h-full items-stretch justify-between w-full max-w-[1400px] mx-auto;
@@ -235,20 +272,25 @@ nav {
             }
         }
     }
+    .search {
+        @apply absolute left-0 right-0 lg:hidden z-[-1];
+    }
 }
 
 /* Mobile Navigation */
 .mobile-menu {
-    @apply fixed top-[100px] left-0 w-full h-screen bg-white z-20 grid grid-cols-1 grid-rows-1 items-center justify-items-center;
+    @apply fixed top-[100px] left-0 w-full h-screen bg-white z-20 grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:hidden;
 
     .mobile-menu__content {
         @apply h-full w-full;
 
         .mobile-menu__content__list {
-            .mobile-menu__content__list__item {
-                @apply flex justify-between items-center text-2xl text-blue-950 py-2 px-4;
-            }
+            @apply overflow-auto;
+            max-height: calc(100vh - 100px);
 
+            .mobile-menu__content__list__item {
+                @apply flex justify-between items-center text-2xl text-blue-950 py-4 px-4 active:bg-gray-200;
+            }
             .mobile-menu__content__list__sublist {
                 @apply flex flex-col gap-2 bg-gray-100;
 
@@ -308,6 +350,22 @@ nav {
 }
 .home__sidebar, .home__advertisement {
     grid-area: sidebar;
+}
+.sidebar__filter-section {
+    h3 {
+        @apply mb-2;
+        &::after {
+            content: '';
+            display: block;
+            width: 20%;
+            height: 2px;
+            background-color: #ececec;
+
+            @screen md {
+                width: 40%
+            }
+        }
+    }
 }
 .sidebar__filter-section:not(:first-child) {
     @apply flex flex-col mb-3;
@@ -457,7 +515,9 @@ nav {
 
 /* Cart ***********************************/
 .cart__container {
-
+    .cart__items {
+        @apply  h-[calc(100%-64px)] pb-[150px] overflow-auto;
+    }
 }
 .cart__checkout-btn,
 .checkout__sidebar__checkout-btn{
