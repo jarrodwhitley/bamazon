@@ -18,7 +18,6 @@ export default function SearchResultsView() {
     const [sideBarFilters, setSideBarFilters] = useState([])
     const [staticFilters, setStaticFilters] = useState({ brands: [], price: '' })
     const [initialClear, setInitialClear] = useState(false)
-    
     //  Update Static Search Results
     useEffect(() => {
         scrollToTop()
@@ -50,7 +49,6 @@ export default function SearchResultsView() {
             setInitialClear(true)
         }
     }, [dispatch, initialClear, products, searchString, staticFilters.brands, staticFilters.price, staticSearchResults.length, staticSearchString])
-    
     // Update Static Filters
     useEffect(() => {
         if (!arrayMatch(selectedBrands, staticFilters.brands)) {
@@ -63,10 +61,7 @@ export default function SearchResultsView() {
             setStaticSearchString(searchString)
         }
     }, [staticSearchString, selectedBrands, selectedPrice, staticFilters, searchString])
-    
-    useEffect(() => {
-        console.log('sideBarFilters updated', sideBarFilters)
-    }, [sideBarFilters])
+
     
     return (
         <div className={'results-view'}>

@@ -116,7 +116,12 @@ export default function NavigationBar() {
                                         ))}
                                     </div>
                                 </div>
-                                <div className={'nav-links__link user cursor-not-allowed'}>
+                                <div className={'nav-links__link user cursor-not-allowed'} onClick={() => alert('Coming soon!')}>
+                                    <span className={'font-semibold'}>
+                                        Contact
+                                    </span>
+                                </div>
+                                <div className={'nav-links__link user cursor-not-allowed'} onClick={() => alert('Coming soon!')}>
                                     <span className={'font-semibold'}>
                                         Account
                                     </span>
