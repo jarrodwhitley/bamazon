@@ -22,22 +22,6 @@ export default function NavigationBar() {
     const [categories, setCategories] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
-    
-    useEffect(() => {
-        if (Array.isArray(products)) {
-            if (categories.length < 1) {
-                const newCategories = products.reduce((acc, product) => {
-                    if (!acc.includes(product.category) && product.category !== undefined) {
-                        acc.push(product.category)
-                    }
-                    return acc
-                }, [])
-                setCategories(newCategories)
-            }
-        }
-    }, [products])
-    
-    
     const handleLogoClick = () => {
         dispatch(clearFilters())
         dispatch(setShowCart(false))
@@ -76,6 +60,20 @@ export default function NavigationBar() {
     const toggleMobileSearch = () => {
         dispatch(setShowMobileSearch(!showMobileSearch))
     }
+    
+    useEffect(() => {
+        if (Array.isArray(products)) {
+            if (categories.length < 1) {
+                const newCategories = products.reduce((acc, product) => {
+                    if (!acc.includes(product.category) && product.category !== undefined) {
+                        acc.push(product.category)
+                    }
+                    return acc
+                }, [])
+                setCategories(newCategories)
+            }
+        }
+    }, [products])
     
     return (
         <nav className={''}>
