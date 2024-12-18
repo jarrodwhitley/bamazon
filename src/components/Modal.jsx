@@ -1,5 +1,4 @@
 import {useDispatch, useSelector} from 'react-redux'
-import PropTypes from 'prop-types'
 import ContactForm from './forms/ContactForm.jsx';
 import { clearModal } from '../store/uiSlice.js';
 
