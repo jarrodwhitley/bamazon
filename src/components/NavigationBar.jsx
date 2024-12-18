@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import {setShowMobileMenu, setShowMobileSearch, setModal} from '../store/uiSlice.js'
-import {removeItem, toggleCart} from '../store/cartSlice.js'
+import {setShowCart, removeItem, toggleCart} from '../store/cartSlice.js'
 import {setSelectedProduct} from '../store/selectedProductSlice.js'
 import {updateFilters, clearFilters} from '../store/filtersSlice.js'
 import SearchBar from './SearchBar.jsx'
@@ -37,9 +37,10 @@ export default function NavigationBar() {
         }
     }, [products])
     
+    
     const handleLogoClick = () => {
         dispatch(clearFilters())
-        dispatch(toggleCart(false))
+        dispatch(setShowCart(false))
     }
     const handleSetSearchString = (string) => {
         dispatch(
@@ -57,12 +58,16 @@ export default function NavigationBar() {
     const handleDropDownItemClick = (category) => () => {
         dispatch(updateFilters({category: category}))
     }
-    const handleToggleCart = () => {
-        dispatch(setShowMobileMenu(false))
-        if (location.pathname === '/checkout') {
-            navigate('/checkout')
-        } else {
-            dispatch(toggleCart())
+    const handleToggleCart = (e) => {
+        e.stopPropagation()
+        console.log('click', e.target.closest('.cart'))
+        // dispatch(setShowMobileMenu(false))
+        if (e.target.closest('.cart')) {
+            if (location.pathname === '/checkout') {
+                navigate('/checkout')
+            } else {
+                dispatch(toggleCart())
+            }
         }
     }
     const handleLaunchModal = (modalType) => () => {

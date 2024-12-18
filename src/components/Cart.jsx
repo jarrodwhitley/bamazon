@@ -1,5 +1,5 @@
 import {useSelector, useDispatch} from 'react-redux'
-import {setCart, updateItem, removeItem, toggleCart} from '../store/cartSlice'
+import {setShowCart, updateItem, removeItem, toggleCart} from '../store/cartSlice'
 import {useMemo, useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 
@@ -14,7 +14,7 @@ export default function Cart() {
         dispatch(updateItem({id, quantity: parseInt(e.target.value)}))
     }
     const handleCheckout = () => {
-        dispatch(toggleCart())
+        dispatch(setShowCart(false))
     }
     const totalSavings = useMemo(() => {
         return cart.items.reduce((acc, product) => {
@@ -25,11 +25,8 @@ export default function Cart() {
     // if the use clicks outside the cart, close it
     useEffect(() => {
         function handleClickOutside(event) {
-            if (event.target.closest('.nav-links__link.cart') || document.querySelector('.mobile-cart-btn')) {
-                return
-            }
-            if (event.target.closest('.cart__container') === null && cart.showCart) {
-                dispatch(toggleCart())
+            if (event.target.closest('.cart') === null && cart.showCart) {
+                dispatch(setShowCart(false))
             }
         }
         document.addEventListener('mousedown', handleClickOutside)
