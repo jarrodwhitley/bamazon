@@ -13,6 +13,7 @@ build
 dist-ssr
 *.local
 .husky
+.firebase
 
 # Editor directories and files
 .vscode/*

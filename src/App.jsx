@@ -1,8 +1,11 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { initializeApp } from 'firebase/app';
+import { ref, getDatabase, onValue } from 'firebase/database';
+import { useSelector, useDispatch } from "react-redux";
 import { setIsMobile } from './store/uiSlice';
 import { setProducts } from './store/productsSlice.js';
-import { useSelector, useDispatch } from "react-redux";
+import { setIsLoading } from './store/uiSlice';
 import Home from './pages/Home.jsx';
 import SingleProductView from './pages/SingleProductView.jsx';
 import RelatedProductsView from './pages/RelatedProductsView.jsx';
@@ -16,26 +19,37 @@ import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import LoadingOverlay from "./components/LoadingOverlay.jsx";
 import Cart from './components/Cart.jsx';
 import MobileMenu from './components/MobileMenu.jsx';
-import productsData from './assets/data/products.json';
-import { setIsLoading } from './store/uiSlice';
 import PageNotFound from './components/404.jsx';
+import { firebaseConfig } from './firebaseConfig.js';
+import admin from './firebaseAdmin.js'
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 export default function App() {
     const dispatch = useDispatch();
     const isLoading = useSelector(state => state.ui.isLoading);
     const isMobile = useSelector(state => state.ui.isMobile);
     const products = useSelector(state => state.products);
+    const [productsData, setProductsData] = useState([]);
+    
+    // DB update test
+    //  useEffect(() => {
+    //      const ref = admin.database().ref('products/0');
+    //      ref.update({ stock: 15 });
+    //  }, [])
+    
     useEffect(() => {
-        const updateIsMobile = () => {
-            const isMobile = window.innerWidth <= 768; // Define your mobile breakpoint
-            dispatch(setIsMobile(isMobile));
-        };
-        
-        updateIsMobile();
-        window.addEventListener('resize', updateIsMobile); // Add event listener
-        
-        return () => window.removeEventListener('resize', updateIsMobile); // Clean up
-    }, [dispatch]);
+        const productsRef = ref(database, 'products');
+        onValue(productsRef, (snapshot) => {
+            try {
+                const data = snapshot.val();
+                setProductsData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }, []);
+    
     useEffect(() => {
         dispatch(setProducts(productsData.map(product => {
             let newObj = { ...product, featured: false };
@@ -44,7 +58,18 @@ export default function App() {
             }
             return newObj;
         })));
-    }, [dispatch, isMobile]);
+    }, [productsData, isMobile, dispatch]);
+    
+    useEffect(() => {
+        const updateIsMobile = () => {
+            const isMobile = window.innerWidth <= 768; // Define your mobile breakpoint
+            dispatch(setIsMobile(isMobile));
+        };
+        updateIsMobile();
+        window.addEventListener('resize', updateIsMobile); // Add event listener
+        return () => window.removeEventListener('resize', updateIsMobile); // Clean up
+    }, [dispatch]);
+    
     useEffect(() => {
         if (products.length > 0 && isLoading) {
             setTimeout(() => {

@@ -6,6 +6,7 @@ import {setCart, updateItem, removeItem, clearCart} from '../store/cartSlice'
 import Boombam from '../assets/images/bamazon_logo_boombam.png'
 import ProductCard from '../components/ProductCard.jsx'
 import BamazonAd from '../assets/images/bamazon_ad.png'
+import { getDatabase, ref, get, update } from 'firebase/database';
 
 export default function Checkout() {
     const dispatch = useDispatch()
@@ -28,20 +29,60 @@ export default function Checkout() {
     const total = useMemo(() => {
         return (parseFloat(subTotal) + shippingCost).toFixed(2)
     }, [subTotal])
+    const checkAndUpdateQuantities = async (cartItems) => {
+        const db = getDatabase();
+        const updates = {};
+        
+        for (const item of cartItems) {
+            const itemRef = ref(db, `products/${(item.id - 1)}`);
+            const snapshot = await get(itemRef);
+            
+            if (!snapshot.exists()) {
+                throw new Error(`Sorry, item ${item.id} is no longer available`);
+            }
+            
+            const productData = snapshot.val();
+            if (productData.stock < item.quantity) {
+                throw new Error(`Sorry, item ${item.id} is no longer available`);
+            }
+            
+            const newQuantity = productData.stock - item.quantity;
+            if (isNaN(newQuantity) || newQuantity < 0) {
+                throw new Error(`Invalid quantity for item ${item.id}`);
+            }
+            
+            updates[`products/${item.id}/quantity`] = newQuantity;
+        }
+        
+        await update(ref(db), updates);
+    };
+    const handleCheckout = async () => {
+        try {
+            await checkAndUpdateQuantities(cart.items);
+            setShowBam(true)
+            setTimeout(() => {
+                setShowBam(false)
+                dispatch(clearCart())
+                navigate('/')
+            }, 2000)
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
     const handleQuantityChange = (e, id) => {
         dispatch(updateItem({ id, quantity: parseInt(e.target.value) }))
     }
     const handleRemoveFromCart = (e, id) => {
         dispatch(removeItem(id))
     }
-    const handleCheckoutClick = () => {
-        setShowBam(true)
-        setTimeout(() => {
-            setShowBam(false)
-            dispatch(clearCart())
-            navigate('/')
-        }, 2000)
-    }
+    // const handleCheckoutClick = () => {
+    //     setShowBam(true)
+    //     setTimeout(() => {
+    //         setShowBam(false)
+    //         dispatch(clearCart())
+    //         navigate('/')
+    //     }, 2000)
+    // }
     
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -101,7 +142,7 @@ export default function Checkout() {
                                 <div className={'checkout__sidebar__value'}>{`$${total}`}</div>
                             </div>
                             <div className={'checkout__sidebar__button-container checkout__sidebar__row'}>
-                                <div className={'checkout__sidebar__checkout-btn'} onClick={handleCheckoutClick}>Submit Payment</div>
+                                <div className={'checkout__sidebar__checkout-btn'} onClick={handleCheckout}>Submit Payment</div>
                             </div>
                         </div>
                     </div>
