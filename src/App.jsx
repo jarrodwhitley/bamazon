@@ -21,7 +21,7 @@ import Cart from './components/Cart.jsx';
 import MobileMenu from './components/MobileMenu.jsx';
 import PageNotFound from './components/404.jsx';
 import { firebaseConfig } from './firebaseConfig.js';
-import admin from './firebaseAdmin.js'
+// import admin from './firebaseAdmin.js'
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
