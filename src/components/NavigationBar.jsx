@@ -23,7 +23,6 @@ export default function NavigationBar() {
     const location = useLocation()
     const navigate = useNavigate()
     
-    
     useEffect(() => {
         if (Array.isArray(products)) {
             if (categories.length < 1) {
@@ -38,6 +37,10 @@ export default function NavigationBar() {
         }
     }, [products])
     
+    const handleLogoClick = () => {
+        dispatch(clearFilters())
+        dispatch(toggleCart(false))
+    }
     const handleSetSearchString = (string) => {
         dispatch(
             updateFilters({
@@ -89,7 +92,7 @@ export default function NavigationBar() {
             </div>
             <div className={'lower'}>
                 <div className={'lower__wrapper'}>
-                    <Link to={'/'} onClick={() => dispatch(clearFilters())}>
+                    <Link to={'/'} onClick={handleLogoClick}>
                         <figure className={'logo'}>
                             <img
                                 className={'bamazon-logo'}
