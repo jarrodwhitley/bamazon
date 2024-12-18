@@ -17,6 +17,7 @@ export default function SingleProductView() {
     const {dispatch} = store
     const navigate = useNavigate()
     const isMobile = useSelector((state) => state.ui.isMobile)
+    const products = useSelector((state) => state.products)
     const selectedProduct = useSelector((state) => state.selectedProduct)
     const cart = useSelector((state) => state.cart)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -30,13 +31,6 @@ export default function SingleProductView() {
         dispatch(addItem(selectedProduct))
         setShowBam(true)
         setItemAdded(true)
-        // const itemInCart = cart.items.find((item) => item.id === selectedProduct.id)
-        // if (itemInCart) {
-        //     setShowBam(true)
-        //     setItemAdded(true)
-        // } else {
-        //     setShowErrorMessage(true)
-        // }
     }
     
     function setImageIndex(index) {
@@ -55,14 +49,15 @@ export default function SingleProductView() {
             }, 2000)
         }
     }, [itemAdded])
+    
     useEffect(() => {
         scrollToTop()
         if (Object.keys(selectedProduct).length === 0) {
             const id = window.location.hash.split('/')[2]
-            const product = store.getState().products.find((product) => product.id === parseInt(id))
+            const product = products.find((product) => product.id === parseInt(id))
             dispatch(setSelectedProduct(product))
         }
-    }, [dispatch, selectedProduct])
+    }, [dispatch, selectedProduct, products])
 
     return (
         <>
