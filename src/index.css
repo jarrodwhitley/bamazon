@@ -162,7 +162,7 @@ button:focus-visible {
     @apply fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50;
 
     .modal__content {
-        @apply bg-white p-4 rounded-md shadow-lg w-full lg:w-1/2 mx-auto mt-20;
+        @apply bg-white p-4 rounded-md shadow-lg w-full md:w-1/2 md:max-w-[500px] mx-auto mt-20;
 
         .modal__close-button {
             @apply absolute top-2 right-2 cursor-pointer;
