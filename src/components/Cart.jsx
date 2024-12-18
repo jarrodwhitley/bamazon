@@ -25,7 +25,7 @@ export default function Cart() {
     // if the use clicks outside the cart, close it
     useEffect(() => {
         function handleClickOutside(event) {
-            if (event.target.closest('.nav-links__link.cart')) {
+            if (event.target.closest('.nav-links__link.cart') || document.querySelector('.mobile-cart-btn')) {
                 return
             }
             if (event.target.closest('.cart__container') === null && cart.showCart) {
