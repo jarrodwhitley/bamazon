@@ -60,8 +60,7 @@ export default function NavigationBar() {
     }
     const handleToggleCart = (e) => {
         e.stopPropagation()
-        console.log('click', e.target.closest('.cart'))
-        // dispatch(setShowMobileMenu(false))
+        dispatch(setShowMobileMenu(false))
         if (e.target.closest('.cart')) {
             if (location.pathname === '/checkout') {
                 navigate('/checkout')
