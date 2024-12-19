@@ -7,7 +7,8 @@
     "scripts": {
         "dev": "vite --host",
         "build": "vite build",
-        "start-server": "node server.js",
+        "start": "node server.js",
+        "heroku-logs": "heroku logs --tail --app bamazon",
         "lint": "eslint .",
         "preview": "vite preview",
         "postbuild": "cp CNAME build/ && cp -r favicon build/",
