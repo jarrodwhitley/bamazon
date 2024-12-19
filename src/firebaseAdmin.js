@@ -2,7 +2,7 @@ import admin from "firebase-admin";
 import dotenv from "dotenv";
 dotenv.config();
 
-const serviceAccount = './.firebase/serviceAccountKey.json';
+const serviceAccount = JSON.parse(process.env.VITE_FIREBASE_SERVICE_ACCOUNT);
 console.log('serviceAccount', serviceAccount)
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
