@@ -7,6 +7,7 @@ import Boombam from '../assets/images/bamazon_logo_boombam.png'
 import ProductCard from '../components/ProductCard.jsx'
 import BamazonAd from '../assets/images/bamazon_ad.png'
 import { getDatabase, ref, get, update } from 'firebase/database';
+import { admin } from '../firebaseAdmin.js';
 
 export default function Checkout() {
     const dispatch = useDispatch()
@@ -75,14 +76,9 @@ export default function Checkout() {
     const handleRemoveFromCart = (e, id) => {
         dispatch(removeItem(id))
     }
-    // const handleCheckoutClick = () => {
-    //     setShowBam(true)
-    //     setTimeout(() => {
-    //         setShowBam(false)
-    //         dispatch(clearCart())
-    //         navigate('/')
-    //     }, 2000)
-    // }
+    
+    const dbRef = admin.database().ref('products/1');
+    dbRef.update({ stock: 15 });
     
     useEffect(() => {
         window.scrollTo(0, 0)
