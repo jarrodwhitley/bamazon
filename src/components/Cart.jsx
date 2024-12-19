@@ -25,7 +25,7 @@ export default function Cart() {
     // if the use clicks outside the cart, close it
     useEffect(() => {
         function handleClickOutside(event) {
-            if (event.target.closest('.cart') === null && cart.showCart) {
+            if ((!event.target.closest('.cart') && !event.target.closest('.cart__container')) && cart.showCart) {
                 dispatch(setShowCart(false))
             }
         }
