@@ -9,37 +9,24 @@ const app = express();
 const __dirname = path.resolve();
 
 // Initialize database connection
-let db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-})
-
-db.connect((err) => {
-    if (err) {
-      console.error('Error connecting to database: ', err);
-      return;
-    }
-    console.log('Connected to the database');
-  });
+let db;
 /* eslint-disable */
-// async function initializeDatabase() {
-//     console.log('Initializing database');
-//     try {
-//         db = await mysql.createConnection(process.env.JAWSDB_MARIA_URL);
-//         console.log('Connected to the database');
-//     } catch (error) {
-//         console.error('Error connecting to the database:', error);
-//         process.exit(1); // Exit the app if the database connection fails
-//     }
-// }
-// /* eslint-enable */
+async function initializeDatabase() {
+    console.log('Initializing database');
+    try {
+        db = await mysql.createConnection(process.env.JAWSDB_MARIA_URL);
+        console.log('Connected to the database');
+    } catch (error) {
+        console.error('Error connecting to the database:', error);
+        process.exit(1); // Exit the app if the database connection fails
+    }
+}
+/* eslint-enable */
 
-// initializeDatabase();
+initializeDatabase();
 
 // API route to query the database
-app.get('/products', async (req, res) => {
+app.get('/api/products', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).send('Database connection not established');
@@ -62,7 +49,7 @@ app.get('*', (req, res) => {
 });
 
 // Start the server
- 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
