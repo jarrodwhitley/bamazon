@@ -25,7 +25,10 @@ export default function Cart() {
     // if the use clicks outside the cart, close it
     useEffect(() => {
         function handleClickOutside(event) {
-            if ((!event.target.closest('.cart') && !event.target.closest('.cart__container')) && cart.showCart) {
+            if ((!event.target.closest('.cart') &&
+             !event.target.closest('.cart__container')) &&
+             !event.target.closest('.mobile-cart-btn') &&
+              cart.showCart) {
                 dispatch(setShowCart(false))
             }
         }
@@ -36,7 +39,7 @@ export default function Cart() {
     }, [cart, dispatch])
 
     return (
-        <div className={'cart__container fixed w-full lg:w-[400px] h-full overflow-hidden pb-32 top-[100px] right-0 bg-white shadow-lg animate__animated animate__faster z-10 px-4 ' + (cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ')}>
+        <div className={'cart__container animate__animated animate__faster ' + (cart.showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ')}>
             {cart.items.length > 0 && <div className={'text-base lg:text-2xl font-semibold pl-6 py-2 lg:py-4 border-b'}>Your cart</div>}
 
             {cart.items.length > 0 && (
@@ -65,12 +68,12 @@ export default function Cart() {
                     </div>
 
                     {/* Subtotal and Checkout Button */}
-                    <div className={'flex flex-col justify-evenly items-center h-fit w-full bg-white p-4 pr-6 lg:pb-10 shadow-2xl absolute top-auto left-0 right-0 bottom-[100px] overflow-auto shadow-[0_0_8px_rgba(0,0,0,0.2)]'}>
+                    <div className={'cart__summary '}>
                         <div className={'cart__savings w-full flex items-center justify-between pt-2'}>
                             <span className={'text-sm font-semibold'}>Total Savings:</span>
                             <span className={'font-semibold'}>-${totalSavings.toFixed(2)}</span>
                         </div>
-                        <div className={'cart__subtotal w-full flex items-center justify-between pt-2'}>
+                        <div className={'cart__subtotal w-full flex items-center justify-between'}>
                             <span className={'text-sm font-semibold'}>Subtotal:</span>
                             <span className={'font-semibold'}>${cart.items.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2)}</span>
                         </div>
