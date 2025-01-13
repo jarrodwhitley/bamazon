@@ -1,7 +1,5 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
-import { ref, getDatabase, onValue } from 'firebase/database';
 import { useSelector, useDispatch } from "react-redux";
 import { setIsMobile } from './store/uiSlice';
 import { setProducts } from './store/productsSlice.js';
@@ -20,10 +18,6 @@ import LoadingOverlay from "./components/LoadingOverlay.jsx";
 import Cart from './components/Cart.jsx';
 import MobileMenu from './components/MobileMenu.jsx';
 import PageNotFound from './components/404.jsx';
-import { firebaseConfig } from './firebaseConfig.js';
-import admin from './firebaseAdmin.js'
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
 
 export default function App() {
     const dispatch = useDispatch();
@@ -32,23 +26,23 @@ export default function App() {
     const products = useSelector(state => state.products);
     const [productsData, setProductsData] = useState([]);
     
-    // DB update test
-    //  useEffect(() => {
-    //      const ref = admin.database().ref('products/0');
-    //      ref.update({ stock: 15 });
-    //  }, [])
-    
     useEffect(() => {
-        const productsRef = ref(database, 'products');
-        onValue(productsRef, (snapshot) => {
+        const fetchProducts = async () => {
             try {
-                const data = snapshot.val();
+                const response = await fetch('/api/products');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
                 setProductsData(data);
+                dispatch(setProducts(data));
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching products:', error);
             }
-        });
-    }, []);
+        };
+
+        fetchProducts();
+    }, [dispatch]);
     
     useEffect(() => {
         dispatch(setProducts(productsData.map(product => {

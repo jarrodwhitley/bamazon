@@ -1,25 +1,55 @@
 import express from 'express';
 import path from 'path';
-import admin from './src/firebaseAdmin.js';
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const __dirname = path.resolve();
 
+// Initialize database connection
+let db;
+/* eslint-disable */
+async function initializeDatabase() {
+    try {
+        db = await mysql.createConnection(process.env.JAWSDB_MARIA_URL);
+        console.log('Connected to the database');
+    } catch (error) {
+        console.error('Error connecting to the database:', error);
+        process.exit(1); // Exit the app if the database connection fails
+    }
+}
+/* eslint-enable */
+
+initializeDatabase();
+
+// API route to query the database
+app.get('/api/products', async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).send('Database connection not established');
+        }
+
+        const [rows] = await db.execute('SELECT * FROM products');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error querying the database:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('/api/update-stock', async (req, res) => {
-    const dbRef = admin.database().ref('products/1');
-    await dbRef.update({ stock: 15 });
-    res.send('Stock updated');
-});
-
-// Handles any requests that don't match the ones above
+// Handle all other requests
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+// Start the server
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log('Server is running on port 3000');
+    console.log(`Server is running on port ${PORT}`);
 });
