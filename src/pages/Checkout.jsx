@@ -6,7 +6,6 @@ import {setCart, updateItem, removeItem, clearCart} from '../store/cartSlice'
 import Boombam from '../assets/images/bamazon_logo_boombam.png'
 import ProductCard from '../components/ProductCard.jsx'
 import BamazonAd from '../assets/images/bamazon_ad.png'
-import { getDatabase, ref, get, update } from 'firebase/database';
 
 export default function Checkout() {
     const dispatch = useDispatch()
