@@ -530,7 +530,7 @@ nav {
 
 /* Checkout ***********************************/
 .checkout__page {
-    @apply h-screen;
+    @apply min-h-screen;
     @screen md {
         background: linear-gradient(to right, #ffffff 50%, #F3F4F6 50%);
     }
