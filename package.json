@@ -8,6 +8,7 @@
         "dev": "vite --host",
         "build": "vite build",
         "start": "node server.js",
+        "heroku-local": "vite --host &&",
         "heroku-logs": "heroku logs --tail --app bamazon",
         "lint": "eslint .",
         "preview": "vite preview",
