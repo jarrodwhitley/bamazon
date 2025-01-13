@@ -11,10 +11,11 @@
         "heroku-logs": "heroku logs --tail --app bamazon",
         "lint": "eslint .",
         "preview": "vite preview",
-        "postbuild": "cp CNAME build/ && cp -r favicon build/",
+        "postbuild": "cp CNAME build/ && cp -r favicon build/ && cp -r Procfile build/",
         "deploy": "rm -rf node_modules/.cache/gh-pages && npm run build && npm run postbuild && gh-pages -d build"
     },
     "dependencies": {
+        "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
         "@formspree/react": "^2.5.1",
         "@headlessui/react": "^2.2.0",
         "@heroicons/react": "^2.2.0",
