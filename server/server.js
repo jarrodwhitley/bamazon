@@ -2,18 +2,11 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import mysql from 'mysql2/promise';
-import cors from 'cors';
-
-const corsOptions = {
-    origin: 'http://localhost:5173',
-    optionsSuccessStatus: 200
-};
+import process from 'process';
 
 dotenv.config();
 
 const app = express();
-app.use(cors(corsOptions));
-
 const __dirname = path.resolve();
 
 // Initialize database connection
@@ -55,7 +48,7 @@ if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../build', 'index.html'));
     });
-} else {
+} else if (process.env.NODE_ENV === 'development') {
     app.use(express.static(path.join(__dirname, '../client')));
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../client', 'index.html'));

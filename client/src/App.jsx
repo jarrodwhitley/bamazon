@@ -28,9 +28,10 @@ export default function App() {
     const [productsData, setProductsData] = useState([]);
     
     useEffect(() => {
+        console.log('running')
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/products');
+                const response = await axios.get('/api/products');
                 console.log('response => ', response)
                 setProductsData(response.data);
                 dispatch(setProducts(response.data));
