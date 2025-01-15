@@ -39,6 +39,9 @@ const cartSlice = createSlice({
         toggleCart(state) {
             state.showCart = !state.showCart
         },
+        setShowCart(state, action) {
+            state.showCart = action.payload
+        }
     },
 })
 
@@ -49,5 +52,6 @@ export const {
     updateItem,
     removeItem,
     toggleCart,
+    setShowCart,
 } = cartSlice.actions
 export default cartSlice.reducer

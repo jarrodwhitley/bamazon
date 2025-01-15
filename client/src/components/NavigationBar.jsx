@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import {setShowMobileMenu, setShowMobileSearch, setModal} from '../store/uiSlice.js'
-import {removeItem, toggleCart} from '../store/cartSlice.js'
+import {setShowCart, removeItem, toggleCart} from '../store/cartSlice.js'
 import {setSelectedProduct} from '../store/selectedProductSlice.js'
 import {updateFilters, clearFilters} from '../store/filtersSlice.js'
 import SearchBar from './SearchBar.jsx'
@@ -22,24 +22,9 @@ export default function NavigationBar() {
     const [categories, setCategories] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
-    
-    useEffect(() => {
-        if (Array.isArray(products)) {
-            if (categories.length < 1) {
-                const newCategories = products.reduce((acc, product) => {
-                    if (!acc.includes(product.category) && product.category !== undefined) {
-                        acc.push(product.category)
-                    }
-                    return acc
-                }, [])
-                setCategories(newCategories)
-            }
-        }
-    }, [products])
-    
     const handleLogoClick = () => {
         dispatch(clearFilters())
-        dispatch(toggleCart(false))
+        dispatch(setShowCart(false))
     }
     const handleSetSearchString = (string) => {
         dispatch(
@@ -57,12 +42,17 @@ export default function NavigationBar() {
     const handleDropDownItemClick = (category) => () => {
         dispatch(updateFilters({category: category}))
     }
-    const handleToggleCart = () => {
+    const handleToggleCart = (e) => {
+        e.stopPropagation()
         dispatch(setShowMobileMenu(false))
-        if (location.pathname === '/checkout') {
-            navigate('/checkout')
-        } else {
-            dispatch(toggleCart())
+        if (e.target.closest('.cart') || e.target.closest('.mobile-cart-btn')) {
+            if (location.pathname === '/checkout') {
+                console.log('1')
+                navigate('/checkout')
+            } else {
+                console.log('2')
+                dispatch(toggleCart())
+            }
         }
     }
     const handleLaunchModal = (modalType) => () => {
@@ -72,6 +62,20 @@ export default function NavigationBar() {
     const toggleMobileSearch = () => {
         dispatch(setShowMobileSearch(!showMobileSearch))
     }
+    
+    useEffect(() => {
+        if (Array.isArray(products)) {
+            if (categories.length < 1) {
+                const newCategories = products.reduce((acc, product) => {
+                    if (!acc.includes(product.category) && product.category !== undefined) {
+                        acc.push(product.category)
+                    }
+                    return acc
+                }, [])
+                setCategories(newCategories)
+            }
+        }
+    }, [products])
     
     return (
         <nav className={''}>

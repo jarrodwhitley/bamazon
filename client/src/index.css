@@ -515,18 +515,22 @@ nav {
 
 /* Cart ***********************************/
 .cart__container {
+    @apply fixed w-full lg:w-[400px] h-full overflow-hidden pb-2 top-[100px] right-0 bg-white shadow-lg z-10;
     .cart__items {
-        @apply  h-[calc(100%-64px)] pb-[150px] overflow-auto;
+        @apply  h-[calc(100%-64px)] max-h-[50vh] pb-2 mx-4 overflow-auto;
+    }
+    .cart__summary {
+        @apply flex flex-col justify-evenly items-center h-fit w-full bg-white p-4 pr-6 pb-10 shadow-2xl lg:absolute top-auto left-0 right-0 bottom-[100px] overflow-auto shadow-[0_0_8px_rgba(0,0,0,0.2)] z-10
     }
 }
 .cart__checkout-btn,
-.checkout__sidebar__checkout-btn{
+.checkout__sidebar__checkout-btn {
     @apply w-fit h-fit mt-8 mb-6 py-2 px-8 cursor-pointer text-white hover:text-white bg-orange-400 hover:bg-orange-500 font-semibold rounded;
 }
 
 /* Checkout ***********************************/
 .checkout__page {
-    @apply h-screen;
+    @apply min-h-screen;
     @screen md {
         background: linear-gradient(to right, #ffffff 50%, #F3F4F6 50%);
     }
