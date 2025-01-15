@@ -21,21 +21,43 @@ async function initializeDatabase() {
         process.exit(1); // Exit the app if the database connection fails
     }
 }
+// Function to process reviews
+function processReviews(row) {
+    const reviews = [];
+    let index = 0;
+
+    while (row[`reviews_${index}_rating`] !== undefined) {
+        reviews.push({
+            rating: row[`reviews_${index}_rating`],
+            comment: row[`reviews_${index}_comment`],
+            date: row[`reviews_${index}_date`],
+            reviewerName: row[`reviews_${index}_reviewerName`],
+            reviewerEmail: row[`reviews_${index}_reviewerEmail`]
+        });
+        index++;
+    }
+    return reviews;
+}
+function processImages(row) {
+    return row.images ? row.images.split(',') : [];
+}
 
 initializeDatabase();
 
 // API route to query the database
 app.get('/api/products', async (req, res) => {
-    console.log('API endpoint /api/products hit');
     try {
         if (!db) {
-            console.log('Database connection not established');
             return res.status(500).send('Database connection not established');
         }
-
         const [rows] = await db.execute('SELECT * FROM products');
-        console.log('Database query successful');
-        res.json(rows);
+        // Convert the images column from a comma-separated string to an array
+        const formattedRows = rows.map(row => ({
+            ...row,
+            images: processImages(row),
+            reviews: processReviews(row)
+        }));
+        res.json(formattedRows);
     } catch (error) {
         console.error('Error querying the database:', error);
         res.status(500).send('Internal Server Error');

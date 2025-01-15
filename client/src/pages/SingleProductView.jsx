@@ -52,7 +52,8 @@ export default function SingleProductView() {
     
     useEffect(() => {
         scrollToTop()
-        if (Object.keys(selectedProduct).length === 0) {
+        console.log('selectedProduct', selectedProduct)
+        if (!selectedProduct.id) {
             const id = window.location.hash.split('/')[2]
             const product = products.find((product) => product.id === parseInt(id))
             dispatch(setSelectedProduct(product))
@@ -61,7 +62,7 @@ export default function SingleProductView() {
 
     return (
         <>
-            {selectedProduct && Object.keys(selectedProduct).length > 0 && (
+            {selectedProduct.id && (
                 <>
                     <div className={'single-product-view ' + (!closingModal ? 'animate__slideInUp animate__faster' : 'animate__zoomOut')} onClick={(e) => e.stopPropagation()}>
                         <div className={'single-product-view__images row-start-1 col-start-1 grid grid-cols-1 md:grid-cols-[auto_1fr] grid-rows-1 w-full h-[30vh] lg:h-full'}>
@@ -148,15 +149,15 @@ export default function SingleProductView() {
                                     </div>
                                     <div className={'single-product-view__dimensions__row col-span-full flex items-center justify-center'}>
                                         <div className={'single-product-view__row-title'}>Width</div>
-                                        <div className={'single-product-view__row-value'}>{selectedProduct.dimensions.width} in.</div>
+                                        <div className={'single-product-view__row-value'}>{selectedProduct.dimensions_width} in.</div>
                                     </div>
                                     <div className={'single-product-view__dimensions__row col-span-full flex items-center justify-center'}>
                                         <div className={'single-product-view__row-title'}>Height</div>
-                                        <div className={'single-product-view__row-value'}>{selectedProduct.dimensions.height} in.</div>
+                                        <div className={'single-product-view__row-value'}>{selectedProduct.dimensions_height} in.</div>
                                     </div>
                                     <div className={'single-product-view__dimensions__row col-span-full flex items-center justify-center'}>
                                         <div className={'single-product-view__row-title'}>Depth</div>
-                                        <div className={'single-product-view__row-value'}>{selectedProduct.dimensions.depth} in.</div>
+                                        <div className={'single-product-view__row-value'}>{selectedProduct.dimensions_depth} in.</div>
                                     </div>
                                 </div>
                             </div>

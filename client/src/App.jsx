@@ -28,7 +28,6 @@ export default function App() {
     const [productsData, setProductsData] = useState([]);
     
     useEffect(() => {
-        console.log('running')
         const fetchProducts = async () => {
             try {
                 const response = await axios.get('/api/products');
