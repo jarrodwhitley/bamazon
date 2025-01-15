@@ -12,7 +12,8 @@ export const formattedPrice = (product, type = 'sale', isMobile = false) => {
             </span>
         )
     } else if (type === 'sale') {
-        const [dollars, cents] = product.price.toString().split('.')
+        let [dollars, cents] = product.price.toString().split('.')
+        if (cents) cents = cents.slice(0, 2)
         return (
             <span className="items-start flex font-semibold">
                 <span className="text-sm translate-y-[3px]">$</span>
