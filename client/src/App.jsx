@@ -1,9 +1,9 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile } from './store/uiSlice.js';
+import { setIsMobile } from './store/uiSlice';
 import { setProducts } from './store/productsSlice.js';
-import { setIsLoading } from './store/uiSlice.js';
+import { setIsLoading } from './store/uiSlice';
 import Home from './pages/Home.jsx';
 import SingleProductView from './pages/SingleProductView.jsx';
 import RelatedProductsView from './pages/RelatedProductsView.jsx';
@@ -18,6 +18,7 @@ import LoadingOverlay from "./components/LoadingOverlay.jsx";
 import Cart from './components/Cart.jsx';
 import MobileMenu from './components/MobileMenu.jsx';
 import PageNotFound from './components/404.jsx';
+import axios from 'axios';
 
 export default function App() {
     const dispatch = useDispatch();
@@ -29,18 +30,14 @@ export default function App() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('/api/products');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setProductsData(data);
-                dispatch(setProducts(data));
+                const response = await axios.get('http://localhost:3000/api/products');
+                console.log('response => ', response)
+                setProductsData(response.data);
+                dispatch(setProducts(response.data));
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
         };
-
         fetchProducts();
     }, [dispatch]);
     

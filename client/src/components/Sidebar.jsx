@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useSelector, useDispatch} from 'react-redux'
-import {setFilters, updateFilters, clearFilters, filtersActive} from '../store/filtersSlice.js'
-import {capitalizeFirstLetter, arrayMatch} from '../utils/functions.jsx'
+import {setFilters, updateFilters, clearFilters, filtersActive} from '../store/filtersSlice'
+import {capitalizeFirstLetter, arrayMatch} from '../utils/functions'
 import {filteredProducts} from '../store/productsSlice.js'
 import {Link} from 'react-router-dom'
 

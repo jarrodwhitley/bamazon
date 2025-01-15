@@ -2,11 +2,18 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import mysql from 'mysql2/promise';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import cors from 'cors';
+
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200
+};
 
 dotenv.config();
 
 const app = express();
+app.use(cors(corsOptions));
+
 const __dirname = path.resolve();
 
 // Initialize database connection
@@ -45,28 +52,13 @@ app.get('/api/products', async (req, res) => {
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../build')));
-
-    // Handle all other requests in production
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../build', 'index.html'));
     });
 } else {
-    // Proxy API requests to the server
-    app.use('/api', createProxyMiddleware({
-        target: 'http://localhost:3000', // Port of your Express server
-        changeOrigin: true,
-        onProxyReq: (proxyReq, req, res) => {
-            console.log('Proxying request to:', proxyReq.path);
-        },
-        onProxyRes: (proxyRes, req, res) => {
-            console.log('Received response from target:', proxyRes.statusCode);
-        },
-    }));
-
-    // Let Vite handle client-side requests
+    app.use(express.static(path.join(__dirname, '../client')));
     app.get('*', (req, res) => {
-        console.log('Redirecting to Vite dev server');
-        res.redirect('http://localhost:5173'); // Default Vite dev server port
+        res.sendFile(path.join(__dirname, '../client', 'index.html'));
     });
 }
 

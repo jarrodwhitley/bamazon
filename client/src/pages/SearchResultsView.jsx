@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import ProductCard from '../components/ProductCard.jsx'
+import ProductCard from '../components/ProductCard'
 import { scrollToTop } from '../utils/functions.jsx'
 import store from '../store.js'
 import { updateFilters, clearFilters } from '../store/filtersSlice.js'

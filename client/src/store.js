@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from './store/cartSlice.js';
-import productsReducer from './store/productsSlice.js';
-import selectedProductReducer from './store/selectedProductSlice.js';
-import filtersReducer from './store/filtersSlice.js';
+import cartReducer from './store/cartSlice';
+import productsReducer from './store/productsSlice';
+import selectedProductReducer from './store/selectedProductSlice';
+import filtersReducer from './store/filtersSlice';
 import uiReducer from "./store/uiSlice.js";
 
 const localStorageMiddleware = (storeAPI) => (next) => (action) => {
