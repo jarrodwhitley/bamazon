@@ -1,7 +1,7 @@
 import React from 'react'
 import {useMemo, useState, useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import {setCart, updateItem, removeItem, clearCart} from '../store/cartSlice'
 import Boombam from '../assets/images/bamazon_logo_boombam.png'
 import ProductCard from '../components/ProductCard.jsx'
@@ -29,10 +29,6 @@ export default function Checkout() {
         return (parseFloat(subTotal) + shippingCost).toFixed(2)
     }, [subTotal])
     const checkAndUpdateQuantities = async (cartItems) => {
-        // hit the products api and check if the quantities are still available
-        // if not, throw an error
-        // if they are, update the quantities in the database
-        // then update the quantities in the cart
         const response = await fetch('/api/check-quantities', {
             method: 'POST',
             headers: {
@@ -79,8 +75,7 @@ export default function Checkout() {
             }
     
             const data = await response.json();
-            alert('Checkout successful!');
-            // Optionally, clear the cart or redirect the user
+            navigate('/order-complete')
         } catch (error) {
             console.error('Error during checkout:', error);
             alert('Checkout failed: ' + error.message);
@@ -92,9 +87,6 @@ export default function Checkout() {
     const handleRemoveFromCart = (e, id) => {
         dispatch(removeItem(id))
     }
-    
-    // const dbRef = admin.database().ref('products/1');
-    // dbRef.update({ stock: 15 });
     
     useEffect(() => {
         window.scrollTo(0, 0)

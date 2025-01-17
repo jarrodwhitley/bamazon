@@ -10,6 +10,7 @@ import RelatedProductsView from './pages/RelatedProductsView.jsx';
 import SearchResultsView from './pages/SearchResultsView.jsx';
 import CategoryView from './pages/CategoryView.jsx';
 import Checkout from './pages/Checkout.jsx';
+import OrderComplete from './pages/OrderComplete.jsx';
 import NavigationBar from './components/NavigationBar.jsx';
 import Footer from './components/Footer.jsx';
 import Modal from './components/Modal.jsx';
@@ -80,6 +81,7 @@ export default function App() {
                     <Route path={'results/:searchString'} element={<SearchResultsView />} />
                     <Route path={'category/:category'} element={<CategoryView />} />
                     <Route path={'checkout'} element={<Checkout />} />
+                    <Route path={'order-complete'} element={<OrderComplete />} />
                     <Route path={'*'} element={<PageNotFound />} />
                 </Routes>
                 <Cart />

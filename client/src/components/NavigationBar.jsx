@@ -8,6 +8,7 @@ import {updateFilters, clearFilters} from '../store/filtersSlice.js'
 import SearchBar from './SearchBar.jsx'
 import BamazonLogo from '../assets/images/bamazon_logo_v1.1.png'
 import {capitalizeFirstLetter} from '../utils/functions.jsx'
+import Modal from './Modal.jsx'
 
 export default function NavigationBar() {
     const dispatch = useDispatch()
@@ -130,10 +131,16 @@ export default function NavigationBar() {
                                         Contact
                                     </span>
                                 </div>
-                                <div className={'nav-links__link user cursor-not-allowed'} onClick={() => alert('Coming soon!')}>
-                                    <span className={'font-semibold'}>
-                                        Account
-                                    </span>
+                                <div className={'nav-links__link user'}>
+                                    <span className={'font-semibold'}>Account</span>
+                                    <div className={'nav-links__link__dropdown'}>
+                                        {/* <Link to={'/account/settings'} key={index}
+                                                  className={'nav-links__link__dropdown-item'}
+                                                  onClick={handleDropDownItemClick(category)}>
+                                                {capitalizeFirstLetter(category)}
+                                            </Link> */}
+                                        <div className={'nav-links__link__dropdown-item'} onClick={handleLaunchModal('login')}>Login</div>
+                                    </div>
                                 </div>
                                 <div className={'nav-links__link cart cursor-pointer'}
                                      onClick={handleToggleCart}>

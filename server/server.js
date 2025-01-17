@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import mysql from 'mysql2/promise';
-import process from 'process';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -77,10 +78,6 @@ app.put('/api/checkout', async (req, res) => {
         if (!db) {
             return res.status(500).json({ error: 'Database connection not established' });
         }
-
-        // Start a transaction
-        await db.beginTransaction();
-
         // Update stock values for each item in the cart
         for (const item of items) {
             const [rows] = await db.execute('SELECT stock FROM products WHERE id = ?', [item.id]);
@@ -89,8 +86,6 @@ app.put('/api/checkout', async (req, res) => {
             }
 
             const currentStock = rows[0].stock;
-            console.log('Current stock:', currentStock);
-            console.log('item.quantity', item.quantity);
             if (currentStock < item.quantity) {
                 throw new Error(`Insufficient stock for product with id ${item.id}`);
             }
@@ -107,6 +102,60 @@ app.put('/api/checkout', async (req, res) => {
         await db.rollback();
         console.error('Error during checkout:', error);
         res.status(500).json({ error: 'Internal Server Error' }); // Send JSON response
+    }
+});
+
+// API route to handle login
+app.post('/api/login', async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).send('Database connection not established');
+        }
+        const [rows] = await db.execute('SELECT * FROM users');
+        console.log('All Users:', rows);
+        if (rows.length === 0) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+        const user = rows.find(user => user.email_address === req.body.email && user.password === req.body.password);
+        console.log('User matched', user);
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+        const token = jwt.sign({ email: user.email_address }, process.env.JWT_SECRET, { expiresIn: '1h' });        
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error('Error querying the database:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// API route to handle registration
+app.post('/api/register', async (req, res) => {
+    console.log('Registering user...');
+    try {
+        if (!db) {
+            return res.status(500).send('Database connection not established');
+        }
+        const [rows] = await db.execute('SELECT * FROM users');
+        if (rows.length === 0) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+        const user = rows.find(user => user.email_address === req.body.email);
+        if (user) {
+            return res.status(409).json({ error: 'User already exists' });
+        }
+        // Generate a unique id for the user by getting the last id and adding 1
+        const [lastRow] = await db.execute('SELECT * FROM users ORDER BY id DESC LIMIT 1');
+        const id = lastRow.length === 0 ? 1 : lastRow[0].id + 1;
+        // Generate a salt and hash the password
+        const salt = await bcrypt.genSalt(12);
+        // Hash the password using the generated salt
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        await db.execute('INSERT INTO users (id, email_address, password_salt, password_hash) VALUES (?, ?, ?, ?)', [id, req.body.email, salt, hashedPassword]);
+        res.status(200).json({ message: 'User registered successfully' });
+    } catch (error) {
+        console.error('Error querying the database:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
