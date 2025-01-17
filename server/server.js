@@ -7,6 +7,7 @@ import process from 'process';
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 const __dirname = path.resolve();
 
 // Initialize database connection
@@ -41,6 +42,9 @@ function processReviews(row) {
 function processImages(row) {
     return row.images ? row.images.split(',') : [];
 }
+function processTags(row) {
+    return row.tags ? row.tags.split(',') : [];
+}
 
 initializeDatabase();
 
@@ -55,12 +59,54 @@ app.get('/api/products', async (req, res) => {
         const formattedRows = rows.map(row => ({
             ...row,
             images: processImages(row),
+            tags: processTags(row),
             reviews: processReviews(row)
         }));
         res.json(formattedRows);
     } catch (error) {
         console.error('Error querying the database:', error);
         res.status(500).send('Internal Server Error');
+    }
+});
+
+// API route to handle checkout and update stock values
+app.put('/api/checkout', async (req, res) => {
+    const { items } = req.body;
+
+    try {
+        if (!db) {
+            return res.status(500).json({ error: 'Database connection not established' });
+        }
+
+        // Start a transaction
+        await db.beginTransaction();
+
+        // Update stock values for each item in the cart
+        for (const item of items) {
+            const [rows] = await db.execute('SELECT stock FROM products WHERE id = ?', [item.id]);
+            if (rows.length === 0) {
+                throw new Error(`Product with id ${item.id} not found`);
+            }
+
+            const currentStock = rows[0].stock;
+            console.log('Current stock:', currentStock);
+            console.log('item.quantity', item.quantity);
+            if (currentStock < item.quantity) {
+                throw new Error(`Insufficient stock for product with id ${item.id}`);
+            }
+
+            await db.execute('UPDATE products SET stock = stock - ? WHERE id = ?', [item.quantity, item.id]);
+        }
+
+        // Commit the transaction
+        await db.commit();
+
+        res.status(200).json({ message: 'Checkout successful and stock updated' }); // Send JSON response
+    } catch (error) {
+        // Rollback the transaction in case of error
+        await db.rollback();
+        console.error('Error during checkout:', error);
+        res.status(500).json({ error: 'Internal Server Error' }); // Send JSON response
     }
 });
 

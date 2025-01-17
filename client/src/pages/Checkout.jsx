@@ -57,15 +57,33 @@ export default function Checkout() {
     };
     const handleCheckout = async () => {
         try {
-            await checkAndUpdateQuantities(cart.items);
-            setShowBam(true)
-            setTimeout(() => {
-                setShowBam(false)
-                dispatch(clearCart())
-                navigate('/')
-            }, 2000)
+            const response = await fetch('/api/checkout', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    items: cart.items.map(item => ({
+                        id: item.id,
+                        quantity: item.quantity,
+                        sku: item.sku,
+                        price: item.price,
+                        warrantyInformation: item.warrantyInformation,
+                        returnPolicy: item.returnPolicy
+                    }))
+                }),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Checkout failed');
+            }
+    
+            const data = await response.json();
+            alert('Checkout successful!');
+            // Optionally, clear the cart or redirect the user
         } catch (error) {
-            console.error(error.message);
+            console.error('Error during checkout:', error);
+            alert('Checkout failed: ' + error.message);
         }
     };
     const handleQuantityChange = (e, id) => {
