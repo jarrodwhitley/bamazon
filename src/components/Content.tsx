@@ -15,7 +15,7 @@
 // export default function Content({isLoading}) {
 //     const dispatch = useDispatch()
 //     const isMobile = useSelector((state) => state.ui.isMobile)
-//     const products = useSelector((state) => state.products) // store.js state values accessed this way
+//     const products = useSelector((state) => state.products) // store.ts state values accessed this way
 //     const filteredProductsState = useSelector(filteredProducts) // other values accessed this way
 //     const selectedFilters = useSelector((state) => state.filters)
 //     const filtersActiveState = useSelector(filtersActive)

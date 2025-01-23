@@ -1,10 +1,10 @@
 import React from 'react'
 import {useMemo, useState, useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import {setCart, updateItem, removeItem, clearCart} from '../store/cartSlice'
+import {useNavigate} from 'react-router-dom'
+import {setCart, updateItem, removeItem, clearCart} from '../store/cartSlice.ts'
 import Boombam from '../assets/images/bamazon_logo_boombam.png'
-import ProductCard from '../components/ProductCard.jsx'
+import ProductCard from '../components/ProductCard.tsx'
 import BamazonAd from '../assets/images/bamazon_ad.png'
 
 export default function Checkout() {
@@ -29,7 +29,7 @@ export default function Checkout() {
         return (parseFloat(subTotal) + shippingCost).toFixed(2)
     }, [subTotal])
     const handleQuantityChange = (e, id) => {
-        dispatch(updateItem({ id, quantity: parseInt(e.target.value) }))
+        dispatch(updateItem({id, quantity: parseInt(e.target.value)}))
     }
     const handleRemoveFromCart = (e, id) => {
         dispatch(removeItem(id))
@@ -42,11 +42,11 @@ export default function Checkout() {
             navigate('/')
         }, 2000)
     }
-    
+
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
-    
+
     return (
         <>
             {cart.items.length > 0 && (
@@ -84,8 +84,7 @@ export default function Checkout() {
                                     </div>
                                 </div>
                             ))}
-                            {showBam &&
-                                <img src={Boombam} alt={'Bamazon logo'} className={'checkout__bam animate__animated animate__bounceIn animate__faster'} />}
+                            {showBam && <img src={Boombam} alt={'Bamazon logo'} className={'checkout__bam animate__animated animate__bounceIn animate__faster'} />}
                         </div>
                         <div className={'checkout__sidebar'}>
                             <div className={'checkout__sidebar__subtotal checkout__sidebar__row'}>
@@ -101,7 +100,9 @@ export default function Checkout() {
                                 <div className={'checkout__sidebar__value'}>{`$${total}`}</div>
                             </div>
                             <div className={'checkout__sidebar__button-container checkout__sidebar__row'}>
-                                <div className={'checkout__sidebar__checkout-btn'} onClick={handleCheckoutClick}>Submit Payment</div>
+                                <div className={'checkout__sidebar__checkout-btn'} onClick={handleCheckoutClick}>
+                                    Submit Payment
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -129,6 +130,5 @@ export default function Checkout() {
                 </>
             )}
         </>
-    
     )
 }

@@ -1,4 +1,7 @@
-export const formattedPrice = (product, type = 'sale', isMobile = false) => {
+import React from 'react'
+import Product from '../types/Product'
+
+export const formattedPrice = (product: Product, type: string = 'sale', isMobile: boolean = false) => {
     if (!product) return
     if (type === 'list') {
         const listPrice = product.price + product.price * (product.discountPercentage / 100)
@@ -23,12 +26,16 @@ export const formattedPrice = (product, type = 'sale', isMobile = false) => {
     }
 }
 
-export const formattedDate = (date) => {
-    const options = {year: 'numeric', month: 'long', day: 'numeric'}
+export const formattedDate = (date: Date) => {
+    const options: object = {year: 'numeric', month: 'long', day: 'numeric'}
     return new Date(date).toLocaleDateString(undefined, options)
 }
 
-export const capitalizeFirstLetter = (val) => {
+interface CapitalizeFirstLetter {
+    (val: string): string
+}
+
+export const capitalizeFirstLetter: CapitalizeFirstLetter = (val) => {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1)
 }
 
@@ -42,16 +49,22 @@ export const scrollToTop = () => {
     }
 }
 
-export const arrayMatch = (arr1, arr2) => {
+interface ArrayMatch {
+    (arr1: any[], arr2: any[]): boolean
+}
+
+export const arrayMatch: ArrayMatch = (arr1, arr2) => {
     return arr1.length === arr2.length && arr1.every((val, index) => val === arr2[index])
 }
 
-export const scrollToElementByID = (elementId) => {
+export const scrollToElementByID = (elementId: string) => {
     console.log('scrolling to', elementId)
     const element = document.getElementById(elementId)
     console.log('element', element)
-    element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-    })
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        })
+    }
 }

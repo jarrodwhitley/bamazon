@@ -1,32 +1,33 @@
-import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from './store/cartSlice';
-import productsReducer from './store/productsSlice';
-import selectedProductReducer from './store/selectedProductSlice';
-import filtersReducer from './store/filtersSlice';
-import uiReducer from "./store/uiSlice.js";
-
-const localStorageMiddleware = (storeAPI) => (next) => (action) => {
-    const result = next(action);
-    
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var toolkit_1 = require("@reduxjs/toolkit");
+var cartSlice_1 = __importDefault(require("./store/cartSlice"));
+var productsSlice_1 = __importDefault(require("./store/productsSlice"));
+var selectedProductSlice_1 = __importDefault(require("./store/selectedProductSlice"));
+var filtersSlice_1 = __importDefault(require("./store/filtersSlice"));
+var uiSlice_js_1 = __importDefault(require("./store/uiSlice.js"));
+var localStorageMiddleware = function (storeAPI) { return function (next) { return function (action) {
+    var result = next(action);
     // Save cart state to localStorage
-    const state = storeAPI.getState();
+    var state = storeAPI.getState();
     if (action.type.startsWith('cart/')) {
         localStorage.setItem('cart', JSON.stringify(state.cart));
     }
-    
     return result;
-};
-
-const store = configureStore({
+}; }; };
+var store = (0, toolkit_1.configureStore)({
     reducer: {
-        cart: cartReducer,
-        products: productsReducer,
-        selectedProduct: selectedProductReducer,
-        filters: filtersReducer,
-        ui: uiReducer,
+        cart: cartSlice_1.default,
+        products: productsSlice_1.default,
+        selectedProduct: selectedProductSlice_1.default,
+        filters: filtersSlice_1.default,
+        ui: uiSlice_js_1.default,
     },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(localStorageMiddleware),
+    middleware: function (getDefaultMiddleware) {
+        return getDefaultMiddleware().concat(localStorageMiddleware);
+    },
 });
-
-export default store;
+exports.default = store;

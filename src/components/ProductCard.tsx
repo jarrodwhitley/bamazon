@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
-import store from '../store.js'
-import {setSelectedProduct} from '../store/selectedProductSlice.js'
-import {updateFilters} from '../store/filtersSlice.js'
-import RatingStars from './RatingStars.jsx'
-import DiscountBadge from './DiscountBadge.jsx'
-import {formattedPrice, capitalizeFirstLetter} from '../utils/functions.jsx'
+import store from '../store.ts'
+import {setSelectedProduct} from '../store/selectedProductSlice.ts'
+import {updateFilters} from '../store/filtersSlice.ts'
+import RatingStars from './RatingStars.tsx'
+import DiscountBadge from './DiscountBadge.tsx'
+import {formattedPrice, capitalizeFirstLetter} from '../utils/functions.tsx'
 import {useSelector} from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 export default function ProductCard({product, showDiscount = false, showLowStock = false, categoryCard = false, featuredCard = false}) {
     const {dispatch} = store
@@ -25,9 +25,7 @@ export default function ProductCard({product, showDiscount = false, showLowStock
     const showLowStockWarning = product.stock < 10 && showLowStock
 
     return (
-        <div key={product.id} className={'product-card ' +
-            (categoryCard ? 'category-card ' : '') +
-            (featuredCard ? 'featured-card ' : '')} onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
+        <div key={product.id} className={'product-card ' + (categoryCard ? 'category-card ' : '') + (featuredCard ? 'featured-card ' : '')} onClick={!categoryCard ? () => selectProduct(product) : () => selectCategory(product)}>
             <figure className={'product-card__image-container'}>
                 <img src={product?.thumbnail} className={'product-card__image'} alt={product.title} />
             </figure>

@@ -1,24 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>BAMazon</title>
-    <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/favicon/site.webmanifest">
-</head>
-<body class="bg-white text-blue-950 no-animation">
-<div id="root" class="w-full min-h-screen"></div>
-<script type="module" src="/src/main.jsx"></script>
-<script>
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.body.classList.remove('no-animation');
-        }, 1000);
-    });
-</script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BAMazon</title>
+        <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+        <link rel="manifest" href="/favicon/site.webmanifest" />
+    </head>
+    <body class="bg-white text-blue-950 no-animation">
+        <div id="root" class="w-full min-h-screen"></div>
+        <script type="module" src="/src/main.tsx"></script>
+        <script>
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    document.body.classList.remove('no-animation')
+                }, 1000)
+            })
+        </script>
+    </body>
 </html>

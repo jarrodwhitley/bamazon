@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useSelector, useDispatch} from 'react-redux'
-import {setFilters, updateFilters, clearFilters, filtersActive} from '../store/filtersSlice'
-import {capitalizeFirstLetter, arrayMatch} from '../utils/functions'
-import {filteredProducts} from '../store/productsSlice.js'
+import {setFilters, updateFilters, clearFilters, filtersActive} from '../store/filtersSlice.ts'
+import {capitalizeFirstLetter, arrayMatch} from '../utils/functions.tsx'
+import {filteredProducts} from '../store/productsSlice.ts'
 import {Link} from 'react-router-dom'
 
 export default function Sidebar({initialProducts = null, filterString = null, filterType = null}) {
@@ -22,7 +22,7 @@ export default function Sidebar({initialProducts = null, filterString = null, fi
         {min: 101, max: 1000},
     ]
     const [showFilters, setShowFilters] = useState(false)
-    
+
     useEffect(() => {
         if (filterType === 'category') {
             if (selectedFilters.category) {
@@ -59,7 +59,7 @@ export default function Sidebar({initialProducts = null, filterString = null, fi
             setPrevCategory(newCategories[0])
         }
     }, [categoryLinks.length, filterString, filterType, initialProducts, prevCategory, products, selectedFilters.category])
-    
+
     const handleCheckboxChange = () => {
         let checkboxes = document.querySelectorAll('input[type="checkbox"]')
         let checkboxesObj = {
@@ -82,7 +82,7 @@ export default function Sidebar({initialProducts = null, filterString = null, fi
                 ...checkboxesObj,
                 category: selectedFilters.category || '',
                 searchString: selectedFilters.searchString || '',
-            }),
+            })
         )
     }
     const handleClearFilters = () => {
@@ -97,13 +97,10 @@ export default function Sidebar({initialProducts = null, filterString = null, fi
             checkbox.checked = false
         })
     }
-    
+
     return (
         <>
-            <div className={'sidebar px-4 h-fit left-0 min-w-[300px] lg:w-1/5 ' +
-                (!isMobile ? 'sticky ' : '') +
-                (isMobile ? 'block bg-white fixed top-auto bottom-0 right-0 shadow-2xl shadow-black text-xl p-6 z-10 transition ' : '') +
-                (isMobile && !showFilters ? 'translate-y-full' : '') + (isMobile && showFilters ? ' ' : '')}>
+            <div className={'sidebar px-4 h-fit left-0 min-w-[300px] lg:w-1/5 ' + (!isMobile ? 'sticky ' : '') + (isMobile ? 'block bg-white fixed top-auto bottom-0 right-0 shadow-2xl shadow-black text-xl p-6 z-10 transition ' : '') + (isMobile && !showFilters ? 'translate-y-full' : '') + (isMobile && showFilters ? ' ' : '')}>
                 {isMobile && (
                     <div className={'sidebar__mobile-filter-btn w-[160px] flex items-center justify-center absolute -top-10 right-0 z-50 bg-blue-500 text-white text-base font-semibold p-2 rounded-t shadow '} onClick={() => setShowFilters(!showFilters)}>
                         {(showFilters ? 'Hide' : 'Show') + ' filters'}
@@ -118,7 +115,7 @@ export default function Sidebar({initialProducts = null, filterString = null, fi
                             <h3 className={'text-base font-semibold text-gray-400'}>Categories</h3>
                             <div className={'sidebar__filter-list mt-2'}>
                                 {categoryLinks.map((category, index) => (
-                                    <Link to={`/category/${category}`} key={index} className={'w-fit flex text-blue-600 hover:underline items-center select-none gap-2'} onClick={() => (handleLinkClick(category))}>
+                                    <Link to={`/category/${category}`} key={index} className={'w-fit flex text-blue-600 hover:underline items-center select-none gap-2'} onClick={() => handleLinkClick(category)}>
                                         <span className={'text-base'}>{capitalizeFirstLetter(category)}</span>
                                     </Link>
                                 ))}
@@ -146,17 +143,24 @@ export default function Sidebar({initialProducts = null, filterString = null, fi
                         <div className={'sidebar__filter-list'}>
                             {prices.map((price, index) => (
                                 <div className={'checkbox'} key={index}>
-                                    <input type={'checkbox'} id={`price-${price.min}_${price.max}`} checked={selectedFilters.price === `${price.min}_${price.max}`} onChange={(e) => {
-                                               // Uncheck all other checkboxes
-                                               document.querySelectorAll('input[type="checkbox"][id^="price-"]').forEach((checkbox) => {
-                                                   if (checkbox !== e.target) {
-                                                       checkbox.checked = false
-                                                   }
-                                               })
-                                               handleCheckboxChange()
-                                           }} />
+                                    <input
+                                        type={'checkbox'}
+                                        id={`price-${price.min}_${price.max}`}
+                                        checked={selectedFilters.price === `${price.min}_${price.max}`}
+                                        onChange={(e) => {
+                                            // Uncheck all other checkboxes
+                                            document.querySelectorAll('input[type="checkbox"][id^="price-"]').forEach((checkbox) => {
+                                                if (checkbox !== e.target) {
+                                                    checkbox.checked = false
+                                                }
+                                            })
+                                            handleCheckboxChange()
+                                        }}
+                                    />
                                     <label className={'w-fit flex items-center select-none gap-2'} htmlFor={`price-${price.min}_${price.max}`}>
-                                        <span className={'text-base'}>${price.min} - ${price.max}</span>
+                                        <span className={'text-base'}>
+                                            ${price.min} - ${price.max}
+                                        </span>
                                     </label>
                                 </div>
                             ))}

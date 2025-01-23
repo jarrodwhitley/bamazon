@@ -1,22 +1,22 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import ProductCard from '../components/ProductCard'
-import { scrollToTop } from '../utils/functions.jsx'
-import store from '../store.js'
-import { updateFilters, clearFilters } from '../store/filtersSlice.js'
-import Sidebar from '../components/Sidebar.jsx'
-import { arrayMatch } from '../utils/functions.jsx'
+import React, {useEffect, useState, useMemo} from 'react'
+import {useSelector} from 'react-redux'
+import ProductCard from '../components/ProductCard.tsx'
+import {scrollToTop} from '../utils/functions.tsx'
+import store from '../store.ts'
+import {updateFilters, clearFilters} from '../store/filtersSlice.ts'
+import Sidebar from '../components/Sidebar.tsx'
+import {arrayMatch} from '../utils/functions.tsx'
 
 export default function SearchResultsView() {
     const dispatch = store.dispatch
-    const products = useSelector(state => state.products)
-    const searchString = useSelector(state => state.filters.searchString)
-    const selectedBrands = useSelector(state => state.filters.brands)
-    const selectedPrice = useSelector(state => state.filters.price)
+    const products = useSelector((state) => state.products)
+    const searchString = useSelector((state) => state.filters.searchString)
+    const selectedBrands = useSelector((state) => state.filters.brands)
+    const selectedPrice = useSelector((state) => state.filters.price)
     const [staticSearchString, setStaticSearchString] = useState('')
     const [staticSearchResults, setStaticSearchResults] = useState([])
     const [sideBarFilters, setSideBarFilters] = useState([])
-    const [staticFilters, setStaticFilters] = useState({ brands: [], price: '' })
+    const [staticFilters, setStaticFilters] = useState({brands: [], price: ''})
     const [initialClear, setInitialClear] = useState(false)
     //  Update Static Search Results
     useEffect(() => {
@@ -27,14 +27,14 @@ export default function SearchResultsView() {
         } else {
             setStaticSearchString(searchString)
         }
-        
+
         // First filter products by search string
-        const sidebarResults = products.filter(product => {
+        const sidebarResults = products.filter((product) => {
             return product.title.toLowerCase().includes(staticSearchString.toLowerCase())
         })
         setSideBarFilters(sidebarResults)
-        
-        const searchResults = products.filter(product => {
+
+        const searchResults = products.filter((product) => {
             let brandMatch = staticFilters.brands.length < 1 || staticFilters.brands.includes(product.brand)
             const [min, max] = staticFilters.price.split('_')
             let priceMatch = !staticFilters.price || (product.price >= min && product.price <= max)
@@ -42,7 +42,7 @@ export default function SearchResultsView() {
             return brandMatch && priceMatch && searchMatch
         })
         setStaticSearchResults(searchResults)
-        
+
         // if initialClear is false, clear filters
         if (!initialClear && staticSearchString && staticSearchResults.length > 0) {
             dispatch(clearFilters())
@@ -52,17 +52,16 @@ export default function SearchResultsView() {
     // Update Static Filters
     useEffect(() => {
         if (!arrayMatch(selectedBrands, staticFilters.brands)) {
-            setStaticFilters({ ...staticFilters, brands: selectedBrands })
+            setStaticFilters({...staticFilters, brands: selectedBrands})
         }
         if (staticFilters.price !== selectedPrice) {
-            setStaticFilters({ ...staticFilters, price: selectedPrice })
+            setStaticFilters({...staticFilters, price: selectedPrice})
         }
         if (searchString && staticSearchString !== searchString) {
             setStaticSearchString(searchString)
         }
     }, [staticSearchString, selectedBrands, selectedPrice, staticFilters, searchString])
 
-    
     return (
         <div className={'results-view'}>
             <h1 className={'results-view__heading'}>{`Results for "${staticSearchString}"`}</h1>
@@ -70,7 +69,7 @@ export default function SearchResultsView() {
                 <Sidebar initialProducts={sideBarFilters} filterType={'search'} filterString={staticSearchString} />
                 {staticSearchResults.length > 0 && (
                     <div className={'results-view__content__grid'}>
-                        {staticSearchResults.map(product => (
+                        {staticSearchResults.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>

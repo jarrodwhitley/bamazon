@@ -1,17 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
-
-const selectedProductSlice = createSlice({
+"use strict";
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.clearSelectedProduct = exports.setSelectedProduct = void 0;
+var toolkit_1 = require("@reduxjs/toolkit");
+var selectedProductSlice = (0, toolkit_1.createSlice)({
     name: 'selectedProduct',
     initialState: {},
     reducers: {
-        setSelectedProduct(state, action) {
+        setSelectedProduct: function (state, action) {
             return action.payload;
         },
-        clearSelectedProduct() {
+        clearSelectedProduct: function () {
             return {};
         }
     }
-})
-
-export const { setSelectedProduct, clearSelectedProduct } = selectedProductSlice.actions;
-export default selectedProductSlice.reducer;
+});
+exports.setSelectedProduct = (_a = selectedProductSlice.actions, _a.setSelectedProduct), exports.clearSelectedProduct = _a.clearSelectedProduct;
+exports.default = selectedProductSlice.reducer;

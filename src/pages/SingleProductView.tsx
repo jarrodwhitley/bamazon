@@ -1,17 +1,17 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import store from '../store.js'
-import { setSelectedProduct, clearSelectedProduct} from '../store/selectedProductSlice.js'
-import {addItem} from '../store/cartSlice.js'
-import DiscountBadge from '../components/DiscountBadge.jsx'
-import RatingStars from '../components/RatingStars.jsx'
-import {formattedPrice} from '../utils/functions.jsx'
-import FontAwesomeIcon from '../components/FontAwesomeIcon.jsx'
-import { formattedDate } from '../utils/functions.jsx'
+import store from '../store.ts'
+import {setSelectedProduct, clearSelectedProduct} from '../store/selectedProductSlice.ts'
+import {addItem} from '../store/cartSlice.ts'
+import DiscountBadge from '../components/DiscountBadge.tsx'
+import RatingStars from '../components/RatingStars.tsx'
+import {formattedPrice} from '../utils/functions.tsx'
+import FontAwesomeIcon from '../components/FontAwesomeIcon.tsx'
+import {formattedDate} from '../utils/functions.tsx'
 import Boombam from '../assets/images/bamazon_logo_boombam.png'
-import { useNavigate } from 'react-router-dom'
-import { scrollToTop } from '../utils/functions.jsx'
+import {useNavigate} from 'react-router-dom'
+import {scrollToTop} from '../utils/functions.tsx'
 
 export default function SingleProductView() {
     const {dispatch} = store
@@ -32,16 +32,16 @@ export default function SingleProductView() {
         setShowBam(true)
         setItemAdded(true)
     }
-    
+
     function setImageIndex(index) {
         setCurrentImageIndex(index)
     }
     function scrollToReviews() {
-        console.log('scrolling');
+        console.log('scrolling')
         const reviews = document.getElementById('reviews')
         reviews.scrollIntoView({behavior: 'smooth', block: 'start'})
     }
-    
+
     useEffect(() => {
         if (itemAdded) {
             setTimeout(() => {
@@ -49,7 +49,7 @@ export default function SingleProductView() {
             }, 2000)
         }
     }, [itemAdded])
-    
+
     useEffect(() => {
         scrollToTop()
         if (Object.keys(selectedProduct).length === 0) {
@@ -98,13 +98,12 @@ export default function SingleProductView() {
                                     </div>
                                 </>
                             )}
-                            {showBam &&
-                                <img src={Boombam} alt={'Bamazon logo'} className={'animate__animated animate__bounceIn animate__faster single-product-view__bam absolute top-0 left-0 w-2/3 drop-shadow-2xl z-10'} />}
+                            {showBam && <img src={Boombam} alt={'Bamazon logo'} className={'animate__animated animate__bounceIn animate__faster single-product-view__bam absolute top-0 left-0 w-2/3 drop-shadow-2xl z-10'} />}
                         </div>
                         <div className={'single-product-view__details row-start-2 lg:row-start-1 col-start-1 lg:col-start-2 w-full p-4 md:p-0 '}>
                             <div className={'single-product-view__title-price'}>
                                 <h3 className={'single-product-view__heading text-2xl font-semibold truncate'}>{selectedProduct.title}</h3>
-                                <RatingStars value={selectedProduct.rating} onClick={scrollToReviews}/>
+                                <RatingStars value={selectedProduct.rating} onClick={scrollToReviews} />
                                 <div className={'flex flex-row items-center'}>
                                     <div className={'single-product-view__price text-lg font-semibold'}>
                                         <div className={'flex gap-2'}>
@@ -114,17 +113,14 @@ export default function SingleProductView() {
                                     </div>
                                     <DiscountBadge discountPercentage={selectedProduct.discountPercentage} singleProductView={true} />
                                 </div>
-                                {selectedProduct.stock < 10 && (
-                                    <div className={'single-product-view__low-stock text-red-500 text-xs font-semibold'}>Low Stock - only {selectedProduct.stock} remaining</div>
-                                )}
+                                {selectedProduct.stock < 10 && <div className={'single-product-view__low-stock text-red-500 text-xs font-semibold'}>Low Stock - only {selectedProduct.stock} remaining</div>}
                             </div>
                             <div className={'single-product-view__in-stock text-sm font-semibold text-emerald-500'}>{selectedProduct.availabilityStatus}</div>
                             <div className={'single-product-view__add-to-cart'}>
                                 <div className={'single-product-view__add-to-cart__button flex items-center justify-center bg-blue-500 text-white font-semibold px-4 py-2 rounded self-start cursor-pointer'} onClick={handleAddToCart}>
                                     {itemAdded ? 'Done!' : 'Add to Cart'}
                                 </div>
-                                {showErrorMessage &&
-                                    <div className={'single-product-view__error-message text-red-500 text-sm font-semibold'}>Sorry! Item could not be added to your cart.</div>}
+                                {showErrorMessage && <div className={'single-product-view__error-message text-red-500 text-sm font-semibold'}>Sorry! Item could not be added to your cart.</div>}
                             </div>
                             <div className={'single-product-view__description mt-4 pt-2 border-t-2'}>
                                 <div className={'font-semibold'}>Description</div>
@@ -168,7 +164,8 @@ export default function SingleProductView() {
                                 {selectedProduct.reviews.map((review, index) => (
                                     <div key={index} className={'single-product-view__reviews-grid__card'}>
                                         <span className={'flex gap-2'}>
-                                            <span>{review.reviewerName}</span><RatingStars value={review.rating} />
+                                            <span>{review.reviewerName}</span>
+                                            <RatingStars value={review.rating} />
                                         </span>
                                         {/*<span className={'text-sm text-gray-400'}>{review.reviewerEmail}</span>*/}
                                         <span className={'text-sm'}>{formattedDate(review.date)}</span>
