@@ -12,34 +12,39 @@ import {formattedDate} from '../utils/functions.tsx'
 import Boombam from '../assets/images/bamazon_logo_boombam.png'
 import {useNavigate} from 'react-router-dom'
 import {scrollToTop} from '../utils/functions.tsx'
+import type RootState from '../types/Store.ts'
+import type CartItem from '../types/CartItem.ts'
+import type Product from '../types/Product.ts'
 
 export default function SingleProductView() {
     const {dispatch} = store
     const navigate = useNavigate()
-    const isMobile = useSelector((state) => state.ui.isMobile)
-    const products = useSelector((state) => state.products)
-    const selectedProduct = useSelector((state) => state.selectedProduct)
-    const cart = useSelector((state) => state.cart)
-    const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    const [imageLoaded, setImageLoaded] = useState(false)
-    const [showBam, setShowBam] = useState(false)
-    const [closingModal, setCloseModal] = useState(false)
-    const [screenHeight, setScreenHeight] = useState(window.innerHeight)
-    const [showErrorMessage, setShowErrorMessage] = useState(false)
-    const [itemAdded, setItemAdded] = useState(false)
+    const isMobile = useSelector((state: RootState) => state.ui.isMobile)
+    const products = useSelector((state: RootState) => state.products)
+    const selectedProduct = useSelector((state: RootState) => state.selectedProduct) as Product
+    const cart = useSelector((state: RootState) => state.cart)
+    const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
+    const [imageLoaded, setImageLoaded] = useState<boolean>(false)
+    const [showBam, setShowBam] = useState<boolean>(false)
+    const [closingModal, setCloseModal] = useState<boolean>(false)
+    const [screenHeight, setScreenHeight] = useState<number>(window.innerHeight)
+    const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false)
+    const [itemAdded, setItemAdded] = useState<boolean>(false)
     const handleAddToCart = () => {
         dispatch(addItem(selectedProduct))
         setShowBam(true)
         setItemAdded(true)
     }
 
-    function setImageIndex(index) {
+    function setImageIndex(index: number) {
         setCurrentImageIndex(index)
     }
     function scrollToReviews() {
         console.log('scrolling')
-        const reviews = document.getElementById('reviews')
-        reviews.scrollIntoView({behavior: 'smooth', block: 'start'})
+        const reviews = document.getElementById('reviews') as HTMLElement
+        if (reviews) {
+            reviews.scrollIntoView({behavior: 'smooth', block: 'start'})
+        }
     }
 
     useEffect(() => {
@@ -52,16 +57,19 @@ export default function SingleProductView() {
 
     useEffect(() => {
         scrollToTop()
-        if (Object.keys(selectedProduct).length === 0) {
+        if (!selectedProduct.id) {
+            console.log('0')
             const id = window.location.hash.split('/')[2]
-            const product = products.find((product) => product.id === parseInt(id))
+            console.log('id', id)
+            const product = products.find((product) => product.id === parseInt(id)) as Product
+            console.log('product', product)
             dispatch(setSelectedProduct(product))
         }
     }, [dispatch, selectedProduct, products])
 
     return (
         <>
-            {selectedProduct && Object.keys(selectedProduct).length > 0 && (
+            {selectedProduct.id && Object.keys(selectedProduct).length > 0 && (
                 <>
                     <div className={'single-product-view ' + (!closingModal ? 'animate__slideInUp animate__faster' : 'animate__zoomOut')} onClick={(e) => e.stopPropagation()}>
                         <div className={'single-product-view__images row-start-1 col-start-1 grid grid-cols-1 md:grid-cols-[auto_1fr] grid-rows-1 w-full h-[30vh] lg:h-full'}>
@@ -103,7 +111,9 @@ export default function SingleProductView() {
                         <div className={'single-product-view__details row-start-2 lg:row-start-1 col-start-1 lg:col-start-2 w-full p-4 md:p-0 '}>
                             <div className={'single-product-view__title-price'}>
                                 <h3 className={'single-product-view__heading text-2xl font-semibold truncate'}>{selectedProduct.title}</h3>
-                                <RatingStars value={selectedProduct.rating} onClick={scrollToReviews} />
+                                <div className={'single-product-view__rating-container'} onClick={scrollToReviews}>
+                                    <RatingStars value={selectedProduct.rating} />
+                                </div>
                                 <div className={'flex flex-row items-center'}>
                                     <div className={'single-product-view__price text-lg font-semibold'}>
                                         <div className={'flex gap-2'}>

@@ -1,10 +1,4 @@
-interface Review {
-    rating: number
-    comment: string
-    date: string
-    reviewerName: string
-    reviewerEmail: string
-}
+import Review from './Review'
 
 interface Meta {
     createdAt: string
@@ -30,7 +24,14 @@ export default interface Product {
     returnPolicy: string
     minimumOrderQuantity: number
     meta: Meta
+    sku: string
     images: string[]
     thumbnail: string
     featured: boolean
+    dimensions: {
+        width: number
+        height: number
+        depth: number
+    }
+    weight: number
 }

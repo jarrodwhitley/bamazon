@@ -19,6 +19,7 @@ export default defineConfig(async () => {
         },
         build: {
             outDir: 'build',
+            sourcemap: true,
         },
     }
 })

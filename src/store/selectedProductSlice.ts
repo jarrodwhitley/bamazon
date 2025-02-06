@@ -1,23 +1,19 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import Product from '../types/Product'
 
-interface SelectedProductState {
-    product: Product | null
-}
+type SelectedProductState = Product | null
 
-const initialState: SelectedProductState = {
-    product: null,
-}
+const initialState: SelectedProductState = null
 
 const selectedProductSlice = createSlice({
     name: 'selectedProduct',
     initialState,
     reducers: {
-        setSelectedProduct(state: SelectedProductState, action: PayloadAction<Product>) {
-            state.product = action.payload
+        setSelectedProduct(state: SelectedProductState, action: PayloadAction) {
+            return action.payload
         },
         clearSelectedProduct(state: SelectedProductState) {
-            state.product = null
+            return initialState
         },
     },
 })

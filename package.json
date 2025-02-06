@@ -6,7 +6,7 @@
     "homepage": "https://bamazon.jarrodwhitley.com",
     "scripts": {
         "dev": "vite --host",
-        "build": "vite build",
+        "build": "tsc && vite build",
         "start": "node server.js",
         "lint": "eslint .",
         "preview": "vite preview",
