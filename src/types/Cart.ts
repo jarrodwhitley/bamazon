@@ -1,6 +1,5 @@
 import CartItem from './CartItem'
 
-export default interface Cart {
-    showCart: boolean
-    items: CartItem[]
-}
+type Cart = CartItem[]
+
+export default Cart

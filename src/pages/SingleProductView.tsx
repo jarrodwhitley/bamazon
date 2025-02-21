@@ -31,7 +31,8 @@ export default function SingleProductView() {
     const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false)
     const [itemAdded, setItemAdded] = useState<boolean>(false)
     const handleAddToCart = () => {
-        dispatch(addItem(selectedProduct))
+        const cartItem: CartItem = {...selectedProduct, purchaseQuantity: 1}
+        dispatch(addItem(cartItem))
         setShowBam(true)
         setItemAdded(true)
     }
@@ -58,11 +59,8 @@ export default function SingleProductView() {
     useEffect(() => {
         scrollToTop()
         if (!selectedProduct.id) {
-            console.log('0')
             const id = window.location.hash.split('/')[2]
-            console.log('id', id)
             const product = products.find((product) => product.id === parseInt(id)) as Product
-            console.log('product', product)
             dispatch(setSelectedProduct(product))
         }
     }, [dispatch, selectedProduct, products])

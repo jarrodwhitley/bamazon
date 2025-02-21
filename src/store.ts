@@ -14,7 +14,6 @@ const localStorageMiddleware = (storeAPI: any) => (next: any) => (action: any) =
     if (action.type.startsWith('cart/')) {
         localStorage.setItem('cart', JSON.stringify(state.cart))
     }
-
     return result
 }
 

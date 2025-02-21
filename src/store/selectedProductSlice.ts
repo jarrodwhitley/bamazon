@@ -1,15 +1,15 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import Product from '../types/Product'
 
-type SelectedProductState = Product | null
+type SelectedProductState = Product | {}
 
-const initialState: SelectedProductState = null
+const initialState: SelectedProductState = {}
 
 const selectedProductSlice = createSlice({
     name: 'selectedProduct',
     initialState,
     reducers: {
-        setSelectedProduct(state: SelectedProductState, action: PayloadAction) {
+        setSelectedProduct(state: SelectedProductState, action: PayloadAction<Product>) {
             return action.payload
         },
         clearSelectedProduct(state: SelectedProductState) {

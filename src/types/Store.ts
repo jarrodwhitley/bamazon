@@ -10,6 +10,7 @@ export default interface RootState {
     ui: {
         isMobile: boolean
         isLoading: boolean
+        showCart: boolean
         showMobileMenu: boolean
         showMobileSearch: boolean
         modal: string | null

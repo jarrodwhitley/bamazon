@@ -516,6 +516,7 @@ nav {
 /* Cart ***********************************/
 .cart__container {
     @apply fixed w-full lg:w-[400px] h-full overflow-hidden pb-2 top-[100px] right-0 bg-white shadow-lg z-10;
+    
     .cart__items {
         @apply  h-[calc(100%-64px)] max-h-[50vh] pb-2 mx-4 overflow-auto;
     }

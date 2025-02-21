@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
+import type RootState from '../types/Store.ts'
+import type Product from '../types/Product.ts'
 import {setShowMobileMenu, setShowMobileSearch, setModal} from '../store/uiSlice.ts'
-import {setShowCart, removeItem, toggleCart} from '../store/cartSlice.ts'
+import {removeItem} from '../store/cartSlice.ts'
+import {setShowCart, toggleCart} from '../store/uiSlice.ts'
 import {setSelectedProduct} from '../store/selectedProductSlice.ts'
 import {updateFilters, clearFilters} from '../store/filtersSlice.ts'
 import SearchBar from './SearchBar.tsx'
@@ -11,13 +14,13 @@ import {capitalizeFirstLetter} from '../utils/functions.tsx'
 
 export default function NavigationBar() {
     const dispatch = useDispatch()
-    const isMobile = useSelector((state) => state.ui.isMobile)
-    const products = useSelector((state) => state.products)
-    const showMobileMenu = useSelector((state) => state.ui.showMobileMenu)
-    const showMobileSearch = useSelector((state) => state.ui.showMobileSearch)
-    const selectedFilters = useSelector((state) => state.filters)
-    const selectedProduct = useSelector((state) => state.selectedProduct)
-    const cart = useSelector((state) => state.cart)
+    const isMobile: Boolean = useSelector((state: RootState) => state.ui.isMobile)
+    const products: Product[] = useSelector((state: RootState) => state.products)
+    const showMobileMenu: Boolean = useSelector((state: RootState) => state.ui.showMobileMenu)
+    const showMobileSearch: Boolean = useSelector((state: RootState) => state.ui.showMobileSearch)
+    const selectedFilters = useSelector((state: RootState) => state.filters)
+    const selectedProduct = useSelector((state: RootState) => state.selectedProduct)
+    const cart = useSelector((state: RootState) => state.cart)
     const [upperNavHidden, setUpperNavHidden] = useState(false)
     const [categories, setCategories] = useState([])
     const location = useLocation()
@@ -26,36 +29,35 @@ export default function NavigationBar() {
         dispatch(clearFilters())
         dispatch(setShowCart(false))
     }
-    const handleSetSearchString = (string) => {
+    const handleSetSearchString = (string: String) => {
         dispatch(
             updateFilters({
                 searchString: string,
-                categories: selectedFilters.categories,
+                categories: selectedFilters.category,
                 brands: selectedFilters.brands,
                 price: selectedFilters.price,
             })
         )
     }
-    const handleSetSelectedProduct = (product) => {
+    const handleSetSelectedProduct = (product: Product) => {
         dispatch(setSelectedProduct(product))
     }
-    const handleDropDownItemClick = (category) => () => {
+    const handleDropDownItemClick = (category: String) => () => {
         dispatch(updateFilters({category: category}))
     }
-    const handleToggleCart = (e) => {
+    const handleToggleCart = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
         dispatch(setShowMobileMenu(false))
-        if (e.target.closest('.cart') || e.target.closest('.mobile-cart-btn')) {
+        const target = e.target as HTMLElement
+        if (target.closest('.cart') || target.closest('.mobile-cart-btn')) {
             if (location.pathname === '/checkout') {
-                console.log('1')
                 navigate('/checkout')
             } else {
-                console.log('2')
                 dispatch(toggleCart())
             }
         }
     }
-    const handleLaunchModal = (modalType) => () => {
+    const handleLaunchModal = (modalType: String) => () => {
         dispatch(setModal(modalType))
     }
     const toggleMobileMenu = () => dispatch(setShowMobileMenu(!showMobileMenu))
@@ -122,7 +124,7 @@ export default function NavigationBar() {
                                 </div>
                                 <div className={'nav-links__link cart cursor-pointer'} onClick={handleToggleCart}>
                                     <span className={'font-semibold relative'}>Cart</span>
-                                    {cart.items.length > 0 && <span className={'cart-count bg-red-600 absolute top-2 -right-3 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>}
+                                    {cart.length > 0 && <span className={'cart-count bg-red-600 absolute top-2 -right-3 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.length}</span>}
                                 </div>
                             </div>
                         </>
@@ -135,7 +137,7 @@ export default function NavigationBar() {
                                 </div>
                                 <div className={'mobile-cart-btn'}>
                                     <i className={'fa-solid text-lg fa-cart-shopping relative'} onClick={handleToggleCart}>
-                                        {cart.items.length > 0 && <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>}
+                                        {cart.length > 0 && <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.length}</span>}
                                     </i>
                                 </div>
                                 <div className={'mobile-menu-btn'} onClick={toggleMobileMenu}>

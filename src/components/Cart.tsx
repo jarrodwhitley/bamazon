@@ -1,21 +1,23 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {setShowCart, updateItem, removeItem, toggleCart} from '../store/cartSlice.ts'
+import {updateItem, removeItem} from '../store/cartSlice.ts'
+import {setShowCart} from '../store/uiSlice.ts'
 import {Link} from 'react-router-dom'
 import type RootState from '../types/Store.ts'
 import type CartType from '../types/Cart.ts'
 import type CartItem from '../types/CartItem.ts'
 
 export default function Cart() {
-    const cart: CartType = useSelector((state: RootState) => state.cart)
+    const cart = useSelector((state: RootState) => state.cart) as CartItem[]
+    const showCart = useSelector((state: RootState) => state.ui.showCart)
     const dispatch = useDispatch()
     const [showBam, setShowBam] = useState<boolean>(false)
 
-    const handleRemoveFromCart = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
+    const handleRemoveFromCart = (e: React.MouseEvent<HTMLElement>, id: number) => {
         dispatch(removeItem(id))
     }
 
-    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>, id: number) => {
         dispatch(updateItem({id, quantity: parseInt(e.target.value)}))
     }
 
@@ -24,14 +26,15 @@ export default function Cart() {
     }
 
     const totalSavings = useMemo(() => {
-        return cart.items.reduce((acc: number, product: CartItem) => {
+        return cart.reduce((acc: number, product: CartItem) => {
             return acc + (product.price * product.discountPercentage) / 100
         }, 0)
-    }, [cart.items])
+    }, [cart])
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (!event.target.closest('.cart') && !event.target.closest('.cart__container') && !event.target.closest('.mobile-cart-btn') && cart.showCart) {
+            const target = event.target as Element
+            if (target && !target.closest('.cart') && !target.closest('.cart__container') && !target.closest('.mobile-cart-btn') && showCart) {
                 dispatch(setShowCart(false))
             }
         }
@@ -40,28 +43,61 @@ export default function Cart() {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [cart.showCart, dispatch])
+    }, [showCart, dispatch])
 
     return (
-        <div className="cart">
-            <h2>Shopping Cart</h2>
-            {cart.items.length === 0 ? (
-                <p>Your cart is empty</p>
-            ) : (
-                <ul>
-                    {cart.items.map((item: CartItem) => (
-                        <li key={item.id}>
-                            <h3>{item.name}</h3>
-                            <p>Price: ${item.price}</p>
-                            <p>Quantity: {item.purchaseQuantity}</p>
-                            <button onClick={(e) => handleRemoveFromCart(e, item.id)}>Remove</button>
-                            <input type="number" value={item.purchaseQuantity} onChange={(e) => handleQuantityChange(e, item.id)} />
-                        </li>
-                    ))}
-                </ul>
+        <div className={'cart__container animate__animated animate__faster ' + (showCart ? 'animate__slideInRight ' : 'animate__slideOutRight ')}>
+            {cart.length > 0 && <div className={'text-base lg:text-2xl font-semibold pl-6 py-2 lg:py-4 border-b'}>Your cart</div>}
+
+            {cart.length > 0 && (
+                <>
+                    {/* Cart Items */}
+                    <div className={'cart__items'}>
+                        {cart.map((product, index) => (
+                            <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 p-4 border-b border-gray-200'}>
+                                <img src={product.images[0]} alt={product.title} className={'w-16 h-16 object-cover row-start-1'} />
+                                <div className={'details flex flex-col row-start-1 self-start gap-2 leading-[1]'}>
+                                    <span className={'text-sm whitespace-nowrap max-w-[150px] text-ellipsis overflow-hidden'}>{product.title}</span>
+                                    <span className={'font-semibold'}>${product.price.toFixed(2)}</span>
+                                </div>
+                                <div className={'quantity flex items-center row-start-1 gap-2'}>
+                                    <select className={'font-base bg-gray-100 rounded'} value={product.quantity || ''} onChange={(e) => handleQuantityChange(e, product.id)}>
+                                        {[...Array(10).keys()].map((i) => (
+                                            <option key={i + 1} value={i + 1}>
+                                                {i + 1}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <i className={'fa-solid fa-trash-alt text-gray-300 cursor-pointer row-start-1'} onClick={(e) => handleRemoveFromCart(e, product.id)}></i>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Subtotal and Checkout Button */}
+                    <div className={'cart__summary '}>
+                        <div className={'cart__savings w-full flex items-center justify-between pt-2'}>
+                            <span className={'text-sm font-semibold'}>Total Savings:</span>
+                            <span className={'font-semibold'}>-${totalSavings.toFixed(2)}</span>
+                        </div>
+                        <div className={'cart__subtotal w-full flex items-center justify-between'}>
+                            <span className={'text-sm font-semibold'}>Subtotal:</span>
+                            <span className={'font-semibold'}>${cart.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2)}</span>
+                        </div>
+                        <Link to={'/checkout'} className={'cart__checkout-btn'} onClick={handleCheckout}>
+                            Checkout
+                        </Link>
+                    </div>
+                </>
             )}
-            <button onClick={handleCheckout}>Checkout</button>
-            <p>Total Savings: ${totalSavings.toFixed(2)}</p>
+
+            {/* Cart empty */}
+            {cart.length === 0 && (
+                <div className={'cart__empty flex flex-col items-center justify-center h-full select-none'}>
+                    <span className={'text-2xl font-semibold text-center'}>Your cart is empty 😅</span>
+                    <span className={'text-xl font-base text-center mt-4 mx-6 leading-[1]'}>Come back after you add a few things!</span>
+                </div>
+            )}
         </div>
     )
 }
