@@ -33,7 +33,7 @@ export default function NavigationBar() {
                 categories: selectedFilters.categories,
                 brands: selectedFilters.brands,
                 price: selectedFilters.price,
-            }),
+            })
         )
     }
     const handleSetSelectedProduct = (product) => {
@@ -62,7 +62,7 @@ export default function NavigationBar() {
     const toggleMobileSearch = () => {
         dispatch(setShowMobileSearch(!showMobileSearch))
     }
-    
+
     useEffect(() => {
         if (Array.isArray(products)) {
             if (categories.length < 1) {
@@ -75,22 +75,21 @@ export default function NavigationBar() {
                 setCategories(newCategories)
             }
         }
-    }, [products])
-    
+    }, [products, categories])
+
     return (
         <nav className={''}>
             <div className={(upperNavHidden ? 'hidden' : 'block') + ' upper bg-blue-950 px-6'}>
                 <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
-                    <span className={'w-fit text-sm text-[#EAB308] font-bold justify-self-center md:justify-self-start col-span-full row-start-1'}>
-                        Under Construction
-                    </span>
+                    <span className={'w-fit text-sm text-[#EAB308] font-bold justify-self-center md:justify-self-start col-span-full row-start-1'}>Under Construction</span>
                     <div className={'text-sm row-start-1 hidden md:flex items-center gap-4 justify-end'}>
-                        <a className={'nav-links__link flex items-center hover:text-blue-400'}
-                           href={'https://github.com/jarrodwhitley/bamazon'}>
+                        <a className={'nav-links__link flex items-center hover:text-blue-400'} href={'https://github.com/jarrodwhitley/bamazon'}>
                             <i className={'fa-brands fa-github text-lg'}></i>
                             <span className={'ml-2'}>See Project</span>
                         </a>
-                        <a className={'nav-links__link'} href={'https://jarrodwhitley.com'}>JW</a>
+                        <a className={'nav-links__link'} href={'https://jarrodwhitley.com'}>
+                            JW
+                        </a>
                     </div>
                 </div>
             </div>
@@ -98,51 +97,32 @@ export default function NavigationBar() {
                 <div className={'lower__wrapper'}>
                     <Link to={'/'} onClick={handleLogoClick}>
                         <figure className={'logo'}>
-                            <img
-                                className={'bamazon-logo'}
-                                src={BamazonLogo}
-                                alt={'BAMazon logo'}
-                            />
+                            <img className={'bamazon-logo'} src={BamazonLogo} alt={'BAMazon logo'} />
                         </figure>
                     </Link>
                     {!isMobile && (
                         <>
-                            <SearchBar
-                                classes={'search-bar w-1/2 relative my-auto'}
-                                onSetSearchString={handleSetSearchString}
-                                onSetSelectedProduct={handleSetSelectedProduct}
-                            />
+                            <SearchBar classes={'search-bar w-1/2 relative my-auto'} onSetSearchString={handleSetSearchString} onSetSelectedProduct={handleSetSelectedProduct} />
                             <div className={'navigation-bar__lower__links'}>
                                 <div className={'nav-links__link categories'}>
                                     <span className={'font-semibold'}>Categories</span>
                                     <div className={'nav-links__link__dropdown'}>
                                         {categories.map((category, index) => (
-                                            <Link to={'/category/' + category} key={index}
-                                                  className={'nav-links__link__dropdown-item'}
-                                                  onClick={handleDropDownItemClick(category)}>
+                                            <Link to={'/category/' + category} key={index} className={'nav-links__link__dropdown-item'} onClick={handleDropDownItemClick(category)}>
                                                 {capitalizeFirstLetter(category)}
                                             </Link>
                                         ))}
                                     </div>
                                 </div>
                                 <div className={'nav-links__link user'} onClick={handleLaunchModal('contact')}>
-                                    <span className={'font-semibold'}>
-                                        Contact
-                                    </span>
+                                    <span className={'font-semibold'}>Contact</span>
                                 </div>
                                 <div className={'nav-links__link user cursor-not-allowed'} onClick={() => alert('Coming soon!')}>
-                                    <span className={'font-semibold'}>
-                                        Account
-                                    </span>
+                                    <span className={'font-semibold'}>Account</span>
                                 </div>
-                                <div className={'nav-links__link cart cursor-pointer'}
-                                     onClick={handleToggleCart}>
+                                <div className={'nav-links__link cart cursor-pointer'} onClick={handleToggleCart}>
                                     <span className={'font-semibold relative'}>Cart</span>
-                                    {cart.items.length > 0 && (
-                                        <span className={'cart-count bg-red-600 absolute top-2 -right-3 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>
-                                                {cart.items.length}
-                                        </span>
-                                    )}
+                                    {cart.items.length > 0 && <span className={'cart-count bg-red-600 absolute top-2 -right-3 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>}
                                 </div>
                             </div>
                         </>
@@ -155,11 +135,7 @@ export default function NavigationBar() {
                                 </div>
                                 <div className={'mobile-cart-btn'}>
                                     <i className={'fa-solid text-lg fa-cart-shopping relative'} onClick={handleToggleCart}>
-                                        {cart.items.length > 0 && (
-                                            <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>
-                                            {cart.items.length}
-                                        </span>
-                                        )}
+                                        {cart.items.length > 0 && <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>}
                                     </i>
                                 </div>
                                 <div className={'mobile-menu-btn'} onClick={toggleMobileMenu}>
