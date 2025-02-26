@@ -12,11 +12,13 @@ app.use(express.json());
 const __dirname = path.resolve();
 
 // Initialize database connection
+let db_url = process.env.JAWSDB_MARIA_URL || process.env.BAMAZON_DB_URL;
 let db;
 async function initializeDatabase() {
     console.log('Initializing database');
+    console.log('db_url:', db_url);
     try {
-        db = await mysql.createConnection(process.env.JAWSDB_MARIA_URL || process.env.DB_URL);
+        db = await mysql.createConnection(db_url);
         console.log('Connected to the database');
     } catch (error) {
         console.error('Error connecting to the database:', error);

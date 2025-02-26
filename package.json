@@ -7,9 +7,9 @@
         "server"
     ],
     "scripts": {
-        "dev": "vite",
+        "dev": "dotenv -e .env -- concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
         "build": "vite build",
-        "start": "NODE_ENV=development concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
+        "start": "dotenv -e .env -- concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
         "start-prod": "NODE_ENV=production npm run build -w client && npm run start -w server",
         "server": "node server.js",
         "heroku-logs": "heroku logs --tail --app bamazon",
@@ -19,6 +19,7 @@
         "production": "NODE_ENV=production npm run build"
     },
     "devDependencies": {
+        "dotenv-cli": "^4.0.0",
         "glob": "^11.0.1"
     },
     "dependencies": {
