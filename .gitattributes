@@ -1,0 +1,26 @@
+# Prioritize JavaScript and TypeScript
+*.js linguist-detectable
+*.jsx linguist-detectable
+*.ts linguist-detectable
+*.tsx linguist-detectable
+
+# Ignore assets and template files in language stats
+*.html linguist-vendored
+*.css linguist-vendored
+*.scss linguist-vendored
+*.sass linguist-vendored
+*.less linguist-vendored
+*.json linguist-vendored
+*.md linguist-vendored
+
+# Ignore media/assets
+*.png linguist-vendored
+*.jpg linguist-vendored
+*.jpeg linguist-vendored
+*.gif linguist-vendored
+*.svg linguist-vendored
+*.ico linguist-vendored
+
+# Ignore build output
+build/** linguist-vendored
+dist/** linguist-vendored
