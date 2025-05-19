@@ -1,10 +1,9 @@
-# Prioritize JavaScript and TypeScript
-*.js linguist-detectable
 *.jsx linguist-detectable
-*.ts linguist-detectable
-*.tsx linguist-detectable
 
 # Ignore assets and template files in language stats
+*.js linguist-vendored
+*.ts linguist-vendored
+*.tsx linguist-vendored
 *.html linguist-vendored
 *.css linguist-vendored
 *.scss linguist-vendored
