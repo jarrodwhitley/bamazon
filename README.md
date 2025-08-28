@@ -110,6 +110,6 @@ It emphasizes understanding React and Redux principles, with future improvements
 
 ## Live Demo
 
-If hosted, you can try the app here:  
+You can try the app here:  
 
 👉 [https://bamazon.jarrodwhitley.com](https://bamazon.jarrodwhitley.com)
