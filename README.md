@@ -67,17 +67,13 @@ Make sure you have the following installed:
 2. Install dependencies:
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
 ### Running the App
 
 Launch it locally:
 ```bash
-npm start
-# or
-yarn start
+npm run dev
 ```
 
 This will spin up a local development server (commonly at `localhost:3000` or `localhost:5173` depending on Vite configuration).
