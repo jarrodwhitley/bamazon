@@ -8,7 +8,6 @@ export default function PaymentSuccess() {
     const cart = useSelector((state) => state.cart)
 
     useEffect(() => {
-        // Redirect to home after 5 seconds
         const timer = setTimeout(() => {
             navigate('/')
         }, 5000)

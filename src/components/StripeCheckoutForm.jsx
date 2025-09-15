@@ -37,7 +37,6 @@ export default function StripeCheckoutForm({total, onSuccess, onError}) {
 
         const cardElement = elements.getElement(CardElement)
 
-        // First create the payment method
         const {error: paymentMethodError, paymentMethod} = await stripe.createPaymentMethod({
             type: 'card',
             card: cardElement,
@@ -59,7 +58,6 @@ export default function StripeCheckoutForm({total, onSuccess, onError}) {
             return
         }
 
-        // Since we don't have a backend, simulate payment processing based on test card numbers
         setTimeout(() => {
             if (paymentMethod.card.last4 === '0002') {
                 // Generic decline
@@ -84,8 +82,6 @@ export default function StripeCheckoutForm({total, onSuccess, onError}) {
 
     const fillTestCard = (cardNumber) => {
         setSelectedTestCard(cardNumber)
-        // Note: In a real application, you would need to programmatically set the card element
-        // For this demo, we'll show the test card numbers for manual entry
     }
 
     return (
