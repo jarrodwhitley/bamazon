@@ -1,20 +1,20 @@
 import React, {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector} from 'react-redux'
-import Boombam from '../assets/images/bamazon_logo_boombam.png'
+import Boombam from '../assets/images/bamazon_logo_dark_v1.1.png'
 
 export default function PaymentSuccess() {
     const navigate = useNavigate()
     const cart = useSelector((state) => state.cart)
 
-    // useEffect(() => {
-    //     // Redirect to home after 5 seconds
-    //     const timer = setTimeout(() => {
-    //         navigate('/')
-    //     }, 5000)
+    useEffect(() => {
+        // Redirect to home after 5 seconds
+        const timer = setTimeout(() => {
+            navigate('/')
+        }, 5000)
 
-    //     return () => clearTimeout(timer)
-    // }, [navigate])
+        return () => clearTimeout(timer)
+    }, [navigate])
 
     const handleContinueShopping = () => {
         navigate('/')
@@ -24,7 +24,7 @@ export default function PaymentSuccess() {
         <div className="payment-success">
             <div className="payment-success__container">
                 <div className="payment-success__content">
-                    <img src={Boombam} alt="Bamazon logo" className="payment-success__logo animate__animated animate__bounceIn" />
+                    <img src={Boombam} alt="Bamazon logo" className="payment-success__logo w-full animate__animated animate__bounceIn" />
 
                     <div className="payment-success__message">
                         <h1 className="payment-success__title">Payment Successful!</h1>

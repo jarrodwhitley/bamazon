@@ -725,7 +725,7 @@ footer {
 }
 
 .payment-success__logo {
-    @apply w-32 h-32 mx-auto mb-6;
+    @apply w-3/4 h-auto mx-auto mb-6;
 }
 
 .payment-success__message {
