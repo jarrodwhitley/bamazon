@@ -120,9 +120,9 @@ export default function SingleProductView() {
                             </div>
                             <div className={'single-product-view__in-stock text-sm font-semibold text-emerald-500'}>{selectedProduct.availabilityStatus}</div>
                             <div className={'single-product-view__add-to-cart'}>
-                                <div className={'single-product-view__add-to-cart__button flex items-center justify-center bg-blue-500 text-white font-semibold px-4 py-2 rounded self-start cursor-pointer'} onClick={handleAddToCart}>
+                                <button className={'single-product-view__add-to-cart__button flex items-center justify-center bg-blue-500 text-white font-semibold px-4 py-2 rounded self-start cursor-pointer'} onClick={handleAddToCart}>
                                     {itemAdded ? 'Done!' : 'Add to Cart'}
-                                </div>
+                                </button>
                                 {showErrorMessage &&
                                     <div className={'single-product-view__error-message text-red-500 text-sm font-semibold'}>Sorry! Item could not be added to your cart.</div>}
                             </div>

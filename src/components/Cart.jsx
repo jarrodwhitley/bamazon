@@ -21,14 +21,11 @@ export default function Cart() {
             return acc + (product.price * product.discountPercentage) / 100
         }, 0)
     }, [cart.items])
-    
+
     // if the use clicks outside the cart, close it
     useEffect(() => {
         function handleClickOutside(event) {
-            if ((!event.target.closest('.cart') &&
-             !event.target.closest('.cart__container')) &&
-             !event.target.closest('.mobile-cart-btn') &&
-              cart.showCart) {
+            if (!event.target.closest('.cart') && !event.target.closest('.cart__container') && !event.target.closest('.mobile-cart-btn') && cart.showCart) {
                 dispatch(setShowCart(false))
             }
         }
@@ -77,8 +74,8 @@ export default function Cart() {
                             <span className={'text-sm font-semibold'}>Subtotal:</span>
                             <span className={'font-semibold'}>${cart.items.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2)}</span>
                         </div>
-                        <Link to={'/checkout'} className={'cart__checkout-btn'} onClick={handleCheckout}>
-                           Checkout
+                        <Link to={'/checkout'} className={'cart__checkout-btn'} onClick={handleCheckout} aria-label={'Proceed to Checkout'}>
+                            Checkout
                         </Link>
                     </div>
                 </>

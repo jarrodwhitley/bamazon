@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import {setShowMobileMenu, setShowMobileSearch, setModal} from '../store/uiSlice.js'
@@ -63,6 +63,12 @@ export default function NavigationBar() {
         dispatch(setShowMobileSearch(!showMobileSearch))
     }
 
+    const cartCount = useMemo(() => {
+        let count = cart.items.reduce((acc, item) => acc + item.quantity, 0)
+        console.log('Cart count:', count)
+        return count
+    }, [cart.items])
+
     useEffect(() => {
         if (Array.isArray(products)) {
             if (categories.length < 1) {
@@ -120,9 +126,9 @@ export default function NavigationBar() {
                                 <div className={'nav-links__link user cursor-not-allowed'} onClick={() => alert('Coming soon!')}>
                                     <span className={'font-semibold'}>Account</span>
                                 </div>
-                                <div className={'nav-links__link cart cursor-pointer'} onClick={handleToggleCart}>
+                                <div className={'nav-links__link cart cursor-pointer'} onClick={handleToggleCart} aria-label={'Cart'}>
                                     <span className={'font-semibold relative'}>Cart</span>
-                                    {cart.items.length > 0 && <span className={'cart-count bg-red-600 absolute top-2 -right-3 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>}
+                                    {cartCount > 0 && <span className={'cart-count bg-red-600 absolute top-2 -right-3 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cartCount}</span>}
                                 </div>
                             </div>
                         </>
@@ -135,7 +141,7 @@ export default function NavigationBar() {
                                 </div>
                                 <div className={'mobile-cart-btn'}>
                                     <i className={'fa-solid text-lg fa-cart-shopping relative'} onClick={handleToggleCart}>
-                                        {cart.items.length > 0 && <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cart.items.length}</span>}
+                                        {cartCount > 0 && <span className={'cart-count bg-red-600 absolute -top-3 -right-2 w-4 h-4 flex items-center justify-center text-white text-[10px] rounded-full ml-2'}>{cartCount}</span>}
                                     </i>
                                 </div>
                                 <div className={'mobile-menu-btn'} onClick={toggleMobileMenu}>
