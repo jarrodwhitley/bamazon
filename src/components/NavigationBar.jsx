@@ -86,8 +86,7 @@ export default function NavigationBar() {
     return (
         <nav className={''}>
             <div className={(upperNavHidden ? 'hidden' : 'block') + ' upper bg-blue-950 px-6'}>
-                <div className={'grid grid-rows-1 grid-cols-2 items-center py-2 max-w-[1400px] mx-auto'}>
-                    <span className={'w-fit text-sm text-[#EAB308] font-bold justify-self-center md:justify-self-start col-span-full row-start-1'}>Under Construction</span>
+                <div className={'flex items-center justify-end py-2 max-w-[1400px] mx-auto'}>
                     <div className={'text-sm row-start-1 hidden md:flex items-center gap-4 justify-end'}>
                         <a className={'nav-links__link flex items-center hover:text-blue-400'} href={'https://github.com/jarrodwhitley/bamazon'}>
                             <i className={'fa-brands fa-github text-lg'}></i>
@@ -102,6 +101,7 @@ export default function NavigationBar() {
             <div className={'lower'}>
                 <div className={'lower__wrapper'}>
                     <Link to={'/'} onClick={handleLogoClick}>
+                        <h1 className={'sr-only'}>BAMazon</h1>
                         <figure className={'logo'}>
                             <img className={'bamazon-logo'} src={BamazonLogo} alt={'BAMazon logo'} />
                         </figure>

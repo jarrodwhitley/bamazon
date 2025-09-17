@@ -2,10 +2,10 @@ import PropTypes from 'prop-types'
 import {useEffect, useRef, useCallback} from 'react'
 import {setSelectedProduct} from '../store/selectedProductSlice.js'
 import {updateFilters, clearFilters, filtersActive} from '../store/filtersSlice.js'
-import { setShowMobileSearch } from '../store/uiSlice.js'
+import {setShowMobileSearch} from '../store/uiSlice.js'
 import {ReactSearchAutocomplete} from 'react-search-autocomplete'
 import {useSelector, useDispatch} from 'react-redux'
-import {useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 export default function SearchBar({classes}) {
     const dispatch = useDispatch()
@@ -39,17 +39,20 @@ export default function SearchBar({classes}) {
         dispatch(setShowMobileSearch(false))
         handleSelectProduct(product)
         navigate('/product/' + product.id)
-        handleOnClear();
+        handleOnClear()
     }
     const handleOnClear = () => {
         dispatch(clearFilters())
     }
-    const handleOnEnterPress = useCallback((e) => {
-        if (e.key === 'Enter') {
-            navigate('/results/' + selectedFiltersState.searchString)
-        }
-    }, [navigate, selectedFiltersState.searchString])
-    
+    const handleOnEnterPress = useCallback(
+        (e) => {
+            if (e.key === 'Enter') {
+                navigate('/results/' + selectedFiltersState.searchString)
+            }
+        },
+        [navigate, selectedFiltersState.searchString]
+    )
+
     useEffect(() => {
         window.addEventListener('keypress', handleOnEnterPress)
         return () => {
@@ -58,7 +61,7 @@ export default function SearchBar({classes}) {
     }, [handleOnEnterPress])
 
     return (
-        <div className={classes}>
+        <div className={classes} title={'Search products'}>
             <ReactSearchAutocomplete
                 items={products}
                 inputSearchString={selectedFiltersState.searchString || ''}

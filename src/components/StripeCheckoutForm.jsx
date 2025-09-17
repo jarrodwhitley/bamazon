@@ -153,7 +153,7 @@ export default function StripeCheckoutForm({total, onSuccess, onError}) {
                     </div>
                 </div>
 
-                <button type="submit" disabled={!stripe || processing} className={`w-full mt-6 py-3 px-4 rounded font-semibold text-white ${processing ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'}`}>
+                <button type="submit" aria-disabled={!stripe || processing} className={`w-full mt-6 py-3 px-4 rounded font-semibold text-white ${processing ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'}`}>
                     {processing ? 'Processing...' : `Pay $${total}`}
                 </button>
             </form>

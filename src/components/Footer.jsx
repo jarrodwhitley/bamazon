@@ -14,9 +14,9 @@ export default function Footer() {
                     <div className="footer-content">
                         <div className="footer-links__legal">
                             <div className={'text-lg font-semibold'}>Legal</div>
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">Terms of Service</a>
-                            <a href="#">Accessibility</a>
+                            <a href="#" className={'footer__link'}>Privacy Policy</a>
+                            <a href="#" className={'footer__link'}>Terms of Service</a>
+                            <a href="#" className={'footer__link'}>Accessibility</a>
                         </div>
                         <div className="footer-links__contact">
                             <div className={'text-lg font-semibold'}>Contact</div>
@@ -41,9 +41,9 @@ export default function Footer() {
                         </div>
                         <div className={'footer-links__help'}>
                             <div className={'text-lg font-semibold'}>Help</div>
-                            <a href="#">FAQ</a>
-                            <a href="#">Returns</a>
-                            <a href="#">Shipping</a>
+                            <a href="#" className={'footer__link'}>FAQ</a>
+                            <a href="#" className={'footer__link'}>Returns</a>
+                            <a href="#" className={'footer__link'}>Shipping</a>
                         </div>
                     </div>
                 </footer>
