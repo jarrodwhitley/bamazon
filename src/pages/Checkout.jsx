@@ -69,7 +69,7 @@ export default function Checkout() {
                 <div className={'checkout__page'}>
                     <div className={'checkout__page-grid'}>
                         {showBam && <img src={Boombam} alt={'Bamazon logo'} className={'checkout__bam row-span-full col-span-full animate__animated animate__bounceIn animate__faster'} />}
-                        <div className={'text-3xl font-semibold mt-6'}>Your Cart</div>
+                        <div className={'text-3xl font-semibold mt-6 mx-8 md:mx-0'}>Your Cart</div>
                         <div className={'checkout__items'}>
                             {cart.items.map((product, index) => (
                                 <div key={index} className={'checkout-cart__item'}>

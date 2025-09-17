@@ -88,7 +88,7 @@ export default function StripeCheckoutForm({total, onSuccess, onError}) {
         <div className="stripe-checkout-form">
             <div className="test-cards-section mb-6">
                 <h3 className="text-lg font-semibold mb-3">Test Cards (For Development)</h3>
-                <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                     <div className="test-card-item">
                         <span className="font-medium">Visa:</span>
                         <span className="font-mono ml-2 text-blue-600 cursor-pointer" onClick={() => fillTestCard(TEST_CARDS.VISA)}>
