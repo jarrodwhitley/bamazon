@@ -83,7 +83,10 @@ export default function Checkout() {
                                         </div>
                                         <div className={'checkout-cart__item__quantity'}>
                                             <div className={'cart__item__quantity__selector'}>
-                                                <select className={'font-base bg-gray-100 rounded'} value={product.quantity || ''} onChange={(e) => handleQuantityChange(e, product.id)}>
+                                                <label htmlFor={`checkout-quantity-${product.id}`} className="sr-only">
+                                                    Quantity for {product.title}
+                                                </label>
+                                                <select id={`checkout-quantity-${product.id}`} className={'font-base bg-gray-100 rounded select-normalized'} value={product.quantity || ''} onChange={(e) => handleQuantityChange(e, product.id)} aria-label={`Change quantity for ${product.title}`}>
                                                     {[...Array(10).keys()].map((i) => (
                                                         <option key={i + 1} value={i + 1}>
                                                             {i + 1}

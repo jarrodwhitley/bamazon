@@ -51,7 +51,10 @@ export default function Cart() {
                                     <span className={'font-semibold'}>${product.price.toFixed(2)}</span>
                                 </div>
                                 <div className={'quantity flex items-center row-start-1 gap-2'}>
-                                    <select className={'font-base bg-gray-100 rounded'} value={product.quantity || ''} onChange={(e) => handleQuantityChange(e, product.id)}>
+                                    <label htmlFor={`quantity-${product.id}`} className="sr-only">
+                                        Quantity for {product.title}
+                                    </label>
+                                    <select id={`quantity-${product.id}`} className={'font-base bg-gray-100 rounded select-normalized'} value={product.quantity || ''} onChange={(e) => handleQuantityChange(e, product.id)} aria-label={`Change quantity for ${product.title}`}>
                                         {[...Array(10).keys()].map((i) => (
                                             <option key={i + 1} value={i + 1}>
                                                 {i + 1}
