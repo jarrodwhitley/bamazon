@@ -44,7 +44,7 @@ export default function Cart() {
                     {/* Cart Items */}
                     <div className={'cart__items'}>
                         {cart.items.map((product, index) => (
-                            <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 p-4 border-b border-gray-200'}>
+                            <div key={index} className={'cart__product grid grid-cols-[20%_1fr_auto_auto] items-center gap-4 py-4 border-b border-gray-200'}>
                                 <img src={product.images[0]} alt={product.title} className={'w-16 h-16 object-cover row-start-1'} />
                                 <div className={'details flex flex-col row-start-1 self-start gap-2 leading-[1]'}>
                                     <span className={'text-sm whitespace-nowrap max-w-[150px] text-ellipsis overflow-hidden'}>{product.title}</span>

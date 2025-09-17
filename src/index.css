@@ -26,10 +26,10 @@
     background-repeat: no-repeat;
     background-position: right 8px center;
     background-size: 16px;
-    padding-right: 32px;
+
     border: 1px solid #d1d5db;
-    min-height: 36px;
     padding: 4px 30px 4px 12px;
+    @apply h-fit w-16 pr-8;
 }
 
 .select-normalized:focus {
@@ -211,7 +211,7 @@ button:focus-visible {
 
             input,
             textarea {
-                @apply w-full bg-gray-100 text-blue-950 min-h-10 mt-2 mb-4 p-2 border border-gray-300 rounded-md;
+                @apply w-full bg-gray-100 text-blue-950 mt-2 mb-4 p-2 border border-gray-300 rounded-md;
             }
 
             button {
@@ -258,7 +258,7 @@ main {
 nav {
     @apply sticky w-full h-auto top-0 left-0 right-0 bg-blue-900 text-white z-30;
     .upper {
-        @apply z-10;
+        @apply z-10 hidden md:block;
 
         .nav-links__link {
             @apply text-white hover:text-blue-400;
@@ -314,7 +314,7 @@ nav {
 
 /* Mobile Navigation */
 .mobile-menu {
-    @apply fixed top-[100px] left-0 w-full h-screen bg-white z-20 grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:hidden;
+    @apply fixed top-[60px] left-0 w-full h-screen bg-white z-20 grid grid-cols-1 grid-rows-1 items-center justify-items-center lg:hidden;
 
     .mobile-menu__content {
         @apply h-full w-full;
